@@ -49,6 +49,21 @@
       "description": "botname;ownername;ownernumber;image url",
       "required": true,
       "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/6oRG106.jpeg"
+    },
+    "STICKER_DATA": {
+      "description": "sticker package name",
+      "required": false,
+      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮"
+    },
+    "AUDIO_DATA": {
+      "description": "audio package name",
+      "required": false,
+      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/6oRG106.jpeg"
+    },
+    "READ_COMMAND": {
+      "description": "Read all commands",
+      "required": false,
+      "value": "false"
     }
   },
   "addons": [
