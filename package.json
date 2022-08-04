@@ -12,6 +12,7 @@
     "@adiwajshing/baileys": "^4.3.0",
     "@adiwajshing/keyed-db": "^0.2.4",
     "acrcloud": "^1.4.0",
+    "wa-sticker-formatter": "^4.3.2",
     "awesome-phonenumber": "^2.64.0",
     "axios": "^0.24.0",
     "string-crypto": "2.0.2",

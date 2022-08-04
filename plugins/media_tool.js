@@ -1,4 +1,4 @@
-const {Function,isPublic,addAudioMetaData,toAudio,getBuffer,getRandom,webp2mp4File} = require('../lib/')
+const {Function,isPublic,addAudioMetaData,toAudio,getBuffer,getRandom,webp2mp4File,Take} = require('../lib/')
 const {exec} = require("child_process")
 const fs = require('fs')
 const c = require ('../config')
@@ -21,6 +21,9 @@ let image_1 = await getBuffer('https://i.imgur.com/fj2WE83.jpeg')
 let tumb = image || image_1
 let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
 await client.sendMessage(m.chat, { audio: Buffer.from(writer.arrayBuffer), mimetype: 'audio/mpeg' }, { quoted: m })
+})
+Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (m, text, client) => {
+await Take(m, text, client)
 })
 Function({pattern: 'photo ?(.*)', fromMe: isPublic, desc: 'Converts non animated stickers to photo', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a non animated sticker!_")
@@ -52,4 +55,4 @@ Function({pattern: 'attp ?(.*)', fromMe: isPublic, desc: 'Text to animated stick
 if(!text && !m.quoted) return m.reply("*Give me a text.*")
 let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
 await client.sendMessage(m.chat, { sticker: {url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`} }, { quoted: m})
-})
+}) 
