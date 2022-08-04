@@ -3,7 +3,7 @@ const {exec} = require("child_process")
 const fs = require('fs')
 const c = require ('../config')
 Function({pattern: 'sticker ?(.*)', fromMe: isPublic, desc: 'Converts replied media to sticker', type: 'media'}, async (m, text, client) => {
-if (!m.reply_message) return m.reply("_Reply to a photo or a short video!_",)
+if (!m.reply_message) return m.reply("_Reply to a photo or a short video!_")
 if (/image/.test(m.mine)) {
 let media = await client.sendImageAsSticker(m.chat, await m.reply_message.download(), m, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
 await fs.unlinkSync(media)
@@ -11,7 +11,7 @@ await fs.unlinkSync(media)
 if ((m.reply_message.msg || m.reply_message).seconds > 11) return m.reply('_Maximum 10 seconds!_')
 let media = await client.sendVideoAsSticker(m.chat, await m.reply_message.download(), m, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
 await fs.unlinkSync(media)
-} else {return m.reply("_Reply to a photo or a short video!_",)
+} else {return m.reply("_Reply to a photo or a short video!_")
 }})
 Function({pattern: 'mp3 ?(.*)', fromMe: isPublic, desc: 'Converts replied media to mp3 format', type: 'media'}, async (m, text, client) => {
 if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
