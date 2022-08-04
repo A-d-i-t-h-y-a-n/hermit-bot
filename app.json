@@ -58,7 +58,7 @@
     "AUDIO_DATA": {
       "description": "audio package name",
       "required": false,
-      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/6oRG106.jpeg"
+      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;https://i.imgur.com/fj2WE83.jpeg"
     },
     "READ_COMMAND": {
       "description": "Read all commands",
