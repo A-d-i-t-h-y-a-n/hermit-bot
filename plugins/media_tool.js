@@ -16,7 +16,10 @@ await fs.unlinkSync(media)
 Function({pattern: 'mp3 ?(.*)', fromMe: isPublic, desc: 'Converts replied media to mp3 format', type: 'media'}, async (m, text, client) => {
 if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
 let media = await m.reply_message.download()
-let writer = await addAudioMetaData(await toAudio(media, 'mp4'), await getBuffer(c.AUDIO_DATA.split(';')[2]), c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
+let image = await getBuffer(c.AUDIO_DATA.split(';')[2])
+let image_1 = await getBuffer('https://i.imgur.com/fj2WE83.jpeg')
+let tumb = image || image_1
+let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
 await client.sendMessage(m.chat, { audio: Buffer.from(writer.arrayBuffer), mimetype: 'audio/mpeg' }, { quoted: m })
 })
 Function({pattern: 'photo ?(.*)', fromMe: isPublic, desc: 'Converts non animated stickers to photo', type: 'media'}, async (m, text, client) => {
