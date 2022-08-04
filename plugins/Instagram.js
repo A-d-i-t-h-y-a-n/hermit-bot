@@ -1,6 +1,6 @@
 const {Function,isPublic,instagram,Story} = require('../lib/')
 Function({pattern: 'insta ?(.*)', fromMe: isPublic, desc: 'Instagram post or reel downloader', type: 'download'}, async (m, text, client) => {
-match = text || m.quoted ? m.quoted.text : false
+match = text || m.quoted.text || false
 if(!match) return await m.reply('_*Need instagram link!*_')
 if (match.includes("stories")) return await m.reply("_Use .story command!_")
 var url = match.match(/(?:https?:\/\/)?(?:www\.)?(?:instagram\.com(?:\/.+?)?\/(p|reel|tv)\/)([\w-]+)(?:\/)?(\?.*)?$/gm)
