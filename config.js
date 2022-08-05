@@ -7,7 +7,7 @@ function convertToBool(text, fault = 'true') {
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG)
 module.exports = {
-	VERSION: 'v1.0.0',
+	VERSION: 'v1.0.1',
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: process.env.MODE || 'public',
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
