@@ -10,3 +10,6 @@ Function({pattern: 'ping ?(.*)', fromMe: isPublic, desc: 'Bot response in second
 Function({pattern: 'alive ?(.*)', fromMe: isPublic, desc: 'Does bot work?', type: 'misc'}, async (m, text, client) => {
   await sendAlive(client, m, text);
 });
+Function({pattern: 'jid ?(.*)', fromMe: isPublic, desc: 'to get remoteJid' type: 'misc'}, async (m) => {
+  await m.reply(m.jid)
+});
