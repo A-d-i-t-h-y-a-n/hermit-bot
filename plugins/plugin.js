@@ -11,7 +11,7 @@ if (url.host === 'gist.github.com') {
 url.host = 'gist.githubusercontent.com';
 url = url.toString() + '/raw'
 } else {url = url.toString()}
-try {var response = await axios(url);} catch {return await m.reply(Lang.INVALID_PLUGIN + ' ```' + e + '```')}
+try {var response = await axios(url);} catch (e) {return await m.reply(Lang.INVALID_PLUGIN + ' ```' + e + '```')}
 let plugin_name = /pattern: ["'](.*)["'],/g.exec(response.data)
 plugin_name = plugin_name[1].split(" ")[0]
 fs.writeFileSync('./plugins/' + plugin_name + '.js', response.data);
