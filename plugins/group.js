@@ -82,7 +82,7 @@ if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
 const response = await client.groupInviteCode(m.chat)
-await m.reply(`https://chat.whatsapp.com/${response})
+await m.reply(`https://chat.whatsapp.com/${response}`)
 })
 Function({pattern: 'join ?(.*)', fromMe: true, type: 'group'}, async (m, text, client) => {
 if (!text) return await m.reply('Enter the group link!')
