@@ -34,7 +34,7 @@ await client.sendMessage(m.chat, listMessage, { quoted: m })
 });
 
 Function({pattern: 'video ?(.*)', fromMe: isPublic, desc: Lang.VIDEO_DESC, type: 'download'}, async (m, text, client) => { 
-let ytmp4text = m.quoted ? m.quoted.text : text
+let ytmp4text = text || m.quoted.text || false
 let textvideo = ytmp4text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
 if(!textvideo) return m.reply(Lang.NEED_VIDEO)
 let ytId = ytIdRegex.exec(textvideo)
