@@ -8,7 +8,7 @@ if (isUrl(match) && match.includes('pin')) {
 const Url = await getUrl(match)
 const {status,data} = await pinterestDownload(Url)
 if (!status) return await m.reply('*Not found*')
-return await client.sendFromUrl(m.jid, data[0], '', m.quoted_message || m)
+return await client.sendFromUrl(m.jid, data[0].url, '', m.quoted_message || m)
 }
 const image = await pinterest(match)
 if (!image) return await m.reply('*Not found*')
