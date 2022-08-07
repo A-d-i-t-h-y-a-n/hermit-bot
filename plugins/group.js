@@ -24,6 +24,8 @@ await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} 
 await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} because they blocked the bot number._`, mentions: [users] }, { quoted: m })
 }else if (vs == '200') {
 await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Added to The Group`, mentions: [users] })
+}else if (vs == '409') {
+await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Already in Group`, mentions: [users] })
 } else {
 await client.sendMessage(m.chat, { text: vs})
 }})
