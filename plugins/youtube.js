@@ -10,7 +10,7 @@ if (isUrl(text) && text.includes('youtu')) {
 let ytId = ytIdRegex.exec(text)
 let media = await yta('https://youtu.be/' + ytId[1], '128kbps')
 let thumb = await getBuffer(media.thumb)
-if (media.filesize >= 10000) return await sendwithLinkpreview(client, m, media.dl_link, 'https://www.youtube.com/watch?v=' + ytId[1])
+if (media.filesize >= 10000) return await sendwithLinkpreview(client, m.data, media.dl_link, 'https://www.youtube.com/watch?v=' + ytId[1])
 let title = media.title.replaceAll(' ', '+').replaceAll('/', '');
 ffmpeg(media.dl_link)
         .save('./' + title + '.mp3')
@@ -30,7 +30,7 @@ title: search.videos[0].title,
 buttonText: 'Select song',
 sections: list
 }
-await client.sendMessage(m.chat, listMessage, { quoted: m })
+await client.sendMessage(m.chat, listMessage, { quoted: m.data })
 });
 
 Function({pattern: 'video ?(.*)', fromMe: isPublic, desc: Lang.VIDEO_DESC, type: 'download'}, async (m, text, client) => { 

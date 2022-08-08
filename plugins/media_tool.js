@@ -5,11 +5,11 @@ const c = require ('../config')
 Function({pattern: 'sticker ?(.*)', fromMe: isPublic, desc: 'Converts replied media to sticker', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message) return m.reply("_Reply to a photo or a short video!_")
 if (/image/.test(m.mine)) {
-let media = await client.sendImageAsSticker(m.chat, await m.reply_message.download(), m, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
+let media = await client.sendImageAsSticker(m.chat, await m.reply_message.download(), m.data, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
 await fs.unlinkSync(media)
 } else if (/video/.test(m.mine)) {
 if ((m.reply_message.msg || m.reply_message).seconds > 11) return m.reply('_Maximum 10 seconds!_')
-let media = await client.sendVideoAsSticker(m.chat, await m.reply_message.download(), m, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
+let media = await client.sendVideoAsSticker(m.chat, await m.reply_message.download(), m.data, { packname: c.STICKER_DATA.split(';')[0], author: c.STICKER_DATA.split(';')[1] })
 await fs.unlinkSync(media)
 } else {return m.reply("_Reply to a photo or a short video!_")
 }})
@@ -20,7 +20,7 @@ let image = await getBuffer(c.AUDIO_DATA.split(';')[2])
 let image_1 = await getBuffer('https://i.imgur.com/fj2WE83.jpeg')
 let tumb = image || image_1
 let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
-await client.sendMessage(m.chat, { audio: Buffer.from(writer.arrayBuffer), mimetype: 'audio/mpeg' }, { quoted: m })
+await client.sendMessage(m.chat, { audio: Buffer.from(writer.arrayBuffer), mimetype: 'audio/mpeg' }, { quoted: m.data })
 })
 Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (m, text, client) => {
 await Take(m, text, client)
@@ -54,5 +54,5 @@ await fs.unlinkSync(media)
 Function({pattern: 'attp ?(.*)', fromMe: isPublic, desc: 'Text to animated sticker', type: 'misc'}, async (m, text, client) => {
 if(!text && !m.quoted) return m.reply("*Give me a text.*")
 let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
-await client.sendMessage(m.chat, { sticker: {url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`} }, { quoted: m})
+await client.sendMessage(m.chat, { sticker: {url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`} }, { quoted: m.data})
 }) 

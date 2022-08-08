@@ -19,9 +19,9 @@ let vs = await client.GroupParticipantsUpdate(m, users)
 if (vs == '403') {
 await client.sendMessage(m.chat, { text: `_Couldn't add. Invite sent!_`, mentions: [users] })
 } else if (vs == '408') {
-await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} because they left the group recently. Try again later._`, mentions: [users] }, { quoted: m })
+await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} because they left the group recently. Try again later._`, mentions: [users] }, { quoted: m.data })
 } else if (vs == '401') {
-await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} because they blocked the bot number._`, mentions: [users] }, { quoted: m })
+await client.sendMessage(m.chat, { text: `_Couldn't add @${users.split('@')[0]} because they blocked the bot number._`, mentions: [users] }, { quoted: m.data })
 }else if (vs == '200') {
 await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Added to The Group`, mentions: [users] })
 }else if (vs == '409') {

@@ -46,7 +46,7 @@ Function({on: 'text', fromMe: false}, async (message, text, client) => {
         async (filter) => {
             pattern = new RegExp(filter.dataValues.regex ? filter.dataValues.pattern : ('\\b(' + filter.dataValues.pattern + ')\\b'), 'gm');
             if (pattern.test(message.text)) {
-            	await client.sendMessage(message.jid, await parseMessage(message.jid, message.sender, client, filter.dataValues.text), { quoted: message })
+            	await client.sendMessage(message.jid, await parseMessage(message.jid, message.sender, client, filter.dataValues.text), { quoted: message.data })
             }
         }
     );
