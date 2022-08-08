@@ -80,9 +80,9 @@ Function({pattern: 'update ?(.*)', fromMe: true, dontAddCommandList: true, desc:
 if (!text || text === "check") {
 let n = await updatecheck()
 if (n === 500) return await m.reply('Bot is completely up-to-date!')
-var up = "*New update available for Bot!*\n\nChanges:\n```"
-n['all'].map((c) => {up += ' ▢ [' + c.date.substring(0, 10) + ']: ' + c.message + '\n';});
-await client.sendMessage(m.chat, { text: up + '```', templateButtons: [{index: 1, quickReplyButton: {displayText: 'Update Start', id: 'update start'}},]})
+var up = "ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ʙᴏᴛ!\n\nᴄʜᴀɴɢᴇs:\n"
+n['all'].map((c) => {up += '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';});
+await client.sendMessage(m.chat, { text: up})
 } else if (text === "start") {
 let n = await updatecheck()
 if (n === 500) return await m.reply('Bot is completely up-to-date!')
@@ -92,6 +92,6 @@ if (n === 404) return await m.reply("*Your Heroku information is wrong!*")
 if (n === 408) return await m.reply("_Your account has reached its concurrent builds limit!. Please wait for the other app to finish its deploy_")
 if (n === 200) return await m.reply("_Successfully Updated!_")
 } else {
-await client.sendMessage(m.chat, { text: 'Update Manager', templateButtons: [{index: 1, quickReplyButton: {displayText: 'Update Check', id: '.update check'}},{index: 2, quickReplyButton: {displayText: 'Update Start', id: '.update start'}},]})
+await client.sendMessage(m.chat, { text: 'Update Manager', templateButtons: [{index: 1, quickReplyButton: {displayText: 'Update Check', id: 'update check'}},{index: 2, quickReplyButton: {displayText: 'Update Start', id: '.update start'}},]})
 }
 });
