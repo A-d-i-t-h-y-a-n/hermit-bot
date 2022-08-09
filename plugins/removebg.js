@@ -12,7 +12,7 @@ Function({pattern: 'removebg ?(.*)', fromMe: true, desc: Lang.REMOVEBG_DESC}, as
     if (!/image/.test(m.mine)) return await m.reply(Lang.NEED_PHOTO);
     if (Config.RBG_API_KEY === false) return await m.reply(Lang.NO_API_KEY);
     var load = await m.reply(Lang.RBGING);
-    var location = await downloadAndSaveMedia();
+    var location = await m.reply_message.downloadAndSaveMedia();
     var form = new FormData();
     form.append('image_file', fs.createReadStream(location));
     form.append('size', 'auto');
