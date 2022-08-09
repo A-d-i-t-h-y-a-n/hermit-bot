@@ -17,7 +17,7 @@ ffmpeg(media.dl_link)
         .on('end', async () => {
 let writer = await addAudioMetaData(fs.readFileSync('./' + title + '.mp3'), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 fs.unlinkSync('./' + title + '.mp3')
-await sendwithLinkpreview(client, m.data, Buffer.from(writer.arrayBuffer), 'https://www.youtube.com/watch?v=' + ytId[1])
+await sendwithLinkpreview(client, m, Buffer.from(writer.arrayBuffer), 'https://www.youtube.com/watch?v=' + ytId[1])
 });
 return;
 }
@@ -35,6 +35,7 @@ await client.sendMessage(m.chat, listMessage, { quoted: m.data })
 
 Function({pattern: 'video ?(.*)', fromMe: isPublic, desc: Lang.VIDEO_DESC, type: 'download'}, async (m, text, client) => { 
 let ytmp4text = text || m.quoted.text || false
+if(!ytmp4text) return m.reply(Lang.NEED_VIDEO)
 let textvideo = ytmp4text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'))
 if(!textvideo) return m.reply(Lang.NEED_VIDEO)
 let ytId = ytIdRegex.exec(textvideo)
