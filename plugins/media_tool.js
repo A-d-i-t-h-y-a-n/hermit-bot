@@ -27,7 +27,7 @@ await Take(m, text, client)
 })
 Function({pattern: 'photo ?(.*)', fromMe: isPublic, desc: 'Converts non animated stickers to photo', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a non animated sticker!_")
-let media = await client.downloadAndSaveMediaMessage(m.reply_message)
+let media = await m.downloadAndSaveMedia()
 let ran = await getRandom('.png')
 exec(`ffmpeg -i ${media} ${ran}`, (err) => {
 fs.unlinkSync(media)
@@ -38,7 +38,7 @@ fs.unlinkSync(ran)
 })})
 Function({pattern: 'mp4 ?(.*)', fromMe: isPublic, desc: 'Converts animated stickers to video', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a animated sticker!_")
-let media = await client.downloadAndSaveMediaMessage(m.reply_message)
+let media = await m.downloadAndSaveMedia()
 let webpToMp4 = await webp2mp4File(media)
 await client.sendMessage(m.chat, { video: { url: webpToMp4.result }}, { quoted: m.quoted_message })
 await fs.unlinkSync(media)
@@ -46,7 +46,7 @@ await fs.unlinkSync(media)
 
 Function({pattern: 'gif ?(.*)', fromMe: isPublic, desc: 'Converts animated stickers to video', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a animated sticker!_")
-let media = await client.downloadAndSaveMediaMessage(m.reply_message)
+let media = await m.downloadAndSaveMedia()
 let webpToMp4 = await webp2mp4File(media)
 await client.sendMessage(m.chat, { video: { url: webpToMp4.result }, gifAttribution: 'TENOR', gifPlayback: true }, { quoted: m.quoted_message })
 await fs.unlinkSync(media)
