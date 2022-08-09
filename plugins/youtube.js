@@ -1,4 +1,4 @@
-const {addAudioMetaData,isUrl,getBuffer,generateListYTS,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
+const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
@@ -23,12 +23,17 @@ return;
 }
 let search = await yts(text)
 if (search.all.length < 1) return await m.reply(Lang.NO_RESULT);
-let list = await generateListYTS(search)
+let listbutton = [];
+let no = 1;
+for (var z of search.videos) {
+let button = {title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: prefix + 'song ' + z.url}]};
+listbutton.push(button)
+}; 
 const listMessage = {
-text: `And ${list.length} More Results...`,
+text: `And ${listbutton.length} More Results...`,
 title: search.videos[0].title,
 buttonText: 'Select song',
-sections: list
+sections: listbutton
 }
 await client.sendMessage(m.chat, listMessage, { quoted: m.data })
 });
