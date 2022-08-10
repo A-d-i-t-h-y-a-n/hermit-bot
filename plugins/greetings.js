@@ -1,31 +1,31 @@
-const {Function,getString} = require('../lib/')
+const {Function,getString,prefix} = require('../lib/')
 const sql = require('../lib/database/greetings');
 const Lang = getString('greetings');
 Function({pattern: 'welcome ?(.*)', fromMe: true, desc: Lang.WELCOME_DESC, type: 'group'}, async (m, text, client) => {
 if (!text) {
 client.sendMessage(m.chat, { text: 'Welcome Message Manager', templateButtons: [
-{index: 1, quickReplyButton: {displayText: 'ON', id: 'welcome on'}},
-{index: 2, quickReplyButton: {displayText: 'OFF', id: 'Welcome off'}},
-{index: 3, quickReplyButton: {displayText: 'GET', id: 'Welcome get'}},
+{index: 1, quickReplyButton: {displayText: 'ON', id: prefix + 'welcome on'}},
+{index: 2, quickReplyButton: {displayText: 'OFF', id: prefix + 'welcome off'}},
+{index: 3, quickReplyButton: {displayText: 'GET', id: prefix + 'welcome get'}},
 ]})
 return;
 }
-if (m.match[0] === "on") {
+if (text === "on") {
 let msg = await sql.enableMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_WELCOME)
 await sql.enableMessage(m.jid);
-await m.reply(`_Welcome ${m.match[0] == 'on' ? 'Activated' : 'Deactivated'}_`)
-} else if (m.match[0] === "off") {
+await m.reply(`_Welcome ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
+} else if (text === "off") {
 let msg = await sql.getMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_WELCOME)
-await m.reply(`_Welcome ${m.match[0] == 'on' ? 'Activated' : 'Deactivated'}_`)
+await m.reply(`_Welcome ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
 await sql.disableMessage(m.jid);
-} else if (m.match[0] === "delete") {
+} else if (text === "delete") {
 let msg = await sql.getMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_WELCOME)
 await sql.deleteMessage(m.jid, 'welcome');
 await m.reply(Lang.WELCOME_DELETED); 
-} else if (m.match[0] === "get") {
+} else if (text === "get") {
 let msg = await sql.getMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_WELCOME)
 const update = {}
@@ -54,22 +54,22 @@ client.sendMessage(m.chat, { text: 'goodbye Message Manager', templateButtons: [
 ]})
 return;
 }
-if (m.match[0] === "on") {
+if (text === "on") {
 let msg = await sql.enableMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
 await sql.enableMessage(m.jid);
-await m.reply(`_goodbye ${m.match[0] == 'on' ? 'Activated' : 'Deactivated'}_`)
-} else if (m.match[0] === "off") {
+await m.reply(`_goodbye ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
+} else if (text === "off") {
 let msg = await sql.getMessage(m.jid, 'goodbye');
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
-await m.reply(`_goodbye ${m.match[0] == 'on' ? 'Activated' : 'Deactivated'}_`)
+await m.reply(`_goodbye ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
 await sql.disableMessage(m.jid);
-} else if (m.match[0] === "delete") {
+} else if (text === "delete") {
 let msg = await sql.getMessage(m.jid, 'goodbye');
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
 await sql.deleteMessage(m.jid, 'goodbye');
 await m.reply(Lang.goodbye_DELETED); 
-} else if (m.match[0] === "get") {
+} else if (text === "get") {
 let msg = await sql.getMessage(m.jid, 'goodbye');
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
 const update = {}
