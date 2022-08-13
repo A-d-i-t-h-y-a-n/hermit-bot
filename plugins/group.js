@@ -81,11 +81,25 @@ await m.reply('Group opened.')
 indec = "Provides the group's invitation link."
 Function({pattern: 'invite ?(.*)', fromMe: true, desc: indec, type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
 const response = await client.groupInviteCode(m.chat)
 await m.reply(`https://chat.whatsapp.com/${response}`)
+})
+Function({pattern: 'revoke', fromMe: true, desc: 'Revoke Group invite link.', type: 'group'}, async (m, match) => {
+if (!m.isGroup) return await m.reply('_This command only works in group chats_')
+const isbotAdmin = await isBotAdmins(m, client)
+if (!isbotAdmin) return await m.reply("I'm not an admin")
+await m.client.groupRevokeInvite(m.jid)
+})
+Function({pattern: 'ginfo ?(.*)', fromMe: true, desc: 'Shows group invite info', type: 'group'}, async (m, match) => {
+match = match || m.reply_message.text
+if (!match) return await m.reply('*Need Group Link*\n_Example : ginfo group link_')
+const [link, invite] = match.match(/chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i) || []
+if (!invite) return await m.reply('_Invalid invite link_')
+const res = await m.client.groupGetInviteInfo(invite)
+const _0x35fd9b=_0x51bc;function _0x51bc(n,t){const c=_0xcccb();return(_0x51bc=function(n,t){return c[n-=161]})(n,t)}function _0xcccb(){const n=["/M/YYYY","205644YhmOxf","35700EKoEpr","11601288aotFNq","unix","moment","18FrSBOW","87572WFIIMr","7mGpHeB","1904452MVcsPn","4248gLsmqB","hh:mm a, D","8916245QKhseR","format","4986728jkPRVz","243bazbqx"];return(_0xcccb=function(){return n})()}!function(n,t){const c=_0x51bc,r=_0xcccb();for(;;)try{if(981235===-parseInt(c(174))/1*(parseInt(c(163))/2)+-parseInt(c(172))/3*(parseInt(c(164))/4)+parseInt(c(169))/5+parseInt(c(176))/6+parseInt(c(165))/7*(-parseInt(c(171))/8)+parseInt(c(167))/9*(parseInt(c(175))/10)+-parseInt(c(166))/11)break;r.push(r.shift())}catch(n){r.push(r.shift())}}();const moment=require(_0x35fd9b(162)),time=n=>moment[_0x35fd9b(161)](n)[_0x35fd9b(170)](_0x35fd9b(168)+_0x35fd9b(173));
+await m.reply(`Name : ${res.subject}\nJid : ${res.id}@g.us\nOwner : ${res.creator.split('@')[0]}\nMembers : ${res.size}\nCreated : ${time(res.creation)}`)
 })
 Function({pattern: 'join ?(.*)', fromMe: true, desc: 'Join invite link.', type: 'group'}, async (m, text, client) => {
 if (!text) return await m.reply('Enter the group link!')
