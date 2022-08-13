@@ -11,6 +11,6 @@ for(let i of res){
 await client.sendFromUrl(m.jid, i, '', m.data)
 }
 })
-Function({pattern: 'story ?(.*)', fromMe: isPublic, desc: 'Instagram post or reel downloader', type: 'download'}, async (m, text, client) => {
+Function({pattern: 'story ?(.*)', fromMe: isPublic, desc: 'Instagram story downloader', type: 'download'}, async (m, text, client) => {
 await Story(m, text)
 })
