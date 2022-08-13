@@ -9,7 +9,7 @@ await m.reply(await Fancy(match, m.match[0]))
 })
 Function({pattern: 'styletext ?(.*)', fromMe: isPublic, desc: 'change text to styletext', type: 'misc'}, async (m, match) => {
 if (!match && !m.quoted.text) return await m.reply('_Need Text_\n*Example* : styletext Hermit')
-match=m.quoted?m.quoted.text||m.quoted.data.message.hydratedFourRowTemplate.hydratedContentText:match.trim().split(/ +/).slice(1).join(" ");
+match=m.quoted?m.quoted.text||m.quoted.data.message.hydratedFourRowTemplate.hydratedContentText:match;
 const res = await styletext(match)
 let text = ''
 let no = 1
