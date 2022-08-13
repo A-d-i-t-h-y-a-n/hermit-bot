@@ -46,6 +46,7 @@
     "request": "^2.88.2",
     "scrape-primbon": "^1.1.0",
     "translate-google-api": "^1.0.4",
+    "canvacord": "^5.3.0",
     "sqlite3": "^5.0.8",
     "sequelize": "^6.19.0",
     "simple-git": "^3.7.1",
