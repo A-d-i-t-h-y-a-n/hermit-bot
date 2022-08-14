@@ -22,3 +22,20 @@ Function({
 	let sender = 'https://wa.me/' + (m.reply_message.sender || m.mention[0] || text).split('@')[0];
 	await m.reply(sender)
 });
+
+Function({
+	pattern: 'attp ?(.*)',
+	fromMe: isPublic,
+	desc: 'Text to animated sticker',
+	type: 'misc'
+}, async (m, text, client) => {
+	if (!text && !m.quoted) return m.reply("*Give me a text.*")
+	let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
+	await client.sendMessage(m.chat, {
+		sticker: {
+			url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`
+		}
+	}, {
+		quoted: m.data
+	})
+})

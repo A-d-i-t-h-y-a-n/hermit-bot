@@ -52,8 +52,3 @@ let webpToMp4 = await webp2mp4File(media)
 await client.sendMessage(m.chat, { video: { url: webpToMp4.result }, gifAttribution: 'TENOR', gifPlayback: true }, { quoted: m.quoted_message })
 await fs.unlinkSync(media)
 })
-Function({pattern: 'attp ?(.*)', fromMe: isPublic, desc: 'Text to animated sticker', type: 'misc'}, async (m, text, client) => {
-if(!text && !m.quoted) return m.reply("*Give me a text.*")
-let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
-await client.sendMessage(m.chat, { sticker: {url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`} }, { quoted: m.data})
-}) 
