@@ -58,12 +58,12 @@ fs.mkdirSync("../media/avmix")
 }
 let files = fs.readdirSync("../media/avmix/")
 if ((!m.reply_message && files.length < 2) || (m.reply_message && !m.reply_message.audio && !m.reply_message.audio)) return await m.reply('_Reply to Audio and Video to Merge!_');
-if (m.reply_message.audio)) {
+if (m.reply_message.audio) {
 let media = await m.reply_message.downloadAndSaveMedia()
 await fs.writeFileSync('../media/avmix/audio.mp3', fs.readFileSync(media));
 return await m.reply("_Audio Added_")
 }
-if (m.reply_message.video)) {
+if (m.reply_message.video) {
 let media = await m.reply_message.downloadAndSaveMedia()
 await fs.writeFileSync('../media/avmix/video.mp4', fs.readFileSync(media));
 return await m.reply("_Video Added_")
