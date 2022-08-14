@@ -1,5 +1,5 @@
 const {Function} = require('../lib/')
-Function({pattern: 'tag ?(.*)', fromMe: true, type: 'group'}, async (m, text, client) => {
+Function({pattern: 'tag ?(.*)', fromMe: true, desc: 'tag participants in the group', type: 'group'}, async (m, text, client) => {
 const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 const participants = m.isGroup ? await groupMetadata.participants : ''
 if (text == 'all') {
