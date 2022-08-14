@@ -13,7 +13,7 @@ module.exports = {
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: process.env.MODE || 'public',
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
-    SEND_READ: convertToBool(process.env.READ_COMMAND) || true, 
+    SEND_READ: process.env.READ_COMMAND || false, 
     MSG_LOG: convertToBool(process.env.LOG_MSG) || false, 
     LANG: process.env.LANGUAGE === undefined ? 'EN' : process.env.LANGUAGE.toUpperCase(),
     ALWAYS_ONLINE: convertToBool(process.env.ALWAYS_ONLINE) || true,
