@@ -57,7 +57,7 @@ if (!fs.existsSync("./media/avmix")) {
 fs.mkdirSync("./media/avmix")
 }
 let files = fs.readdirSync("./media/avmix/")
-if ((!m.reply_message && files.length < 2) || (m.reply_message && !m.reply_message.audio && !m.reply_message.audio)) return await m.reply('_Reply to Audio and Video to Merge!_');
+if ((!m.reply_message && files.length < 2) || (m.reply_message && !m.reply_message.audio && !m.reply_message.video)) return await m.reply('_Reply to Audio and Video to Merge!_');
 if (m.reply_message.audio) {
 let media = await m.reply_message.downloadAndSaveMedia()
 await fs.writeFileSync('./media/avmix/audio.mp3', fs.readFileSync(media));
