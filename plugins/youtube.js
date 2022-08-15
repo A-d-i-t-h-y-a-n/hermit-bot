@@ -1,4 +1,4 @@
-const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer,getBuffer} = require('../lib/');
+const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
