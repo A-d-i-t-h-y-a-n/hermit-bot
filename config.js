@@ -7,7 +7,7 @@ function convertToBool(text, fault = 'true') {
 }
 
 global.apikey = {'https://hermit-web.herokuapp.com': 'free'}
-global.apiUrl = 'https://hermit-web.herokuapp.com/'
+global.apiUrl = 'https://hermit-web.herokuapp.com'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG)
