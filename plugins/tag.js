@@ -1,4 +1,4 @@
-const {Function} = require('../lib/')
+const {Function,parseMention} = require('../lib/')
 Function({pattern: 'tag ?(.*)', fromMe: true, desc: 'tag participants in the group', type: 'group'}, async (m, text, client) => {
 const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 const participants = m.isGroup ? await groupMetadata.participants : ''
@@ -16,7 +16,7 @@ let count = 1
 for (let admin of admins) {
 msg += `${count++} @${admin.split('@')[0]}\n`
 }
-await m.reply(msg, { mentions: admins.map(a => a.id)})
+return await m.reply(msg, { mentions: parseMention(msg)})
 }
 if (text || m.reply_message.text) return await m.reply(text || m.reply_message.text, {mentions: participants.map(a => a.id) })
 if (!m.reply_message) return await m.reply('_Example : \ntag all\ntag admin\ntag text\nReply to a message_')
