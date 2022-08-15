@@ -16,9 +16,9 @@ let count = 1
 for (let admin of admins) {
 msg += `${count++} @${admin.id.split('@')[0]}\n`
 }
-await m.reply(msg, m.chat, { mentions: admins.map(a => a.id)})
+await m.reply(msg, { mentions: admins.map(a => a.id)})
 }
-if (text || m.reply_message.text) return await m.reply(text || m.reply_message.text, m.chat, {mentions: participants.map(a => a.id) })
+if (text || m.reply_message.text) return await m.reply(text || m.reply_message.text, {mentions: participants.map(a => a.id) })
 if (!m.reply_message) return await m.reply('_Example : \ntag all\ntag admin\ntag text\nReply to a message_')
 await client.forwardMessage(m.chat, m.quoted_message, {contextInfo: { mentionedJid: participants.map(a => a.id)}})
 })
