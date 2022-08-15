@@ -2,7 +2,8 @@
 const {
 	Function,
 	isPublic,
-	getJson
+	getJson,
+	toPTT
 } = require("../lib/");
 const fs = require('fs');
 Function({
@@ -64,3 +65,14 @@ Function({
 		await fs.unlinkSync(media)
 	}
 })
+
+Function({
+	pattern: 'tovn ?(.*)',
+	fromMe: isPublic,
+	desc: 'video/audio to voice',
+	type: 'misc'
+}, async (m, text, client) => {
+	if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
+	let audio = await toPTT(await m.reply_message.download(), 'mp4')
+	await m.client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg', ptt: true }, {quoted: m.data })
+});
