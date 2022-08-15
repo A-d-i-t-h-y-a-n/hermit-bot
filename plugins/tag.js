@@ -8,7 +8,7 @@ let count = 1
 for (let participant of participants) {
 msg += `${count++} @${participant.id.split('@')[0]}\n`
 }
-await m.client.sendMessage(m.chat, {text : msg, mentions: participants.map(a => a.id)})
+return await m.client.sendMessage(m.chat, {text : msg, mentions: participants.map(a => a.id)})
 } else if (text == 'admin' || text == 'admins') {
 let admins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
 let msg = ''
