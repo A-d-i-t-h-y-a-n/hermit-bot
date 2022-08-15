@@ -14,7 +14,7 @@ let admins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v 
 let msg = ''
 let count = 1
 for (let admin of admins) {
-msg += `${count++} @${admin.id.split('@')[0]}\n`
+msg += `${count++} @${admin.split('@')[0]}\n`
 }
 await m.reply(msg, { mentions: admins.map(a => a.id)})
 }
