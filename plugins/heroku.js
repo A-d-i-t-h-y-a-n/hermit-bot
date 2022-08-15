@@ -83,7 +83,7 @@ if (n === 500) return await m.reply('Bot is completely up-to-date!')
 var up = 'ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ʙᴏᴛ!\n\nᴄʜᴀɴɢᴇs:\n'
 n['all'].map((c) => {up += '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';});
 await client.sendMessage(m.chat, { text: up})
-} else if (text === 'start') {
+} else if (text === 'start' || text === 'now') {
 let n = await updatecheck()
 if (n === 500) return await m.reply('Bot is completely up-to-date!')
 await m.reply('_Build started_')
