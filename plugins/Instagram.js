@@ -8,7 +8,7 @@ if (url == null) return await m.reply('_Need instagram link!_')
 const res = await instagram(url[0])
 if (res.length < 1) return await m.reply("*No media found!*")
 for(let i of res){
-await client.sendFromUrl(m.jid, i, '', m.data)
+await client.sendFromUrl(m.jid, i, m.data)
 }
 })
 Function({pattern: 'story ?(.*)', fromMe: isPublic, desc: 'Instagram story downloader', type: 'download'}, async (m, text, client) => {

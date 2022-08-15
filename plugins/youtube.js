@@ -1,4 +1,4 @@
-const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
+const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer,getBuffer} = require('../lib/');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
@@ -47,5 +47,5 @@ let ytId = ytIdRegex.exec(textvideo)
 let quality = m.match[1] ? m.match[1] : '360p'
 let media = await ytv('https://youtu.be/' + ytId[1], quality)
 if (media.filesize >= 100000) return m.reply('_Unable to download video_')
-await client.sendMessage(m.chat, { video: await fromBuffer(media.dl_link), mimetype: 'video/mp4', caption: media.title})
+await client.sendMessage(m.chat, { video: await getBuffer(media.dl_link), mimetype: 'video/mp4', caption: media.title})
 });

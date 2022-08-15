@@ -17,5 +17,5 @@ await message.client.sendMessage(message.jid, listMessage, { quoted: m.data })
 
 Function({pattern: 'sendFromUrl ?(.*)', fromMe: isPublic, dontAddCommandList: true, desc: 'sendFromUrl', type: 'download'}, async (message, match) => {
 if (!match) return await message.reply('*Missing Url! Failed to Download*')
-await message.client.sendFromUrl(message.jid, match, '', m.data)
+await message.client.sendFromUrl(message.jid, match, m.data)
 })
