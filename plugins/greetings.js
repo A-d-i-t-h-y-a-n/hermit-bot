@@ -1,12 +1,12 @@
-const {Function,getString,PREFIX} = require('../lib/')
+const {Function,getString,prefix} = require('../lib/')
 const sql = require('../lib/database/greetings');
 const Lang = getString('greetings');
 Function({pattern: 'welcome ?(.*)', fromMe: true, desc: 'it sets the welcome message', type: 'group'}, async (m, text, client) => {
 if (!text) {
 client.sendMessage(m.chat, { text: 'Welcome Message Manager', templateButtons: [
-{index: 1, quickReplyButton: {displayText: 'ON', id: PREFIX + 'welcome on'}},
-{index: 2, quickReplyButton: {displayText: 'OFF', id: PREFIX + 'welcome off'}},
-{index: 3, quickReplyButton: {displayText: 'GET', id: PREFIX + 'welcome get'}},
+{index: 1, quickReplyButton: {displayText: 'ON', id: prefix + 'welcome on'}},
+{index: 2, quickReplyButton: {displayText: 'OFF', id: prefix + 'welcome off'}},
+{index: 3, quickReplyButton: {displayText: 'GET', id: prefix + 'welcome get'}},
 ]})
 return;
 }

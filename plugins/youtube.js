@@ -1,4 +1,4 @@
-const {addAudioMetaData,isUrl,getBuffer,PREFIX,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
+const {addAudioMetaData,isUrl,getBuffer,prefix,getString,Function,isPublic,yta,ytv,ytIdRegex,sendwithLinkpreview,sendQualityList,y2mate,fromBuffer} = require('../lib/');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
@@ -26,7 +26,7 @@ if (search.all.length < 1) return await m.reply(Lang.NO_RESULT);
 let listbutton = [];
 let no = 1;
 for (var z of search.videos) {
-let button = {title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: PREFIX + 'song ' + z.url}]};
+let button = {title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: prefix + 'song ' + z.url}]};
 listbutton.push(button)
 }; 
 const listMessage = {
