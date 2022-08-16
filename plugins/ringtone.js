@@ -1,10 +1,10 @@
-const {Function,ringtone,isPublic,prefix} = require("../lib/");
+const {Function,ringtone,isPublic,PREFIX} = require("../lib/");
 Function({pattern: 'ringtone ?(.*)', fromMe: isPublic, desc: 'download ringtone', type: 'download'}, async (message, match) => {
 if (!match) return await message.reply('_Example : ringtone the box_')
 const res = await ringtone(match)
 const buttons = [];
 for (var main = 0; main < res.length; main++) {
-buttons.push({title: res[main].title, rowId: prefix+'sendFromUrl ' + res[main].audio})
+buttons.push({title: res[main].title, rowId: PREFIX + 'sendFromUrl ' + res[main].audio})
 }; 
 const listMessage = {
 text: 'And ' + buttons.length + ' More Results...',

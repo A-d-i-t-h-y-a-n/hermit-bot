@@ -2,7 +2,7 @@ const simpleGit = require('simple-git');
 const git = simpleGit();
 const got = require('got');
 const Config = require('../config');
-const {Function,updatecheck,updatestart,formatTime,addCommand,getString,prefix} = require('../lib/');
+const {Function,updatecheck,updatestart,formatTime,addCommand,getString,PREFIX} = require('../lib/');
 const Heroku = require('heroku-client');
 const heroku = new Heroku({token: Config.HEROKU.API_KEY})
 let baseURI = '/apps/' + Config.HEROKU.APP_NAME
@@ -135,6 +135,6 @@ if (n === 404) return await m.send('*Your Heroku information is wrong!*')
 if (n === 408) return await m.send('_Your account has reached its concurrent builds limit!. Please wait for the other app to finish its deploy_')
 if (n === 200) return await m.send('_Successfully Updated!_')
 } else {
-await client.sendMessage(m.chat, { text: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑀𝐴𝑁𝐴𝐺𝐸𝑅', templateButtons: [{index: 1, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝐶𝐻𝐸𝐶𝐾', id: prefix + 'update check'}},{index: 2, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑆𝑇𝐴𝑅𝑇', id: prefix + 'update start'}}]})
+await client.sendMessage(m.chat, { text: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑀𝐴𝑁𝐴𝐺𝐸𝑅', templateButtons: [{index: 1, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝐶𝐻𝐸𝐶𝐾', id: PREFIX + 'update check'}},{index: 2, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑆𝑇𝐴𝑅𝑇', id: PREFIX + 'update start'}}]})
 }
 });
