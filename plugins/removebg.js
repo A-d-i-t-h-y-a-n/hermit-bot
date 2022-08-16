@@ -7,7 +7,7 @@ const stream = require('stream');
 const {promisify} = require('util');
 const pipeline = promisify(stream.pipeline);
 const Lang = getString('removebg');
-Function({pattern: 'removebg ?(.*)', fromMe: true, desc: Lang.REMOVEBG_DESC}, async (m, text, client) => {    
+Function({pattern: 'rmbg ?(.*)', fromMe: true, desc: Lang.REMOVEBG_DESC}, async (m, text, client) => {    
     if (!m.reply_message) return await m.reply(Lang.NEED_PHOTO);
     if (!/image/.test(m.mine)) return await m.reply(Lang.NEED_PHOTO);
     if (Config.RBG_API_KEY === false) return await m.reply(Lang.NO_API_KEY);
