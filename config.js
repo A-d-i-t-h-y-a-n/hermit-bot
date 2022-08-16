@@ -18,6 +18,7 @@ module.exports = {
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
     SEND_READ: process.env.READ_COMMAND || false, 
     MSG_LOG: convertToBool(process.env.LOG_MSG) || false, 
+    BLOCKCHAT: process.env.BLOCK_CHAT === undefined ? false : process.env.BLOCK_CHAT,
     LANG: process.env.LANGUAGE === undefined ? 'EN' : process.env.LANGUAGE.toUpperCase(),
     ALWAYS_ONLINE: convertToBool(process.env.ALWAYS_ONLINE) || true,
     BOT_NAME: process.env.BOT_NAME || '𝛨𝛯𝑅𝛭𝛪𝑇',
