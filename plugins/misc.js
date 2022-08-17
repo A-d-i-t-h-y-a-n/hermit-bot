@@ -3,9 +3,11 @@ const {
 	Function,
 	isPublic,
 	getJson,
-	toPTT
+	toPTT,
+	getString
 } = require("../lib/");
 const fs = require('fs');
+const Lang = getString('weather');
 Function({
 	pattern: 'readmore ?(.*)',
 	fromMe: isPublic,
@@ -75,6 +77,24 @@ Function({
 	if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
 	let audio = await toPTT(await m.reply_message.download(), 'mp4')
 	await m.client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg', ptt: true }, {quoted: m.data })
+});
+
+Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic}, async (message, match) => {
+const got = require('got');
+if (match === '') return await message.send(Lang.NEED_LOCATION);
+const url = `http://api.openweathermap.org/data/2.5/weather?q=${match}&units=metric&appid=060a6bcfa19809c2cd4d97a212b19273&language=en`;
+try {
+const response = await got(url);
+const json = JSON.parse(response.body);
+if (response.statusCode === 200) return await message.send('*📍 ' + Lang.LOCATION +':* ```' + match + '```\n\n' +
+'*☀ ' + Lang.TEMP +':* ```' + json.main.temp_max + '°```\n' + 
+'*ℹ ' + Lang.DESC +':* ```' + json.weather[0].description + '```\n' +
+'*☀ ' + Lang.HUMI +':* ```%' + json.main.humidity + '```\n' + 
+'*💨 ' + Lang.WIND +':* ```' + json.wind.speed + 'm/s```\n' + 
+'*☁ ' + Lang.CLOUD +':* ```%' + json.clouds.all + '```\n');
+} catch {
+return await message.send(Lang.NOT_FOUND);
+}
 });
 
 Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async () => {require('pm2').restart('index.js');});
