@@ -18,7 +18,7 @@ msg += `${count++} @${admin.split('@')[0]}\n`
 }
 return await m.reply(msg, { mentions: parseMention(msg)})
 }
-if (text || m.reply_message.text) return await m.reply(text || m.reply_message.text, {mentions: participants.map(a => a.id) })
+if (text) return await m.reply(text || m.reply_message.text, {mentions: participants.map(a => a.id) })
 if (!m.reply_message) return await m.reply('_Example : \ntag all\ntag admin\ntag text\nReply to a message_')
 await client.forwardMessage(m.chat, m.quoted_message, {contextInfo: { mentionedJid: participants.map(a => a.id)}})
 })
