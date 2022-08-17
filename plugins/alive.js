@@ -11,5 +11,5 @@ Function({pattern: 'alive ?(.*)', fromMe: isPublic, desc: 'Does bot work?', type
   await sendAlive(client, m, text);
 });
 Function({pattern: 'jid ?(.*)', fromMe: isPublic, desc: 'to get remoteJid', type: 'misc'}, async (m) => {
-  await m.reply(m.jid)
+  await m.reply(m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.chat)
 });
