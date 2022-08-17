@@ -62,8 +62,8 @@ if (!users) return await m.reply('Need a participant')
 let v = await client.onWhatsApp(users);
 n = v.map((n_jid) => n_jid.jid);
 if (!n.includes(users)) return await m.reply("This number doesn't exists on whatsapp");
-await client.groupParticipantsUpdate(m.chat, [users], 'promote')
-await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is promoted as admin!`, mentions: [users] })
+await client.groupParticipantsUpdate(m.chat, [users], 'demote')
+await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is no longer an admin!`, mentions: [users] })
 })
 Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
