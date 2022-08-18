@@ -2,9 +2,9 @@ const {Function,isPublic,sendAlive,RandomFancy} = require("../lib/");
 const config = require('../config')
 Function({pattern: 'ping ?(.*)', fromMe: isPublic, desc: 'Bot response in second.', type: 'misc'}, async (m, text, client) => {
   var start = new Date().getTime();
-  var msg = await m.reply(await RandomFancy('Testing Speed..'));
+  var msg = await m.reply('*Testing Speed..*');
   var end = new Date().getTime();
-  await m.reply(await RandomFancy('Response in ' + (end - start) + 'msec'));
+  await m.reply('⟪ *Response in ' + (end - start) + ' msec* ⟫');
 });
 
 Function({pattern: 'alive ?(.*)', fromMe: isPublic, desc: 'Does bot work?', type: 'misc'}, async (m, text, client) => {
