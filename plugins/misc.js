@@ -96,6 +96,19 @@ if (response.statusCode === 200) return await message.send('*📍 ' + Lang.LOCAT
 return await message.send(Lang.NOT_FOUND);
 }
 });
+Function({pattern: 'google ?(.*)', desc: 'Search in Google', fromMe: isPublic}, async (message, match) => {
+if (!match) return message.reply('_Example : who is Elon Musk_')
+let google = require('google-it')
+google({'query': match}).then(res => {
+let result_info = `Google Search From : ${match}\n\n`
+for (let result of res) {
+result_info += `⬡ *Title* : ${result.title}\n`
+result_info += `⬡ *Description* : ${result.snippet}\n`
+result_info += `⬡ *Link* : ${result.link}\n\n──────────────────────\n\n`
+} 
+message.reply(result_info)
+})
+})
 
 Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async () => {require('pm2').restart('index.js');});
 
