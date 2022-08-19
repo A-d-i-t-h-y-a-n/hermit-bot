@@ -2,7 +2,7 @@ const {Function,setAntiFake,antiFakeList,prefix} = require('../lib/')
 const {getFake} = require('../lib/database/antifake')
 Function({pattern: 'antifake ?(.*)', fromMe: true, desc: 'set antifake', type: 'group'}, async (m, match) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-const groupMetadata = await client.groupMetadata(m.chat)
+const groupMetadata = await m.client.groupMetadata(m.chat)
 const isAntiFake = await getFake(m.jid)
 let buttons = [
   {buttonId: prefix + 'antifake on', buttonText: {displayText: 'ON'}, type: 1},
