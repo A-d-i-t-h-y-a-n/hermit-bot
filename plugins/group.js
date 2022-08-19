@@ -93,7 +93,7 @@ if (!isbotAdmin) return await m.reply("I'm not an admin")
 await m.client.groupRevokeInvite(m.jid)
 return await m.reply('_success_')
 })
-Function({pattern: 'setgname', fromMe: true, desc: 'set group subject.', type: 'group'}, async (m, match) => {
+Function({pattern: 'setgcname', fromMe: true, desc: 'set group subject.', type: 'group'}, async (m, match) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, m.client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
