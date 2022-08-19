@@ -104,7 +104,7 @@ Function({pattern: 'setdesc', fromMe: true, desc: 'Set Group desc.', type: 'grou
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, m.client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
-await m.client.groupUpdateDescription(m.chat, text)
+await m.client.groupUpdateDescription(m.chat, match)
 return await m.reply('_success_')
 })
 Function({pattern: 'ginfo ?(.*)', fromMe: true, desc: 'Shows group invite info', type: 'group'}, async (m, match) => {

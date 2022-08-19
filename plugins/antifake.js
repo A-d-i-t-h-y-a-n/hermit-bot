@@ -1,11 +1,24 @@
 const {Function,setAntiFake,antiFakeList,prefix} = require('../lib/')
-
+const {getFake} = require('../lib/database/antifake')
 Function({pattern: 'antifake ?(.*)', fromMe: true, desc: 'set antifake', type: 'group'}, async (m, match) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-if (!match) return await m.client.sendMessage(m.chat, { text: 'Antifake Manager', templateButtons: [{quickReplyButton: {displayText: 'OFF', id: prefix + 'antifake off'}},{quickReplyButton: {displayText: 'LIST', id: prefix + 'antifake list'}},{quickReplyButton: {displayText: 'ON', id: prefix + 'antifake on'}}]})
+const groupMetadata = await client.groupMetadata(m.chat)
+const isAntiFake = await getFake(m.jid)
+let buttons = [
+  {buttonId: prefix + 'antifake on', buttonText: {displayText: 'ON'}, type: 1},
+  {buttonId: prefix + 'antifake off', buttonText: {displayText: 'OFF'}, type: 1},
+  {buttonId: prefix + 'antifake list', buttonText: {displayText: 'LIST'}, type: 1}
+]
+let isantiFake = isAntiFake.enabled || false
+const buttonMessage = {
+text: 'Antifake Manager',
+footer: 'Group Name : ' + groupMetadata.subject + '\nAntiFake status : ' + isantiFake,
+buttons: buttons,
+headerType: 1
+}
+if (!match) return await m.client.sendMessage(m.chat, buttonMessage)
 if (match == 'list') {
-const List = await antiFakeList(m.jid)
-if (!List) return await m.reply("_You don't set the Antifake yet.!_\n__To set:__ ```.antifake 1,44,972...```")
+if (!isAntiFake) return await m.reply("_You don't set the Antifake yet.!_\n__To set:__ ```.antifake 1,44,972...```")
 return await m.reply(await antiFakeList(m.jid))
 }
 if (match == 'on' || match == 'off') {

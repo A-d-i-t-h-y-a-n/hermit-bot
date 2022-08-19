@@ -2,12 +2,24 @@ const {Function,getString,prefix} = require('../lib/')
 const sql = require('../lib/database/greetings');
 const Lang = getString('greetings');
 Function({pattern: 'welcome ?(.*)', fromMe: true, desc: 'it sets the welcome message', type: 'group'}, async (m, text, client) => {
+if (!m.isGroup) return await m.reply('_This command only works in group chats_')
+const groupMetadata = await client.groupMetadata(m.chat)
+let isWelcome = await sql.getMessage(m.jid);
+let buttons = [
+  {buttonId: prefix + 'welcome on', buttonText: {displayText: 'ON'}, type: 1},
+  {buttonId: prefix + 'welcome off', buttonText: {displayText: 'OFF'}, type: 1},
+  {buttonId: prefix + 'welcome get', buttonText: {displayText: 'GET'}, type: 1}
+]
+let isCome = isWelcome.enable || false
+const buttonMessage = {
+text: 'Welcome Manager',
+footer: 'Group Name : ' + groupMetadata.subject + '\nGreetings status : ' + isCome,
+buttons: buttons,
+headerType: 1
+}
+
 if (!text) {
-client.sendMessage(m.chat, { text: 'Welcome Message Manager', templateButtons: [
-{index: 1, quickReplyButton: {displayText: 'ON', id: prefix + 'welcome on'}},
-{index: 2, quickReplyButton: {displayText: 'OFF', id: prefix + 'welcome off'}},
-{index: 3, quickReplyButton: {displayText: 'GET', id: prefix + 'welcome get'}},
-]})
+await m.client.sendMessage(m.chat, buttonMessage)
 return;
 }
 if (text === "on") {
@@ -46,12 +58,24 @@ await m.reply('_Welcome Updated_')
 })
 
 Function({pattern: 'goodbye ?(.*)', fromMe: true, desc: 'it sets the goodbye message', type: 'group'}, async (m, text, client) => {
+if (!m.isGroup) return await m.reply('_This command only works in group chats_')
+const groupMetadata = await client.groupMetadata(m.chat)
+let isGoodbye = await sql.getMessage(m.jid, 'goodbye');
+let buttons = [
+  {buttonId: prefix + 'goodbye on', buttonText: {displayText: 'ON'}, type: 1},
+  {buttonId: prefix + 'goodbye off', buttonText: {displayText: 'OFF'}, type: 1},
+  {buttonId: prefix + 'goodbye get', buttonText: {displayText: 'GET'}, type: 1}
+]
+let isBye = isGoodbye.enable || false
+const buttonMessage = {
+text: 'Goodbye Manager',
+footer: 'Group Name : ' + groupMetadata.subject + '\nGreetings status : ' + isBye,
+buttons: buttons,
+headerType: 1
+}
+
 if (!text) {
-client.sendMessage(m.chat, { text: 'goodbye Message Manager', templateButtons: [
-{index: 1, quickReplyButton: {displayText: 'ON', id: 'goodbye on'}},
-{index: 2, quickReplyButton: {displayText: 'OFF', id: 'goodbye off'}},
-{index: 3, quickReplyButton: {displayText: 'GET', id: 'goodbye get'}},
-]})
+await m.client.sendMessage(m.chat, buttonMessage)
 return;
 }
 if (text === "on") {
