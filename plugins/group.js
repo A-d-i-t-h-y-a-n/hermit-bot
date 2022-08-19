@@ -88,9 +88,24 @@ await m.reply(`https://chat.whatsapp.com/${response}`)
 })
 Function({pattern: 'revoke', fromMe: true, desc: 'Revoke Group invite link.', type: 'group'}, async (m, match) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-const isbotAdmin = await isBotAdmins(m, client)
+const isbotAdmin = await isBotAdmins(m, m.client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
 await m.client.groupRevokeInvite(m.jid)
+return await m.reply('_success_')
+})
+Function({pattern: 'setgname', fromMe: true, desc: 'set group subject.', type: 'group'}, async (m, match) => {
+if (!m.isGroup) return await m.reply('_This command only works in group chats_')
+const isbotAdmin = await isBotAdmins(m, m.client)
+if (!isbotAdmin) return await m.reply("I'm not an admin")
+await m.client.groupUpdateSubject(m.chat, match)
+return await m.reply('_success_')
+})
+Function({pattern: 'setdesc', fromMe: true, desc: 'Set Group desc.', type: 'group'}, async (m, match) => {
+if (!m.isGroup) return await m.reply('_This command only works in group chats_')
+const isbotAdmin = await isBotAdmins(m, m.client)
+if (!isbotAdmin) return await m.reply("I'm not an admin")
+await m.client.groupUpdateDescription(m.chat, text)
+return await m.reply('_success_')
 })
 Function({pattern: 'ginfo ?(.*)', fromMe: true, desc: 'Shows group invite info', type: 'group'}, async (m, match) => {
 match = match || m.reply_message.text
