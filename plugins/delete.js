@@ -8,7 +8,7 @@ return m.isGroup ? groupAdmins.includes(m.user_id) : false
 Function({pattern: 'del ?(.*)', fromMe: isPublic, desc: 'delete message that sended by bot', type: 'misc'}, async (m, text, client) => {
 await client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
 })
-Function({pattern: 'dlt ?(.*)', fromMe: isPublic, desc: 'delete message that sended participant', type: 'group'}, async (m, text, client) => {
+Function({pattern: 'dlt ?(.*)', fromMe: true, desc: 'delete message that sended participant', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
