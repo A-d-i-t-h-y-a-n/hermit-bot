@@ -23,7 +23,6 @@ Function({
 	desc: 'wame generator',
 	type: 'misc'
 }, async (m, text, client) => {
-	if (!m.reply_message.sender || m.mention || text) return await m.reply('_Need a Participant_');
 	let sender = 'https://wa.me/' + (m.reply_message.sender || m.mention[0] || text).split('@')[0];
 	await m.reply(sender)
 });
