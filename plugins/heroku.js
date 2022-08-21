@@ -121,7 +121,7 @@ Function({pattern: 'dyno', fromMe: true, desc: Lang.DYNO_DESC}, async (message, 
 Function({pattern: 'update ?(.*)', fromMe: true, dontAddCommandList: true, desc: 'Checks or start bot updates', type: 'heroku'}, async (m, text, client) => {
 if (!text || text === 'check') {
 let n = await updatecheck()
-if (n === 500) return await m.send('Bot is completely up-to-date!')
+if (n === 500) return await m.send('_Bot is completely up-to-date!_')
 var up = 'ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ʙᴏᴛ!\n\nᴄʜᴀɴɢᴇs:\n'
 let no = 1
 n['all'].map((c) => {up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';});
@@ -135,6 +135,17 @@ if (n === 404) return await m.send('*Your Heroku information is wrong!*')
 if (n === 408) return await m.send('_Your account has reached its concurrent builds limit!. Please wait for the other app to finish its deploy_')
 if (n === 200) return await m.send('_Successfully Updated!_')
 } else {
-await client.sendMessage(m.chat, { text: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑀𝐴𝑁𝐴𝐺𝐸𝑅', templateButtons: [{index: 1, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝐶𝐻𝐸𝐶𝐾', id: prefix + 'update check'}},{index: 2, quickReplyButton: {displayText: '𝑈𝑃𝐷𝐴𝑇𝐸 𝑆𝑇𝐴𝑅𝑇', id: prefix + 'update start'}}]})
+let n = await updatecheck()
+let buttons = [
+  {buttonId: prefix + 'update now', buttonText: {displayText: 'UPDATE NOW'}, type: 1},
+  {buttonId: prefix + 'update check', buttonText: {displayText: 'UPDATE CHECK'}, type: 1}
+]
+const buttonMessage = {
+text: 'Update Manager',
+footer: n == 500 ? '*Bot is up-to-date.*' : n.total + ' New Updates are available',
+buttons: buttons,
+headerType: 1
+}
+await message.client.sendMessage(m.chat, buttonMessage)
 }
 });
