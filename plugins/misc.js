@@ -116,7 +116,7 @@ await m.reply('_Rebooting..._')
 require('pm2').restart('index.js');
 });
 
-Function({pattern: 'whois ?(.*)', fromMe: true, type: 'misc'}, async (message, match) => {
+Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'misc'}, async (message, match) => {
 let user = message.reply_message ? message.reply_message.sender : match.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 if (!user) return message.send('_Need a User!_')
 try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'}
