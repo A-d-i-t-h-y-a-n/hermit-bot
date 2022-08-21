@@ -70,13 +70,13 @@ if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
 await client.groupSettingUpdate(m.chat, 'announcement')
-await m.reply("Group muted. Only admins can send messages")
+await m.reply("*Group muted.*\nOnly admins can send messages")
 })
 Function({pattern: 'unmute ?(.*)', fromMe: true, desc: 'Unmute the group chat. Anyone can send a message.', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 if (!isBotAdmins) return await m.reply("I'm not an admin")
 await client.groupSettingUpdate(m.chat, 'not_announcement')
-await m.reply('Group opened.')
+await m.reply('*Group opened.*')
 })
 indec = "Provides the group's invitation link."
 Function({pattern: 'invite ?(.*)', fromMe: true, desc: indec, type: 'group'}, async (m, text, client) => {
