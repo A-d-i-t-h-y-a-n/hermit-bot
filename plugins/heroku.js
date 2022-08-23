@@ -146,6 +146,6 @@ footer: n == 500 ? '*Bot is up-to-date.*' : n.total + ' New Updates are availabl
 buttons: buttons,
 headerType: 1
 }
-await message.client.sendMessage(m.chat, buttonMessage)
+await client.sendMessage(m.chat, buttonMessage)
 }
 });
