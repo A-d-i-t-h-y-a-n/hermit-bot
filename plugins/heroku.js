@@ -128,7 +128,7 @@ n['all'].map((c) => {up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']
 await client.sendMessage(m.chat, { text: up})
 } else if (text === 'start' || text === 'now') {
 let n = await updatecheck()
-if (n === 500) return await m.send('Bot is completely up-to-date!')
+if (n === 500) return await m.send('_Bot is completely up-to-date!_')
 await m.send('_Build started_')
 let us = await updatestart(m)
 if (n === 404) return await m.send('*Your Heroku information is wrong!*')
