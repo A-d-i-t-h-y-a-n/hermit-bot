@@ -54,7 +54,7 @@ Function({
 		for (let jid of parsedJid(match)) {
 			const m = await Serialize(message.client, message.data, message.client.store)
 			const quoted = await Serialize(message.client, await m.getQuotedMessage(), message.client.store)
-			await message.client.sendForward(message.jid, quoted)
+			await message.client.sendForward(jid, quoted)
 		}
 	} catch (e) {
 		await message.send('_Failed to Load message From store_')
