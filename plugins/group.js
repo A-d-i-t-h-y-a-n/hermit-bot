@@ -65,7 +65,7 @@ if (!n.includes(users)) return await m.reply("This number doesn't exists on what
 await client.groupParticipantsUpdate(m.chat, [users], 'demote')
 await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is no longer an admin!`, mentions: [users] })
 })
-Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (m, text, client) => {
+Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (m, match, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
