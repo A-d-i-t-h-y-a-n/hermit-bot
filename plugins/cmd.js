@@ -17,6 +17,7 @@ if (!delcmd) return await m.reply('_Failed_')
 await m.reply('_Success_')
 });
 
+
 Function({pattern: 'listcmd ?(.*)', fromMe: true, desc: 'to get List cmd', type: 'misc'}, async (m) => {
 const cmd = await getCmdList()
 await m.reply(cmd)
