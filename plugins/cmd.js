@@ -1,4 +1,4 @@
-const {Function,setCmd,delCmd,getCmdList} = require("../lib/");
+const {Function,setCmd,delCmd,prepareCmd,getCmdList,isPublic} = require("../lib/");
 Function({pattern: 'setcmd ?(.*)', fromMe: true, desc: 'to set audio/image/video as a cmd', type: 'misc'}, async (m, text, client) => {
 if (!m.quoted) return await m.reply('_Reply to a image/video/audio/sticker_')
 if (!text) return await m.reply('_Example : setcmd ping_')
@@ -17,8 +17,22 @@ if (!delcmd) return await m.reply('_Failed_')
 await m.reply('_Success_')
 });
 
-
 Function({pattern: 'listcmd ?(.*)', fromMe: true, desc: 'to get List cmd', type: 'misc'}, async (m) => {
 const cmd = await getCmdList()
 await m.reply(cmd)
+});
+Function({on: 'audio', fromMe: isPublic}, async (message) => {
+await prepareCmd(message)
+});
+
+Function({on: 'sticker', fromMe: isPublic}, async (message) => {
+await prepareCmd(message)
+});
+
+Function({on: 'video', fromMe: isPublic}, async (message) => {
+await prepareCmd(message)
+});
+
+Function({on: 'image', fromMe: isPublic}, async (message) => {
+await prepareCmd(message)
 });
