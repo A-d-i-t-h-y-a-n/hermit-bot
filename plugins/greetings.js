@@ -10,7 +10,7 @@ let buttons = [
   {buttonId: prefix + 'welcome off', buttonText: {displayText: 'OFF'}, type: 1},
   {buttonId: prefix + 'welcome get', buttonText: {displayText: 'GET'}, type: 1}
 ]
-let isCome = isWelcome.enable || false
+let isCome = isWelcome.enabled ? true : false
 const buttonMessage = {
 text: 'Welcome Manager',
 footer: 'Group Name : ' + groupMetadata.subject + '\nGreetings status : ' + isCome,
@@ -66,7 +66,7 @@ let buttons = [
   {buttonId: prefix + 'goodbye off', buttonText: {displayText: 'OFF'}, type: 1},
   {buttonId: prefix + 'goodbye get', buttonText: {displayText: 'GET'}, type: 1}
 ]
-let isBye = isGoodbye.enable || false
+let isBye = isGoodbye.enabled ? true : false
 const buttonMessage = {
 text: 'Goodbye Manager',
 footer: 'Group Name : ' + groupMetadata.subject + '\nGreetings status : ' + isBye,
