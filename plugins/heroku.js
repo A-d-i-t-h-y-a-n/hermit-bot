@@ -125,7 +125,16 @@ if (n === 500) return await m.send('_Bot is completely up-to-date!_')
 var up = 'ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ʙᴏᴛ!\n\nᴄʜᴀɴɢᴇs:\n'
 let no = 1
 n['all'].map((c) => {up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';});
-await client.sendMessage(m.chat, { text: up})
+let buttons = [
+  {buttonId: prefix + 'update now', buttonText: {displayText: 'UPDATE START'}, type: 1},
+]
+const buttonMessage = {
+text: up,
+footer: 'Click the button to start update',
+buttons: buttons,
+headerType: 1
+}
+await client.sendMessage(m.chat, buttonMessage)
 } else if (text === 'start' || text === 'now') {
 let n = await updatecheck()
 if (n === 500) return await m.send('_Bot is completely up-to-date!_')
@@ -137,7 +146,7 @@ if (n === 200) return await m.send('_Successfully Updated!_')
 } else {
 let n = await updatecheck()
 let buttons = [
-  {buttonId: prefix + 'update now', buttonText: {displayText: 'UPDATE NOW'}, type: 1},
+  {buttonId: prefix + 'update now', buttonText: {displayText: 'UPDATE START'}, type: 1},
   {buttonId: prefix + 'update check', buttonText: {displayText: 'UPDATE CHECK'}, type: 1}
 ]
 const buttonMessage = {
