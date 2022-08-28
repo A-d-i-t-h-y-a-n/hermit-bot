@@ -5,7 +5,6 @@ const config = require('../config');
 const Lang = getString('scrapers');
 const fs = require('fs');
 Function({pattern: 'song ?(.*)', fromMe: isPublic, desc: Lang.SONG_DESC, type: 'download'}, async (m, text, client) => { 
-text = text || m.reply_message.text
 if(!text) return m.reply(Lang.NEED_TEXT_SONG)
 if (isUrl(text) && text.includes('youtu')) {
 let ytId = ytIdRegex.exec(text)
