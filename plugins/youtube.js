@@ -17,7 +17,7 @@ ffmpeg(media.dl_link)
         .on('end', async () => {
 let writer = await addAudioMetaData(fs.readFileSync('./' + title + '.mp3'), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 fs.unlinkSync('./' + title + '.mp3')
-await sendwithLinkpreview(client, m, Buffer.from(writer.arrayBuffer), 'https://www.youtube.com/watch?v=' + ytId[1])
+await sendwithLinkpreview(client, m, writer, 'https://www.youtube.com/watch?v=' + ytId[1])
 });
 return;
 }
