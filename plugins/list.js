@@ -1,5 +1,5 @@
 const {Function,Fancy,commands,isPublic} = require("../lib/");
-Function({pattern: 'list ?(.*)', fromMe: isPublic, dontAddCommandList: true}, async (message, match) => {
+Function({pattern: 'list', fromMe: isPublic, dontAddCommandList: true}, async (message, match) => {
 let msg = ''
 let no = 1
 commands.map(async (command) => {
