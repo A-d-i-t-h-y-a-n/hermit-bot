@@ -12,7 +12,7 @@ global.apiUrl = 'https://h-e-r-m-i-t-web.herokuapp.com/'
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG)
 module.exports = {
-	VERSION: 'v4.0.0', 
+	VERSION: 'v4.0.1', 
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: process.env.MODE || 'public',
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
