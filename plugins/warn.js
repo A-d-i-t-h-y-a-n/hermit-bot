@@ -25,7 +25,7 @@ await message.client.sendMessage(message.jid, {text: `*╭*⚠️WARNING⚠️ \
 })
 
 Function({pattern: 'reset ?(.*)', fromMe: true, desc: 'warn users in chat', type: 'group', onlyGroup: true}, async (message, match) => {
-if (match.startsWith('warn') {
+if (match.startsWith('warn')) {
 const user = message.mention[0] || message.reply_message.sender
 if (!user) return await message.reply('_Reply or Mention to a user_')
 try {await resetWarn(user, message.jid)} catch {return await message.reply("_The user doesn't have warn yet_") }
