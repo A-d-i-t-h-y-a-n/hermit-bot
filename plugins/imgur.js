@@ -4,11 +4,11 @@ Function({pattern: 'url ?(.*)', fromMe: isPublic, desc: 'upload files to imgur.c
 if (!m.reply_message) return m.reply("_Reply to a video/image/audio!_")
 if (/image/.test(m.mine)) {
 const media = await m.reply_message.downloadAndSaveMedia()
-const url = await Imgur(media)
+const res = await Imgur(media)
 await m.reply(res.link)
 } else if (/video/.test(m.mine)) {
 const media = await m.reply_message.downloadAndSaveMedia()
-const url = await Imgur(media)
+const res = await Imgur(media)
 await m.reply(res.link)
 } else if (/audio/.test(m.mine)) {
 try {
