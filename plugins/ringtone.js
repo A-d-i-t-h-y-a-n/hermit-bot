@@ -16,8 +16,11 @@ await message.client.sendMessage(message.jid, listMessage, { quoted: m.data })
 })
 
 Function({pattern: 'sendFromUrl|upload| upload ?(.*)', fromMe: isPublic, desc: 'sendFromUrl', type: 'download'}, async (message, match) => {
+match = match || message.reply_message.text
 if (!match) return await message.reply('_Missing Url!_')
-for (let url of parsedJid(match)) {
+const Url = await parsedUrl(match)
+if (!Url.length < 1) return await message.reply('_Missing Url!_')
+for (let url of Url) {
 await message.client.sendFromUrl(message.jid, url, message.data)
 }
 })
