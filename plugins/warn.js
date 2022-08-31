@@ -21,5 +21,5 @@ if (message.mention[0]) reasons = 'No Reason'
 if (message.reply_message) reasons = message.reply_message.mtype.replace('Message', '')
 if (message.reply_message.text) reasons = message.reply_message.text.length > 40 ? 'Replied message' : message.reply_message.text
 var reason = match ? match.replace(`@${user.split('@')[0]}`, '') : reasons
-await message.client.sendMessage(message.jid, {text: `╭⚠️WARNING⚠️ \n┣ *User :* @${user.split('@')[0]}\n┣ *Warn :* ${count}\n┣ *Reason :* ${reason}\n┣ *Remaining :* ${config.WARN - count}\n╰ `, mentions: [user]})
+await message.client.sendMessage(message.jid, {text: `*╭*⚠️WARNING⚠️ \n┣ *User :* @${user.split('@')[0]}\n┣ *Warn :* ${count}\n┣ *Reason :* ${reason}\n┣ *Remaining :* ${config.WARN - count}\n*╰*`, mentions: [user]})
 })
