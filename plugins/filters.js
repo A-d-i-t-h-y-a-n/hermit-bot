@@ -2,7 +2,7 @@ const {Function,getString,parseMessage} = require('../lib/');
 const FilterDb = require('../lib/database/filters');
 const Lang = getString('filters');
 
-Function({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC, type: 'misc'}, async (message, text, client) => {
+Function({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC, type: 'user'}, async (message, text, client) => {
     match = text.match(/[\'\"\“](.*?)[\'\"\“]/gsm);
 
     if (match === null) {
@@ -23,7 +23,7 @@ Function({pattern: 'filter ?(.*)', fromMe: true, desc: Lang.FILTER_DESC, type: '
     }
 });
 
-Function({pattern: 'stop ?(.*)', fromMe: true, desc: Lang.STOP_DESC, type: 'misc'}, async (message, text, client) => {
+Function({pattern: 'stop ?(.*)', fromMe: true, desc: Lang.STOP_DESC, type: 'user'}, async (message, text, client) => {
     match = text.match(/[\'\"\“](.*?)[\'\"\“]/gsm);
     if (match === null) {
         return await message.reply(Lang.NEED_REPLY + '\n*Example:* ```.stop "hello"```')

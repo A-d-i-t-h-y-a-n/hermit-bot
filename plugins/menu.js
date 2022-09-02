@@ -1,7 +1,7 @@
 const {Function,isPublic,Menu,RandomFancy,prefix} = require('../lib/');
 const {BOT_INFO} = require('../config')
 
-Function({pattern: 'menu ?(.*)', fromMe: isPublic, dontAddCommandList: false, type: 'misc'}, async (m, text, client) => {
+Function({pattern: 'menu ?(.*)', fromMe: isPublic, dontAddCommandList: false, type: 'info'}, async (m, text, client) => {
 const message= await RandomFancy(await Menu(m))
 await client.sendMessage(m.chat, {
 image: {url: `${BOT_INFO.split(";")[3]}` },

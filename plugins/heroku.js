@@ -92,7 +92,7 @@ function secondsToHms(d) {
     return hDisplay + mDisplay + sDisplay; 
 }
 
-Function({pattern: 'dyno', fromMe: true, desc: Lang.DYNO_DESC}, async (message, match) => {
+Function({pattern: 'dyno', fromMe: true, desc: Lang.DYNO_DESC,type: 'heroku'}, async (message, match) => {
     heroku.get('/account').then(async (account) => {
         url = "https://api.heroku.com/accounts/" + account.id + "/actions/get-quota"
         headers = {

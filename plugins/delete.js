@@ -5,7 +5,7 @@ const participants = m.isGroup ? await groupMetadata.participants : ''
 const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
 return m.isGroup ? groupAdmins.includes(m.user_id) : false
 }
-Function({pattern: 'del ?(.*)', fromMe: isPublic, desc: 'delete message that sended by bot', type: 'misc'}, async (m, text, client) => {
+Function({pattern: 'del ?(.*)', fromMe: isPublic, desc: 'delete message that sended by bot', type: 'whatsapp'}, async (m, text, client) => {
 if (!m.reply_message) return await m.reply('_Reply to a message_')
 await client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
 })
