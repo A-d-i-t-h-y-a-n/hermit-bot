@@ -14,7 +14,7 @@ Function({
 	pattern: 'readmore ?(.*)',
 	fromMe: isPublic,
 	desc: 'Readmore generator',
-	type: 'misc'
+	type: 'whatsapp'
 }, async (m, text, client) => {
 	await m.reply(text.replace(/\+/g, (String.fromCharCode(8206)).repeat(4001)))
 });
@@ -23,7 +23,7 @@ Function({
 	pattern: 'wm ?(.*)',
 	fromMe: isPublic,
 	desc: 'wame generator',
-	type: 'misc'
+	type: 'whatsapp'
 }, async (m, text, client) => {
 	let sender = 'https://wa.me/' + (m.reply_message.sender || m.mention[0] || text).split('@')[0];
 	await m.reply(sender)
@@ -33,7 +33,7 @@ Function({
 	pattern: 'attp ?(.*)',
 	fromMe: isPublic,
 	desc: 'Text to animated sticker',
-	type: 'misc'
+	type: 'sticker'
 }, async (m, text, client) => {
 	if (!text && !m.quoted) return m.reply("*Give me a text.*")
 	let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
@@ -50,7 +50,7 @@ Function({
 	pattern: 'emix ?(.*)',
 	fromMe: isPublic,
 	desc: 'emoji mix',
-	type: 'search'
+	type: 'sticker'
 }, async (m, text) => {
 	if (!text) return await m.reply('_Need Emoji!_\n*Example* : 🥸,😁')
 	let [emoji1, emoji2] = text.split(',')
@@ -73,14 +73,14 @@ Function({
 	pattern: 'tovn ?(.*)',
 	fromMe: isPublic,
 	desc: 'video/audio to voice',
-	type: 'misc'
+	type: 'converter'
 }, async (m, text, client) => {
 	if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
 	let audio = await toPTT(await m.reply_message.download(), 'mp4')
 	await m.client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg', ptt: true }, {quoted: m.data })
 });
 
-Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic}, async (message, match) => {
+Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic,desc: 'shows weather informations', type: 'info'}, async (message, match) => {
 const got = require('got');
 if (match === '') return await message.send(Lang.NEED_LOCATION);
 const url = `http://api.openweathermap.org/data/2.5/weather?q=${match}&units=metric&appid=060a6bcfa19809c2cd4d97a212b19273&language=en`;
@@ -97,7 +97,7 @@ if (response.statusCode === 200) return await message.send('*📍 ' + Lang.LOCAT
 return await message.send(Lang.NOT_FOUND);
 }
 });
-Function({pattern: 'google ?(.*)', desc: 'Search in Google', fromMe: isPublic}, async (message, match) => {
+Function({pattern: 'google ?(.*)', desc: 'Search in Google', fromMe: isPublic, type: 'search'}, async (message, match) => {
 if (!match) return message.reply('_Example : who is Elon Musk_')
 let google = require('google-it')
 google({'query': match}).then(res => {
@@ -111,12 +111,12 @@ message.reply(result_info)
 })
 })
 
-Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async (m) => {
+Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'heroku'}, async (m) => {
 await m.reply('_Rebooting..._')
 require('pm2').restart('index.js');
 });
 
-Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'misc'}, async (message, match) => {
+Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'info'}, async (message, match) => {
 let user = message.reply_message ? message.reply_message.sender : match.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 if (!user) return message.send('_Need a User!_')
 try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'}
@@ -124,7 +124,7 @@ let {status} = await message.client.fetchStatus(user)
 message.client.sendMessage(message.jid, {image: {url: pp}, caption: status})
 })
 
-Function({pattern: 'mode ?(.*)', fromMe: true, type: 'misc'}, async (message, match) => {
+Function({pattern: 'mode ?(.*)', fromMe: true, type: 'heroku'}, async (message, match) => {
 let buttons = [
   {buttonId: prefix + 'setvar mode:private', buttonText: {displayText: 'PRIVATE'}, type: 1},
   {buttonId: prefix + 'setvar mode:public', buttonText: {displayText: 'PUBLIC'}, type: 1}
