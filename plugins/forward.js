@@ -8,7 +8,7 @@ Function({
 	pattern: 'forward ?(.*)',
 	fromMe: true,
 	desc: 'forward replied msg',
-	type: 'misc'
+	type: whatsapp'
 }, async (message, match) => {
 	if (!message.reply_message) return await message.reply('_Reply to a message_')
 	for (let jid of parsedJid(match)) {
@@ -20,7 +20,7 @@ Function({
 	pattern: 'save ?(.*)',
 	fromMe: true,
 	desc: 'forward replied msg to u',
-	type: 'misc'
+	type: 'whatsapp'
 }, async (message, match) => {
 	if (!message.reply_message) return await message.reply('_Reply to a message_')
 	await message.client.forwardMessage(message.client.user.id, m.quoted_message)
@@ -30,7 +30,7 @@ Function({
 	pattern: 'quoted ?(.*)',
 	fromMe: true,
 	desc: 'get quoted of replied  message',
-	type: 'misc'
+	type: 'whatsapp'
 }, async (message, match) => {
 	try {
 		if (!message.reply_message) return await message.reply('_Reply to a message_')
@@ -47,7 +47,7 @@ Function({
 	pattern: 'fullforward ?(.*)',
 	fromMe: true,
 	desc: 'forward message with quoted msg or link preview',
-	type: 'misc'
+	type: 'whatsapp'
 }, async (message, match) => {
 	try {
 		if (!message.reply_message) return await message.reply('_Reply to a message_')
