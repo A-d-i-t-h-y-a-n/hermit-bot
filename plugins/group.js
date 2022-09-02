@@ -84,13 +84,21 @@ await message.client.groupSettingUpdate(message.chat, 'announcement')
 await message.send('_Group Muted for ' + match + ' mins_')
 await sleep(1000 * 60 * match)
 await message.client.groupSettingUpdate(message.chat, 'not_announcement')
-await message.send('*Group Closed.*')
+await message.send('*Group opened.*')
 })
 Function({pattern: 'unmute ?(.*)', fromMe: true, desc: 'Unmute the group chat. Anyone can send a message.', type: 'group'}, async (message, match) => {
 if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 if (!isBotAdmins) return await message.reply("I'm not an admin")
+if (!match || isNaN(match)) {
 await message.client.groupSettingUpdate(message.chat, 'not_announcement')
 await message.send('*Group opened.*')
+return;
+}
+await message.client.groupSettingUpdate(message.chat, 'not_announcement')
+await message.send('_Group Muted for ' + match + ' mins_')
+await sleep(1000 * 60 * match)
+await message.client.groupSettingUpdate(message.chat, 'announcement')
+await message.send('*Group Closed.*')
 })
 indec = "Provides the group's invitation link."
 Function({pattern: 'invite ?(.*)', fromMe: true, desc: indec, type: 'group'}, async (m, text, client) => {
