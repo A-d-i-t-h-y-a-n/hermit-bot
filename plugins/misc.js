@@ -111,7 +111,7 @@ message.reply(result_info)
 })
 })
 
-Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'heroku'}, async (m) => {
+Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async (m) => {
 await m.reply('_Rebooting..._')
 require('pm2').restart('index.js');
 });
