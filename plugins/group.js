@@ -1,4 +1,4 @@
-const {Function,isUrl} = require('../lib/')
+const {Function,isUrl,sleep} = require('../lib/')
 async function isBotAdmins(m, client) {
 const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 const participants = m.isGroup ? await groupMetadata.participants : ''
