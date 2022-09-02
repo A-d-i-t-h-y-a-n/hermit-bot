@@ -8,7 +8,7 @@ Function({
 	pattern: 'forward ?(.*)',
 	fromMe: true,
 	desc: 'forward replied msg',
-	type: whatsapp'
+	type: 'whatsapp'
 }, async (message, match) => {
 	if (!message.reply_message) return await message.reply('_Reply to a message_')
 	for (let jid of parsedJid(match)) {
