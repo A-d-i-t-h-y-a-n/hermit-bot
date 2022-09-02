@@ -72,12 +72,13 @@ if (!n.includes(users)) return await m.reply("This number doesn't exists on what
 await client.groupParticipantsUpdate(m.chat, [users], 'demote')
 await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is no longer an admin!`, mentions: [users] })
 })
-Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (m, text, client) => {
-if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-const isbotAdmin = await isBotAdmins(m, client)
-if (!isbotAdmin) return await m.reply("I'm not an admin")
-await client.groupSettingUpdate(m.chat, 'announcement')
-await m.reply("Group muted. Only admins can send messages")
+Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (message, match) => {
+if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+if (!match || isNaN(match)) return await message.client.groupSettingUpdate(message.chat, 'announcement')
+await message.client.groupSettingUpdate(message.chat, 'announcement')
+await message.send('_Group Muted for ' + match + ' mins_')
+await sleep(1000 * 60 * match)
+await message.client.groupSettingUpdate(message.chat, 'not_announcement')
 })
 Function({pattern: 'unmute ?(.*)', fromMe: true, desc: 'Unmute the group chat. Anyone can send a message.', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
