@@ -80,7 +80,7 @@ Function({
 	await m.client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg', ptt: true }, {quoted: m.data })
 });
 
-Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic,desc: 'shows waether informations', type: 'info'}, async (message, match) => {
+Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic,desc: 'shows weather informations', type: 'info'}, async (message, match) => {
 const got = require('got');
 if (match === '') return await message.send(Lang.NEED_LOCATION);
 const url = `http://api.openweathermap.org/data/2.5/weather?q=${match}&units=metric&appid=060a6bcfa19809c2cd4d97a212b19273&language=en`;
