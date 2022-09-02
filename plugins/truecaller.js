@@ -1,6 +1,6 @@
 const {Function,truecaller,isPublic} = require('../lib/');
 
-Function({pattern: 'true ?(.*)', fromMe: isPublic, desc: 'search number on truecaller', type: 'misc'}, async (m, match, client) => {
+Function({pattern: 'true ?(.*)', fromMe: isPublic, desc: 'search number on truecaller', type: 'search'}, async (m, match, client) => {
 if(!match && !m.quoted) return await m.reply('_Enter the number you want to search_');
 const number = m.quoted ? m.quoted.sender : match.replace(/[^0-9]/g, '')
 const result = await truecaller(number, m.user_id)
