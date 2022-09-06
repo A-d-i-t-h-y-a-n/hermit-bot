@@ -4,7 +4,7 @@
    "description": "Hermit-md - Simple whatsapp Multi Device bot based on @adiwajshing/baileys.",
    "main": "index.js",
    "scripts": {
-      "start": "pm2 start . --attach --name ⛦"
+      "start": "pm2 start . --attach --name ⛦ --max_old_space_size=2560"
    },
    "author": "A-d-i-t-h-y-a-n",
    "license": "ISC",
