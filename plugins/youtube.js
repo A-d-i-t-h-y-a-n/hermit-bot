@@ -30,14 +30,8 @@ Function({
 		let media = await yta('https://youtu.be/' + ytId[1], '128kbps')
 		let thumb = await getBuffer(media.thumb)
 		if (media.filesize >= 10000) return await sendwithLinkpreview(client, m, media.dl_link, 'https://www.youtube.com/watch?v=' + ytId[1])
-		let title = media.title.replaceAll(' ', '+').replaceAll('/', '');
-		ffmpeg(media.dl_link)
-			.save('./' + title + '.mp3')
-			.on('end', async () => {
-				let writer = await addAudioMetaData(await fs.readFileSync('./' + title + '.mp3'), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
-				fs.unlinkSync('./' + title + '.mp3')
+				let writer = await addAudioMetaData(await getBuffer(media.dl_link), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 				await sendwithLinkpreview(client, m, writer, 'https://www.youtube.com/watch?v=' + ytId[1])
-			});
 		return;
 	}
 	let search = await yts(text)
