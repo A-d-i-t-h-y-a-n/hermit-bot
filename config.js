@@ -10,9 +10,10 @@ global.apikey = {'https://h-e-r-m-i-t-web.herokuapp.com': 'free'}
 global.apiUrl = 'https://h-e-r-m-i-t-web.herokuapp.com/'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
+process.env.NODE_OPTIONS = '--max_old_space_size=2560'
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG)
 module.exports = {
-	VERSION: 'v4.2.1', 
+	VERSION: 'v4.3.0', 
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: process.env.MODE || 'public',
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
