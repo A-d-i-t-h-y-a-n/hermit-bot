@@ -81,13 +81,13 @@ return;
 if (text === "on") {
 let msg = await sql.enableMessage(m.jid);
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
-await sql.enableMessage(m.jid);
+await sql.enableMessage(m.jid, 'goodbye');
 await m.reply(`_goodbye ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
 } else if (text === "off") {
 let msg = await sql.getMessage(m.jid, 'goodbye');
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
 await m.reply(`_goodbye ${text == 'on' ? 'Activated' : 'Deactivated'}_`)
-await sql.disableMessage(m.jid);
+await sql.disableMessage(m.jid, 'goodbye');
 } else if (text === "delete") {
 let msg = await sql.getMessage(m.jid, 'goodbye');
 if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
