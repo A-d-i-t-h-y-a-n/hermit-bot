@@ -1,4 +1,4 @@
-const {Function,isUrl,sleep} = require('../lib/')
+const {Function,isUrl,sleep,setPDM,getPDM,prefix} = require('../lib/')
 async function isBotAdmins(m, client) {
 const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 const participants = m.isGroup ? await groupMetadata.participants : ''
@@ -135,4 +135,28 @@ if (res) return await m.reply('_Joined!_')
 Function({pattern: 'left ?(.*)', fromMe: true, desc: 'Left from group', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 await client.groupLeave(m.chat)
+})
+Function({pattern: 'pdm ?(.*)', fromMe: true, desc: 'promote demote message', type: 'group'}, async (message, match, client) => {
+if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+const groupMetadata = await message.client.groupMetadata(message.jid)
+let pdm = await getPDM(message.jid);
+let buttons = [
+  {buttonId: prefix + 'pdm on', buttonText: {displayText: 'ON'}, type: 1},
+  {buttonId: prefix + 'pdm off', buttonText: {displayText: 'OFF'}, type: 1}
+]
+let ispdm = pdm ? true : false
+const buttonMessage = {
+text: 'Pdm Manager',
+footer: 'Group Name : ' + groupMetadata.subject + '\nPdm status : ' + ispdm,
+buttons: buttons,
+headerType: 1
+}
+
+if (!match) {
+await message.client.sendMessage(message.jid, buttonMessage)
+return;
+}
+if (match == 'on' || match == 'off') {
+await setPDM(message.jid, match)
+await message.send(`_pdm ${match == 'on' ? 'Activated' : 'Deactivated'}_`)}
 })
