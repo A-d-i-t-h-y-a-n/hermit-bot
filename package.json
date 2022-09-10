@@ -54,6 +54,7 @@
       "yargs": "^17.2.1",
       "cookie": "^0.5.0",
       "yt-search": "^2.10.2",
+      "qrcode-reader": "^1.0.4",
       "hermit-md": "^1.2.1"
    }
 }
