@@ -13,5 +13,5 @@ qr.decode(bitmap)
 Function({pattern: 'gqr ?(.*)', fromMe: isPublic, desc: 'text to qr code', type: 'converter'}, async (message, match, client) => {
 match = match || message.reply_message.text
 if (!match) return await message.reply("_eg .gqr Hermit_")
-await client.sendFromUrl(m.chat,`https://h-e-r-m-i-t-web.herokuapp.com/qrcode?text=${encodeURI(match)}`)
+await message.client.sendFromUrl(message.chat,`https://h-e-r-m-i-t-web.herokuapp.com/qrcode?text=${encodeURI(match)}`)
 });
