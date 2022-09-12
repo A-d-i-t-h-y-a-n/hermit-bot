@@ -25,3 +25,12 @@ delete require.cache[require.resolve('./' + text + '.js')]
 fs.unlinkSync('./plugins/' + text + '.js');
 await m.reply(Lang.DELETED.replace('{}', text));}
 });
+
+Function({pattern: 'cmdrm ?(.*)', fromMe: true, desc: 'delete a command', type: 'user'}, async (message, match, client) => {
+const response = await removeCommand(match)
+if (response) {
+await message.send('_Deleted_')
+} else {
+await message.send('*Not found*')
+}
+})
