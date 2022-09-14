@@ -2,8 +2,8 @@ const {Function,isPublic} = require("../lib/");
 const jimp = require('jimp')
 const QRReader = require('qrcode-reader')
 Function({pattern: 'qr ?(.*)', fromMe: isPublic, desc: 'qr code reader', type: 'plugin'}, async (message, match, client) => {
-if (!message.reply_message || !message.reply_message.image)
-return await message.reply("_Reply to a  qr image_")
+if (!message.reply_message) return await message.reply("_Reply to a  qr image_")
+if (!message.reply_message.image) return await message.reply("_Reply to a  qr image_")
 const { bitmap } = await jimp.read(await message.reply_message.downloadAndSaveMedia())
 const qr = new QRReader()
 qr.callback = (err, value) =>
