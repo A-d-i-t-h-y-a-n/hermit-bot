@@ -15,7 +15,7 @@ sections: [{title: 'Ringtone Downloader', rows: buttons}]
 await message.client.sendMessage(message.jid, listMessage, { quoted: m.data })
 })
 
-Function({pattern: 'sendFromUrl|upload| upload ?(.*)', fromMe: isPublic, desc: 'sendFromUrl', type: 'download'}, async (message, match) => {
+Function({pattern: 'upload ?(.*)', fromMe: isPublic, desc: 'sendFromUrl', type: 'download'}, async (message, match) => {
 match = match || message.reply_message.text
 if (!match) return await message.reply('_Missing Url!_')
 const Url = await parsedUrl(match)
