@@ -19,7 +19,6 @@ Function({pattern: 'upload ?(.*)', fromMe: isPublic, desc: 'sendFromUrl', type: 
 match = match || message.reply_message.text
 if (!match) return await message.reply('_Missing Url!_')
 const Url = await parsedUrl(match)
-if (!Url.length) return await message.reply('_Missing Url!_')
 for (let url of Url) {
 await message.client.sendFromUrl(message.jid, url, message.data)
 }
