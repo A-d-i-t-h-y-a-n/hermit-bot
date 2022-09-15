@@ -18,7 +18,9 @@ Function({
 	const menuMessage = await Menu(message)
 	const msg = await RandomFancy(menuMessage)
 	var img = await parsedUrl(BOT_INFO)
-	img = img || ['https://i.imgur.com/qJUBCYm.jpeg']
+	if (img.length < 1) {
+	img = ['https://i.imgur.com/qJUBCYm.jpeg']
+	}
 	const image = img[Math.floor(Math.random() * img.length)]
 	const type = image.endsWith('mp4') ? 'video' : 'image'
 	const buttonMessage = {
