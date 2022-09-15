@@ -108,11 +108,12 @@ if (!isbotAdmin) return await m.reply("I'm not an admin")
 const response = await client.groupInviteCode(m.chat)
 await m.reply(`https://chat.whatsapp.com/${response}`)
 })
-Function({pattern: 'revoke', fromMe: true, desc: 'Revoke Group invite link.', type: 'group'}, async (m, match) => {
+Function({pattern: 'revoke ?(.*)', fromMe: true, desc: 'Revoke Group invite link.', type: 'group'}, async (m, match) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
 if (!isbotAdmin) return await m.reply("I'm not an admin")
 await m.client.groupRevokeInvite(m.jid)
+await m.reply('_Revoked_')
 })
 Function({pattern: 'ginfo ?(.*)', fromMe: true, desc: 'Shows group invite info', type: 'group'}, async (m, match) => {
 match = match || m.reply_message.text
