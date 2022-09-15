@@ -92,7 +92,7 @@
         "filters": {
             "FILTER_DESC": "It adds a filter. If someone writes your filter, it send the answer. If you just write .filter, it show's your filter list.",
             "NO_FILTER": "_There are no filters in this chat!_",
-            "FILTERS": "_ There is your filters in this chat:_",
+            "FILTERS": "_There is your filters in this chat:_",
             "NEED_REPLY": "_Please type in reply!_\n_Example:_",
             "FILTERED": "_Successfully set_ ```{}``` _to filter!_",
             "STOP_DESC": "Stops the filter you added previously.",
