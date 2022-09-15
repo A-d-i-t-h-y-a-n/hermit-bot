@@ -11,7 +11,7 @@ text: 'And ' + buttons.length + ' More Results...',
 title: res[0].title,
 buttonText: 'Select Ringtone',
 sections: [{title: 'Ringtone Downloader', rows: buttons}]
-}
+};
 await message.client.sendMessage(message.jid, listMessage, { quoted: m.data })
 })
 
