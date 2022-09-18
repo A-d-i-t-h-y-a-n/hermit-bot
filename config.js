@@ -22,7 +22,7 @@ module.exports = {
     MSG_LOG: convertToBool(process.env.LOG_MSG) || false, 
     BLOCKCHAT: process.env.BLOCK_CHAT === undefined ? false : process.env.BLOCK_CHAT,
     LANG: process.env.LANGUAGE === undefined ? 'EN' : process.env.LANGUAGE.toUpperCase(),
-    ALWAYS_ONLINE: process.env.ALWAYS_ONLINE === 'true', 
+    ALWAYS_ONLINE: toBool(process.env.ALWAYS_ONLINE),
     BOT_NAME: process.env.BOT_NAME || '𝛨𝛯𝑅𝛭𝛪𝑇',
     AUTOMUTE_MSG: process.env.AUTOMUTE_MSG || '_Group automuted!_\n_(Change this by setting var AUTOMUTE_MSG)_',
     AUTOUNMUTE_MSG: process.env.AUTOUNMUTE_MSG || '_Group autounmuted!_\n_(Change this by setting var AUTOUNMUTE_MSG)_',
