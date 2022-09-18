@@ -99,10 +99,9 @@ const meridiem = time12h.match(/[A-Z]/gm).join('')
 return await message.send(`_Group will UnMute at ${_time} ${meridiem}_`)
 })
 
-/* Function({pattern: 'getmute ?(.*)', fromMe: true, desc: 'get all groups mute and unmute schedules', type: 'group'}, async (message, match, client) => {
+Function({pattern: 'getmute ?(.*)', fromMe: true, desc: 'get all groups mute and unmute schedules', type: 'group'}, async (message, match, client) => {
 const schedules = await getAllSchedule()
-var msg = ''
-var mesaj = ''
+var msg = ' '
 var no = 1
 schedules.map(async (schedule) => {
 const { mute, unmute } = JSON.parse(schedule.dataValues.content)
@@ -117,5 +116,5 @@ msg += `*${no++}. Group:* ${mute.groupName}
 *Unmute*: ${_unmutetime}${unmutemeridiem}
 *Status*: ${mute.enabled}\n\n`
 })
-await message.send(msg)
-}) */
+await message.send(msg.trim())
+}) 
