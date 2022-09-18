@@ -44,5 +44,3 @@ module.exports = {
        SUDO: process.env.SUDO || '972528277755,0',
        DEBUG: DEBUG
 };
-
-
