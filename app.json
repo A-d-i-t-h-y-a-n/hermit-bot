@@ -4,12 +4,12 @@
   "keywords": [
     "whatsapp bot"
   ],
-  "repository": "https://github.com/A-d-i-t-h-y-a-n/hermit-commits",
+  "repository": "https://github.com/A-d-i-t-h-y-a-n/hermit-md",
   "stack": "container",
   "env": {
     "SESSION_ID": {
       "description": "session id",
-      "required": false,
+      "required": true,
       "value": ""
     },
     "SUDO": {
@@ -52,18 +52,24 @@
     },
     "STICKER_DATA": {
       "description": "sticker package name",
-      "required": false,
+      "required": true,
       "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮"
     },
     "AUDIO_DATA": {
       "description": "audio package name",
-      "required": false,
+      "required": true,
       "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;https://i.imgur.com/fj2WE83.jpeg"
     },
     "READ_COMMAND": {
       "description": "Read all commands",
       "required": false,
       "value": "false"
+    }
+  },
+  "ERROR_MESSAGE": {
+      "description": "get error alert",
+      "required": false,
+      "value": "true"
     }
   },
   "addons": [
