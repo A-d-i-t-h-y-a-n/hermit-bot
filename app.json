@@ -64,8 +64,7 @@
       "description": "Read all commands",
       "required": false,
       "value": "false"
-    }
-  },
+    },
   "ERROR_MESSAGE": {
       "description": "get error alert",
       "required": false,
