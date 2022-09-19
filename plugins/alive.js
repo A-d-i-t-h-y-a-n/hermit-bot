@@ -11,7 +11,7 @@ Function({pattern: 'alive ?(.*)', fromMe: isPublic, desc: 'Does bot work?', type
   await sendAlive(client, message, match);
 });
 
-Function({pattern: 'jid', fromMe: isPublic, desc: 'to get remoteJid', type: 'whatsapp'}, async (message => {
+Function({pattern: 'jid', fromMe: isPublic, desc: 'to get remoteJid', type: 'whatsapp'}, async (message) => {
   await message.reply(message.mentionedJid[0] ? message.mentionedJid[0] : message.quoted ? message.quoted.sender : message.chat)
 });
 
