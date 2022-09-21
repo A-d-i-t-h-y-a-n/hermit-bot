@@ -11,6 +11,10 @@ for(let i of res){
 await client.sendFromUrl(m.jid, i, m.data)
 }
 })
-Function({pattern: 'story ?(.*)', fromMe: isPublic, desc: 'Instagram story downloader', type: 'download'}, async (m, text, client) => {
-await Story(m, text)
+Function({pattern: 'story ?(.*)', fromMe: isPublic, desc: 'Instagram story downloader', type: 'download'}, async (message, match) => {
+try {
+await Story(message, match)
+} catch (error) {
+await message.send('*_Failed to download_*\n_Server meybe down_\n_Please try again later_')
+}
 })
