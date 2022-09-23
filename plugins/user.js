@@ -37,3 +37,28 @@ if (!id) return await message.send('*Give me a user*')
 await message.send('_Unblocked_')
 await message.client.updateBlockStatus(id, 'unblock');
 })
+
+Function({pattern: 'clear', fromMe: true, desc: 'delete whatsapp chat', type: 'whatsapp'}, async (message, match) => {
+await message.clearChat(message.chat)
+await message.send('_Cleared_')
+})
+
+Function({pattern: 'archive', fromMe: true, desc: 'archive whatsapp chat', type: 'whatsapp'}, async (message, match) => {
+await message.archiveChat(message.chat, true)
+await message.send('_Archived_')
+})
+
+Function({pattern: 'unarchive', fromMe: true, desc: 'unarchive whatsapp chat', type: 'whatsapp'}, async (message, match) => {
+await message.archiveChat(message.chat, false)
+await message.send('_Unarchived_')
+})
+
+Function({pattern: 'pin$', fromMe: true, desc: 'pin a msg', type: 'whatsapp'}, async (message, match) => {
+await message.pinMsg(message.chat, true)
+await message.send('_Pined_')
+})
+
+Function({pattern: 'unpin$', fromMe: true, desc: 'unpin a msg', type: 'whatsapp'}, async (message, match) => {
+await message.pinMsg(message.chat, false)
+await message.send('_Unpined_')
+})
