@@ -6,8 +6,8 @@ function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
 const toBool = (x) => x == 'true'
-global.apikey = {'https://h-e-r-m-i-t.herokuapp.com': 'free'}
-global.apiUrl = 'https://h-e-r-m-i-t.herokuapp.com/'
+global.apikey = {'https://h-e-r-m-i-t-md.herokuapp.com': 'free'}
+global.apiUrl = 'https://h-e-r-m-i-t-md.herokuapp.com/'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 process.env.NODE_OPTIONS = '--max_old_space_size=2560'
