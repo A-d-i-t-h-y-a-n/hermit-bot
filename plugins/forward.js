@@ -12,7 +12,7 @@ Function({
 }, async (message, match) => {
 	if (!message.reply_message) return await message.reply('_Reply to a message_')
 	for (let jid of parsedJid(match)) {
-		await message.client.forwardMessage(jid, m.quoted_message)
+		await message.client.forwardMessage(jid, m.quoted_message, {contextInfo: {isForwarded: false}})
 	}
 })
 
@@ -23,7 +23,7 @@ Function({
 	type: 'whatsapp'
 }, async (message, match) => {
 	if (!message.reply_message) return await message.reply('_Reply to a message_')
-	await message.client.forwardMessage(message.client.user.id, m.quoted_message)
+	await message.client.forwardMessage(message.client.user.id, m.quoted_message, {contextInfo: {isForwarded: false}})
 })
 
 Function({
