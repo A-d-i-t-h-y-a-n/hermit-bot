@@ -86,7 +86,7 @@ if (!schedule && !schedule.time) return await message.send('_AutoMute is Not Sch
 if (match == 'off') {schedule.time = 'off'}
 const isScheduled = await addSchedule(message.jid, schedule.time, 'unmute', groupMetadata.subject, schedule.message, client)
 if (!isScheduled) return await message.send('_AutoMute Already Disabled_')
-return await message.send(`_AutoMute ${hour == 'on' ? 'Enabled' : 'Disabled'}._`)
+return await message.send(`_AutoMute ${match == 'on' ? 'Enabled' : 'Disabled'}._`)
 }
 if (!match.includes(':') || !match.toUpperCase().includes('AM') && !match.toUpperCase().includes('PM')) {
 return await message.reply('_Wrong Format!_\n*Example : autounmute 6:00 AM || autounmute 12:00 PM*')
