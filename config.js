@@ -5,6 +5,7 @@ if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env'
 function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
+
 const toBool = (x) => x == 'true'
 global.apikey = {'https://hermit-network.herokuapp.com': 'free'}
 global.apiUrl = 'https://hermit-network.herokuapp.com/'
