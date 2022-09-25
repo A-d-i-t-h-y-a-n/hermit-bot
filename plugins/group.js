@@ -1,4 +1,4 @@
-const {Function,isUrl,sleep,setPDM,getPDM,prefix} = require('../lib/')
+const {Function,isUrl,sleep,setPDM,getPDM,prefix,getUrl} = require('../lib/')
 async function isBotAdmins(m, client) {
 const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 const participants = m.isGroup ? await groupMetadata.participants : ''
@@ -126,7 +126,7 @@ const _0x35fd9b=_0x51bc;function _0x51bc(n,t){const c=_0xcccb();return(_0x51bc=f
 await m.reply(`Name : ${res.subject}\nJid : ${res.id}@g.us\nOwner : ${res.creator.split('@')[0]}\nMembers : ${res.size}\nCreated : ${time(res.creation)}`)
 })
 Function({pattern: 'join ?(.*)', fromMe: true, desc: 'Join invite link.', type: 'group'}, async (message, match, client) => {
-match = isUrl(match || message.reply_message.text)
+match = getUrl(match || message.reply_message.text)
 if (!match) return await message.reply('_Enter the group link!_')
 if (!isUrl(match) && !match.includes('whatsapp.com')) return await message.reply('*Invalid Link!*')
 let result = match.split('https://chat.whatsapp.com/')[1]
