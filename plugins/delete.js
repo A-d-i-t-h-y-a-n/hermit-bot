@@ -9,7 +9,7 @@ Function({pattern: 'del$', fromMe: isPublic, desc: 'delete message that sended b
 if (!m.reply_message) return await m.reply('_Reply to a message_')
 await client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
 })
-Function({pattern: 'dlt ?(.*)', fromMe: true, desc: 'delete message that sended participant', type: 'group'}, async (m, text, client) => {
+Function({pattern: 'dlt$', fromMe: true, desc: 'delete message that sended participant', type: 'group'}, async (m, text, client) => {
 if (!m.reply_message) return await m.reply('_Reply to a message_')
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
