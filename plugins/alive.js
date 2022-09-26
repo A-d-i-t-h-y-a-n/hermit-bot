@@ -1,4 +1,4 @@
-const { Function, isPublic, sendAlive, RandomFancy, runtime } = require("../lib/");
+const { Function, isPublic, sendAlive, RandomFancy, runtime, chatBot, isChatBot, chatbot } = require("../lib/");
 const config = require('../config')
 Function({pattern: 'ping ?(.*)', fromMe: isPublic, desc: 'Bot response in second.', type: 'info'}, async (message, match, client) => {
   var start = new Date().getTime();
@@ -18,3 +18,14 @@ Function({pattern: 'jid', fromMe: isPublic, desc: 'to get remoteJid', type: 'wha
 Function({pattern: 'runtime', fromMe: isPublic, desc: 'get bots runtime', type: 'info'}, async (message, match, client) => {
   await message.send(await runtime(process.uptime()));
 });
+
+Function({pattern: 'chatbot ?(.*)', fromMe: true, desc: 'set chat bot', type: 'misc'}, async (message, match) => {
+await chatBot(message, match)
+});
+
+Function({on: 'text', fromMe: false}, async (message, match) => {
+if (!await isChatBot(message)) return
+if (!message.reply_message) return
+if (!message.reply_message.data.key.fromMe) return
+await message.reply(await chatbot(message))
+})
