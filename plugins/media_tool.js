@@ -22,6 +22,7 @@ let image_1 = await getBuffer('https://i.imgur.com/fj2WE83.jpeg')
 let tumb = image || image_1
 let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
 await client.sendMessage(m.chat, { audio: writer, mimetype: 'audio/mpeg' }, { quoted: m.data })
+await m.send(writer, 'audio', { mimetype: 'audio/mpeg', quoted: m.data })
 })
 Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (m, text, client) => {
 await Take(m, text, client)
@@ -34,14 +35,14 @@ exec(`ffmpeg -i ${media} ${ran}`, (err) => {
 fs.unlinkSync(media)
 if (err) return console.log(err)
 let buffer = fs.readFileSync(ran)
-client.sendMessage(m.chat, { image: buffer }, { quoted: m.quoted_message })
+m.send(buffer, 'image', { quoted: m.quoted_message })
 fs.unlinkSync(ran)
 })})
 Function({pattern: 'mp4 ?(.*)', fromMe: isPublic, desc: 'Converts animated stickers to video', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a animated sticker!_")
 let media = await m.reply_message.downloadAndSaveMedia()
 let webpToMp4 = await webp2mp4File(media)
-await client.sendMessage(m.chat, { video: { url: webpToMp4.result }}, { quoted: m.quoted_message })
+await m.send(webpToMp4.result, 'video', { quoted: m.quoted_message })
 await fs.unlinkSync(media)
 })
 
@@ -49,7 +50,7 @@ Function({pattern: 'gif ?(.*)', fromMe: isPublic, desc: 'Converts animated stick
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a animated sticker!_")
 let media = await m.reply_message.downloadAndSaveMedia()
 let webpToMp4 = await webp2mp4File(media)
-await client.sendMessage(m.chat, { video: { url: webpToMp4.result }, gifAttribution: 'TENOR', gifPlayback: true }, { quoted: m.quoted_message })
+await m.send(webpToMp4.result, 'video', { gifAttribution: 'TENOR', gifPlayback: true, quoted: m.reply_message.data })
 await fs.unlinkSync(media)
 })
 Function({pattern: 'avmix ?(.*)', fromMe: isPublic, desc: 'Merge audio and video', type: 'media'}, async (m, text, client) => {
@@ -79,7 +80,7 @@ const media = await message.reply_message.downloadAndSaveMedia()
 exec('ffmpeg -i ' + media + ' -af equalizer=f=54:width_type=o:width=2:g=' + bass +' bass.mp3', async (e) => {
 await fs.unlinkSync(media)
 if (e) return await message.reply('_Failed to process_')
-await message.client.sendMessage(message.jid, {audio: await fs.readFileSync('bass.mp3'), mimetype: 'audio/mpeg', ptt : true}, { quoted: message.data})
+await message.send('bass.mp3', 'audio', { mimetype: 'audio/mpeg', ptt : true, quoted: message.data })
 await fs.unlinkSync('bass.mp3')
 })
 })
@@ -90,7 +91,7 @@ const media = await message.reply_message.downloadAndSaveMedia()
 exec('ffmpeg -i ' + media + ' -filter_complex "areverse" areverse.mp3', async (e) => {
 await fs.unlinkSync(media)
 if (e) return await message.reply('_Failed to process_')
-await message.client.sendMessage(message.jid, {audio: await fs.readFileSync('areverse.mp3'), mimetype: 'audio/mpeg', ptt : true}, { quoted: message.data})
+await message.send('areverse.mp3', 'audio', { mimetype: 'audio/mpeg', ptt : true, quoted: message.data })
 await fs.unlinkSync('areverse.mp3')
 })
 } else if (message.reply_message.video) {
@@ -98,7 +99,7 @@ const media = await message.reply_message.downloadAndSaveMedia()
 exec('ffmpeg -i ' + media + ' -vf reverse vreverse.mp4', async (e) => {
 await fs.unlinkSync(media)
 if (e) return await message.reply('_Failed to process_')
-await message.client.sendMessage(message.jid, {video: await fs.readFileSync('vreverse.mp4')}, { quoted: message.data})
+await message.send('vreverse.mp4', 'video', {quoted: message.data})
 await fs.unlinkSync('vreverse.mp4')
 })
 } else {return m.reply("_Reply to a photo or a short video!_")}
