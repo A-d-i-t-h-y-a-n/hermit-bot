@@ -77,8 +77,7 @@ Function({
 	type: 'converter'
 }, async (m, text, client) => {
 	if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
-	let audio = await toPTT(await m.reply_message.download(), 'mp4')
-	await m.client.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg', ptt: true }, {quoted: m.data })
+	await m.send(await m.reply_message.download(), 'audio', { mimetype: 'audio/mpeg', ptt: true, quoted: m.data })
 });
 
 Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic,desc: 'shows weather informations', type: 'info'}, async (message, match) => {
@@ -108,7 +107,7 @@ result_info += `⬡ *Title* : ${result.title}\n`
 result_info += `⬡ *Description* : ${result.snippet}\n`
 result_info += `⬡ *Link* : ${result.link}\n\n──────────────────────\n\n`
 } 
-message.reply(result_info)
+await message.send(result_info)
 })
 })
 
@@ -122,7 +121,7 @@ let user = message.reply_message ? message.reply_message.sender : match.replace(
 if (!user) return message.send('_Need a User!_')
 try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'}
 let {status} = await message.client.fetchStatus(user)
-message.client.sendMessage(message.jid, {image: {url: pp}, caption: status})
+await message.send(pp, 'image', { caption: status })
 })
 
 Function({pattern: 'mode ?(.*)', fromMe: true, type: 'heroku'}, async (message, match) => {
@@ -131,12 +130,11 @@ let buttons = [
   {buttonId: prefix + 'setvar mode:public', buttonText: {displayText: 'PUBLIC'}, type: 1}
 ]
 const buttonMessage = {
-text: 'Mode Manager',
 footer: 'Current Mode : ' + config.MODE,
 buttons: buttons,
 headerType: 1
 }
-await message.client.sendMessage(m.chat, buttonMessage)
+await message.send('Mode Manager', 'text', buttonMessage)
 })
 
 Function({pattern: 'img ?(.*)', fromMe: isPublic, desc: 'Google Image search', type: 'download'}, async (message, match) => {
@@ -145,7 +143,7 @@ let [query, amount] = match.split(',');
 let result = await gimage(query, amount);
 await message.send(`_Downloading ${amount || 5} images for ${query}_`);
 for (let i of result) {
-await message.client.sendFromUrl(message.jid, i);
+await message.send(i, 'image')
 }
 });
 
