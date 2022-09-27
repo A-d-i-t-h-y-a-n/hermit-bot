@@ -107,7 +107,7 @@ result_info += `⬡ *Title* : ${result.title}\n`
 result_info += `⬡ *Description* : ${result.snippet}\n`
 result_info += `⬡ *Link* : ${result.link}\n\n──────────────────────\n\n`
 } 
-await message.send(result_info)
+message.send(result_info)
 })
 })
 
