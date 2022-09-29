@@ -69,7 +69,7 @@ var user = '';
 message.mention.map(async (users) => {
 user += '@' + users.split('@')[0] + ',';
 });
-await message.client.sendMessage(message.chat, { text: `_${user} Is promoted as admin!_`, mentions: [message.mention] })
+await message.client.sendMessage(message.chat, { text: `_${user} Is promoted as admin!_`, mentions: message.mention })
 await message.client.groupParticipantsUpdate(message.jid, message.mention, 'promote')
 } else {
 return await message.reply('*Give me a user!*');
@@ -89,7 +89,7 @@ var user = '';
 message.mention.map(async (users) => {
 user += '@' + users.split('@')[0] + ',';
 });
-await message.client.sendMessage(message.chat, { text: `_@${user} Is no longer an admin!_`, mentions: message.mention })
+await message.client.sendMessage(message.chat, { text: `_${user} Is no longer an admin!_`, mentions: message.mention })
 await message.client.groupParticipantsUpdate(message.jid, message.mention, 'demote')
 } else {
 return await message.reply('*Give me a user!*');
