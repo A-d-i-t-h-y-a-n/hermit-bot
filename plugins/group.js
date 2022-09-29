@@ -1,10 +1,17 @@
-const {Function,isUrl,sleep,setPDM,getPDM,prefix,getUrl} = require('../lib/')
-async function isBotAdmins(m, client) {
-const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
-const participants = m.isGroup ? await groupMetadata.participants : ''
-const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
-return m.isGroup ? groupAdmins.includes(m.user_id) : false
+const { Function, isUrl, sleep, setPDM, getPDM, prefix, getUrl } = require('../lib/')
+
+const isBotAdmins = async (message) => {
+const groupMetadata = await message.client.groupMetadata(message.chat)
+const admins = await groupMetadata.participants.filter(v => v.admin !== null).map(v => v.id)
+return admins.includes(message.user_id)
 }
+
+const isAdmin = async (message, user) => {
+const groupMetadata = await message.client.groupMetadata(message.chat)
+const admins = await groupMetadata.participants.filter(v => v.admin !== null).map(v => v.id)
+return admins.includes(user)
+}
+
 Function({pattern: 'add ?(.*)', fromMe: true, desc: 'Adds someone to the group.', type: 'group'}, async (m, text, client) => {
 if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 const isbotAdmin = await isBotAdmins(m, client)
@@ -41,40 +48,58 @@ var etiketler = '';
 message.mention.map(async (user) => {
 etiketler += '@' + user.split('@')[0] + ',';
 });
-await message.client.sendMessage(message.jid, { text: `${etiketler}, Kicked From The Group`, mentions: [message.mention] })
+await message.client.sendMessage(message.jid, { text: `${etiketler} Kicked From The Group`, mentions: message.mention })
 await message.client.groupParticipantsUpdate(message.jid, message.mention, 'remove')
 } else {
 return await message.reply('*Give me a user!*');
 }
 })
 
-Function({pattern: 'promote ?(.*)', fromMe: true, desc: 'Makes any person an admin.', type: 'group'}, async (m, text, client) => {
-if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-const isbotAdmin = await isBotAdmins(m, client)
-if (!isbotAdmin) return await m.reply("I'm not an admin")
-let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-if (!users) return await m.reply('Need a participant')
-let v = await client.onWhatsApp(users);
-n = v.map((n_jid) => n_jid.jid);
-if (!n.includes(users)) return await m.reply("This number doesn't exists on whatsapp");
-await client.groupParticipantsUpdate(m.chat, [users], 'promote')
-await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is promoted as admin!`, mentions: [users] })
+Function({pattern: 'promote ?(.*)', fromMe: true, desc: 'Makes any person an admin.', type: 'group'}, async (message, match, client) => {
+if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+const isbotAdmin = await isBotAdmins(message, message.client)
+if (!isbotAdmin) return await message.reply("I'm not an admin")
+if (message.reply_message !== false) {
+const admin = await isAdmin(message, message.reply_message.sender)
+if (admin) return await message.send('*User is already an admin*')
+await message.client.sendMessage(message.chat, { text: `_@${message.reply_message.data.participant.split('@')[0]}, Is promoted as admin!_`, mentions: [message.reply_message.data.participant] })
+await message.client.groupParticipantsUpdate(message.jid, [message.reply_message.data.participant], 'promote')
+} else if (message.reply_message === false && message.mention !== false) {
+var user = '';
+message.mention.map(async (users) => {
+user += '@' + users.split('@')[0] + ',';
+});
+await message.client.sendMessage(message.chat, { text: `_${user} Is promoted as admin!_`, mentions: [message.mention] })
+await message.client.groupParticipantsUpdate(message.jid, message.mention, 'promote')
+} else {
+return await message.reply('*Give me a user!*');
+}
 })
-Function({pattern: 'demote ?(.*)', fromMe: true, desc: 'Takes the authority of any admin.', type: 'group'}, async (m, text, client) => {
-if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-const isbotAdmin = await isBotAdmins(m, client)
-if (!isbotAdmin) return await m.reply("I'm not an admin")
-let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-if (!users) return await m.reply('Need a participant')
-let v = await client.onWhatsApp(users);
-n = v.map((n_jid) => n_jid.jid);
-if (!n.includes(users)) return await m.reply("This number doesn't exists on whatsapp");
-await client.groupParticipantsUpdate(m.chat, [users], 'demote')
-await client.sendMessage(m.chat, { text: `@${users.split('@')[0]}, Is no longer an admin!`, mentions: [users] })
+
+Function({pattern: 'demote ?(.*)', fromMe: true, desc: 'Takes the authority of any admin.', type: 'group'}, async (message, match, client) => {
+if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+const isbotAdmin = await isBotAdmins(message, message.client)
+if (!isbotAdmin) return await message.reply("I'm not an admin")
+if (message.reply_message !== false) {
+const admin = await isAdmin(message, message.reply_message.sender)
+await message.client.sendMessage(message.chat, { text: `_@${message.reply_message.data.participant.split('@')[0]}, Is no longer an admin!_`, mentions: [message.reply_message.data.participant] })
+await message.client.groupParticipantsUpdate(message.jid, [message.reply_message.data.participant], 'demote')
+} else if (message.reply_message === false && message.mention !== false) {
+var user = '';
+message.mention.map(async (users) => {
+user += '@' + users.split('@')[0] + ',';
+});
+await message.client.sendMessage(message.chat, { text: `_@${user} Is no longer an admin!_`, mentions: message.mention })
+await message.client.groupParticipantsUpdate(message.jid, message.mention, 'demote')
+} else {
+return await message.reply('*Give me a user!*');
+}
 })
+
 Function({pattern: 'mute ?(.*)', fromMe: true, desc: 'Mute the group chat. Only the admins can send a message.', type: 'group'}, async (message, match) => {
 if (!message.isGroup) return await message.reply('_This command only works in group chats_')
-if (!isBotAdmins) return await message.reply("I'm not an admin")
+const iamAdmin = await isBotAdmins(message)
+if (!iamAdmin) return await message.reply("I'm not an admin")
 if (!match || isNaN(match)) {
 await message.client.groupSettingUpdate(message.chat, 'announcement')
 await message.send('*Group Closed.*')
