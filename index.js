@@ -1,4 +1,5 @@
 const client = require('./lib/client')
+
 const connect = async () => {
 	try {
 		await client.connect()
@@ -6,4 +7,5 @@ const connect = async () => {
 		console.error(error)
 	}
 }
+
 connect()
