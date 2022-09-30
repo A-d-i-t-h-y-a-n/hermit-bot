@@ -1,4 +1,4 @@
-const {Function,isPublic,addAudioMetaData,toAudio,getBuffer,getRandom,webp2mp4File,Take} = require('../lib/')
+const {Function,isPublic,addAudioMetaData,toAudio,getBuffer,getRandom,webp2mp4File,Take,pdf} = require('../lib/')
 const {exec} = require("child_process")
 const fs = require('fs')
 const c = require ('../config')
@@ -21,6 +21,7 @@ let image = await getBuffer(c.AUDIO_DATA.split(';')[2])
 let image_1 = await getBuffer('https://i.imgur.com/fj2WE83.jpeg')
 let tumb = image || image_1
 let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
+await client.sendMessage(m.chat, { audio: writer, mimetype: 'audio/mpeg' }, { quoted: m.data })
 await m.send(writer, 'audio', { mimetype: 'audio/mpeg', quoted: m.data })
 })
 Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (m, text, client) => {
@@ -83,7 +84,7 @@ await message.send('bass.mp3', 'audio', { mimetype: 'audio/mpeg', ptt : true, qu
 await fs.unlinkSync('bass.mp3')
 })
 })
-Function({pattern: 'reverse ?(.*)', fromMe: isPublic, desc: 'increase audio bass', type: 'media'}, async (message, match, client) => {
+Function({pattern: 'reverse$', fromMe: isPublic, desc: 'increase audio bass', type: 'media'}, async (message, match, client) => {
 if (!message.reply_message) return await message.reply('_Reply to a audio or video_')
 if (message.reply_message.audio) {
 const media = await message.reply_message.downloadAndSaveMedia()
@@ -102,4 +103,22 @@ await message.send('vreverse.mp4', 'video', {quoted: message.data})
 await fs.unlinkSync('vreverse.mp4')
 })
 } else {return m.reply("_Reply to a photo or a short video!_")}
+})
+
+Function({pattern: 'pdf$', fromMe: isPublic, desc: 'Convert unlimited image to pdf', type: 'media'}, async (message, match, client) => {
+if (!fs.existsSync("./media/pdf")) {
+fs.mkdirSync("./media/pdf")
+}
+if (message.reply_message) {
+if (!message.reply_message.image) return await message.send('_Reply to an image_')
+const media = await message.reply_message.download()
+await fs.writeFileSync('./media/pdf/' + Math.floor(Math.random() * 10000) + '.jpg', media);
+const files = fs.readdirSync('./media/pdf')
+return await message.send('_Image Added_\n*Total image: ' + files.length + '*')
+}
+const files = fs.readdirSync('./media/pdf')
+if (files.length == 0) {
+return await message.send('*No image added*')
+}
+await message.send(await pdf(), 'document')
 })
