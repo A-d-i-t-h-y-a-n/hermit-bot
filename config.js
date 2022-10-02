@@ -29,7 +29,7 @@ module.exports = {
     ANTILINK_MSG: process.env.ANTILINK_MSG || '_Link Not Allowed!_\n_(Change this by setting var ANTILINK_MSG)_',
     BOT_INFO: process.env.BOT_INFO || '𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/6oRG106.jpeg',
     AUDIO_DATA: process.env.AUDIO_DATA === undefined ? '𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;https://i.imgur.com/fj2WE83.jpeg' : process.env.AUDIO_DATA,
-    STICKER_DATA: process.env.STICKER_DATA === undefined ? '𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮' : process.env.AUDIO_DATA,
+    STICKER_DATA: process.env.STICKER_DATA === undefined ? '𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮' : process.env.STICKER_DATA,
     ERROR_MESSAGE: toBool(process.env.ERROR_MESSAGE), 
     WARN: process.env.WARN || '4',
     HEROKU: {
