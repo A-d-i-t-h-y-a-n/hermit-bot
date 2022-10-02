@@ -1,4 +1,6 @@
-const {Function,isPublic,addAudioMetaData,toAudio,getBuffer,getRandom,webp2mp4File,Take,pdf} = require('../lib/')
+const { Function, isPublic, addAudioMetaData, toAudio, getBuffer, getRandom, webp2mp4File, pdf } = require('../lib/')
+const { STICKER_DATA, AUDIO_DATA } = require ('../config')
+const { addExif } = require('../lib/')
 const {exec} = require("child_process")
 const fs = require('fs')
 const c = require ('../config')
@@ -23,8 +25,29 @@ let tumb = image || image_1
 let writer = await addAudioMetaData(await toAudio(media, 'mp4'), tumb, c.AUDIO_DATA.split(';')[0], c.AUDIO_DATA.split(';')[1], 'Hermit Official')
 await client.sendMessage(m.chat, { audio: writer, mimetype: 'audio/mpeg' }, { quoted: m.data })
 })
-Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (m, text, client) => {
-await Take(m, text, client)
+Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (message, match, client) => {
+if (!message.reply_message || (!message.reply_message.sticker && !message.reply_message.audio)) return await message.send('*_Reply to an audio or a sticker!_*')
+if (message.reply_message.sticker) {
+
+const media = await message.reply_message.download()
+const media_output = await addExif(media, match)
+return await message.client.sendMessage(message.chat, { sticker : media_output } )
+}
+if (message.reply_message.audio) {
+const media = await toAudio(await message.reply_message.download(), 'mp4')
+var [name, artist, url] = AUDIO_DATA == 'false' ? [] : AUDIO_DATA.split(/[,;]/)
+if (match) {
+var [name, artist, url] = match.split(/[,;]/)
+match = name
+artist = artist
+url = url || ''
+} else {
+match = name
+}
+
+const media_output = await addAudioMetaData(media, url, name, artist, 'Hermit Official')
+return await message.client.sendMessage(message.chat, { audio: media_output, mimetype: 'audio/mpeg' }, { quoted: message.data })
+}
 })
 Function({pattern: 'photo ?(.*)', fromMe: isPublic, desc: 'Converts non animated stickers to photo', type: 'media'}, async (m, text, client) => {
 if (!m.reply_message || !/webp/.test(m.mine)) return m.reply("_Reply to a non animated sticker!_")
