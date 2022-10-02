@@ -2,6 +2,7 @@ const { Function, setWarn, resetWarn } = require('../lib/')
 const config = require('../config')
 async function isAdmin(i,n){return(await i.filter((i=>null!==i.admin)).map((i=>i.id))).includes(n)}
 Function({pattern: 'warn ?(.*)', fromMe: true, desc: 'warn users in chat', type: 'group', onlyGroup: true}, async (message, match) => {
+if (message.reply_message.data.key.fromMe) return false
 const user = message.mention[0] || message.reply_message.sender
 if (!user) return await message.reply('_Reply or Mention to a user_')
 const count = await setWarn(user, message.jid)

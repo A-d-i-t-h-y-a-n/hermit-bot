@@ -41,6 +41,7 @@ if (!message.isGroup) return await message.reply('_This command only works in gr
 const isbotAdmin = await isBotAdmins(message, message.client)
 if (!isbotAdmin) return await message.reply("I'm not an admin")
 if (message.reply_message !== false) {
+if (message.reply_message.data.key.fromMe) return false
 await message.client.sendMessage(message.jid, { text: `@${message.reply_message.data.participant.split('@')[0]}, Kicked From The Group`, mentions: [message.reply_message.data.participant] })
 await message.client.groupParticipantsUpdate(message.jid, [message.reply_message.data.participant], 'remove')
 } else if (message.reply_message === false && message.mention !== false) {
