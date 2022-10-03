@@ -1,5 +1,5 @@
-const {Function,mediafiredownload,getUrl} = require('../lib/');
-Function({pattern: 'mediafire ?(.*)', fromMe: true, desc: 'Download mediafire file', type: 'download'}, async (message, match) => {
+const {Function,mediafiredownload,getUrl,isPublic} = require('../lib/');
+Function({pattern: 'mediafire ?(.*)', fromMe: isPublic, desc: 'Download mediafire file', type: 'download'}, async (message, match) => {
 match = getUrl(match || message.reply_message.text)
 const response = await mediafiredownload(match)
 await message.reply('```Name : ' + response[0].nama + '\nSize : ' + response[0].size + '\nLink : ' + response[0].link + '```\n\n_Downloading.._')
