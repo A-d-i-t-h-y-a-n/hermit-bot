@@ -127,7 +127,7 @@ await fs.unlinkSync('vreverse.mp4')
 } else {return m.reply("_Reply to a photo or a short video!_")}
 })
 
-Function({pattern: 'pdf$', fromMe: isPublic, desc: 'Convert unlimited image to pdf', type: 'media'}, async (message, match, client) => {
+Function({pattern: 'pdf ?(.*)', fromMe: isPublic, desc: 'Convert unlimited image to pdf', type: 'media'}, async (message, match, client) => {
 if (!fs.existsSync("./media/pdf")) {
 fs.mkdirSync("./media/pdf")
 }
@@ -142,5 +142,6 @@ const files = fs.readdirSync('./media/pdf')
 if (files.length == 0) {
 return await message.send('*No image added*')
 }
+const filename = match || 'File'
 await message.send(await pdf(), 'document')
 })
