@@ -143,5 +143,5 @@ if (files.length == 0) {
 return await message.send('*No image added*')
 }
 const filename = match || 'File'
-await message.send(await pdf(), 'document')
+await message.send(await pdf(), 'document', {fileName: filename})
 })
