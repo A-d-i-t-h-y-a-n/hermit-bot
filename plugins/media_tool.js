@@ -23,7 +23,7 @@ var [name, artist, url] = AUDIO_DATA == 'false' ? [] : AUDIO_DATA.split(/[,;]/)
 name = name || ''
 artist = artist || ''
 url = url || ''
-let writer = await addAudioMetaData(media, url, name, artist, 'Hermit Official')
+let writer = await addAudioMetaData(await toAudio(media), url, name, artist, 'Hermit Official')
 await client.sendMessage(m.chat, { audio: writer, mimetype: 'audio/mpeg' }, { quoted: m.data })
 })
 Function({pattern: 'take ?(.*)', fromMe: isPublic, desc: 'Change sticker or audio package name', type: 'media'}, async (message, match, client) => {
