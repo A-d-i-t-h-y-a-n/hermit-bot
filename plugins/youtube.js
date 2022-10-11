@@ -185,6 +185,7 @@ Function({
 	desc: 'download videos from youtube',
 	type: 'download'
 }, async (message, match, client) => {
+	try {
 	match = match || message.reply_message.text
 	if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
 	if (isUrl(match) && match.includes('youtu')) {
@@ -204,7 +205,6 @@ Function({
 			const url = await getJson('https://tinyurl.com/api-create.php?url=' + result.dl_link)
 			return await message.reply('*Failed to Download*\n_File size is more is than 100MB_\nClick this url to download manually : ' + url)
 		}
-		var isfile = match.match('\\{([a-z0-9]+)\\}')
 		if (quality) {
 			return await message.client.sendMessage(message.jid, {
 				video: await getBuffer(result.dl_link),
@@ -273,4 +273,7 @@ Function({
 	}, {
 		quoted: message.data
 	})
+	} catch (error) {
+	await message.send('*Failed to download*\n_try .video cmd_')
+	}
 });
