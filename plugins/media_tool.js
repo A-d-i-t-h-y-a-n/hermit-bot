@@ -20,14 +20,9 @@ Function({pattern: 'mp3 ?(.*)', fromMe: isPublic, desc: 'Converts replied media 
 if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
 let media = await m.reply_message.download()
 var [name, artist, url] = AUDIO_DATA == 'false' ? [] : AUDIO_DATA.split(/[,;]/)
-if (match) {
-var [name, artist, url] = match.split(/[,;]/)
-match = name
-artist = artist
+name = name || ''
+artist = artist || ''
 url = url || ''
-} else {
-match = name
-}
 let writer = await addAudioMetaData(media, url, name, artist, 'Hermit Official')
 await client.sendMessage(m.chat, { audio: writer, mimetype: 'audio/mpeg' }, { quoted: m.data })
 })
