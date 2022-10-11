@@ -198,7 +198,6 @@ Function({
 		try {
 			result = await yt('https://youtu.be/' + ytId[1], resol, 'mp4', resol.endsWith('p') ? resol.replace(/p/g, '') : resol, 'en412')
 		} catch (error) {
-			console.log(apiUrl + 'api/ytv/' + ytId[1] + '?quality=' + resol)
 			result = await getJson(apiUrl + 'api/ytv/' + ytId[1] + '?quality=' + resol)
 		}
 		if (result.filesize > 100000) {
@@ -209,7 +208,6 @@ Function({
 		if (quality) {
 			return await message.client.sendMessage(message.jid, {
 				video: await getBuffer(result.dl_link),
-				mimetype: 'video/mp4',
 				caption: result.title
 			}, {
 				quoted: message.data
@@ -271,7 +269,6 @@ Function({
 	}
 	return await message.client.sendMessage(message.jid, {
 		video: await getBuffer(result.dl_link),
-		mimetype: 'video/mp4',
 		caption: result.title
 	}, {
 		quoted: message.data
