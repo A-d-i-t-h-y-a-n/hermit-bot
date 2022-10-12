@@ -10,7 +10,8 @@ const {
 	ytv,
 	yt,
 	ytIdRegex,
-	getJson
+	getJson,
+	sendwithLinkpreview
 } = require('../lib/');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
