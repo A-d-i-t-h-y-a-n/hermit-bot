@@ -69,13 +69,13 @@ Function({
 		listbutton.push(button)
 	};
 	const listMessage = {
-		text: `And ${listbutton.length} More Results...`,
 		title: search.videos[0].title,
 		buttonText: 'Select song',
 		sections: listbutton
 	}
-	await client.sendMessage(message.chat, listMessage, {
-		quoted: message.data
+	await message.send(`And ${listbutton.length} More Results...`, 'text', {
+		quoted: message.data,
+		...listMessage
 	})
 });
 
@@ -95,9 +95,7 @@ Function({
 		} catch (error) {
 			media = await getJson(apiUrl + 'api/ytv/' + ytId[1])
 		}
-		await message.client.sendMessage(message.chat, {
-			video: await getBuffer(media.dl_link)
-		}, {
+		await message.send(media.dl_link, 'video', {
 			quoted: message.data
 		})
 		return;
@@ -117,13 +115,13 @@ Function({
 		listbutton.push(button)
 	};
 	const listMessage = {
-		text: `And ${listbutton.length} More Results...`,
 		title: search.videos[0].title,
 		buttonText: 'Select video',
 		sections: listbutton
 	}
-	await client.sendMessage(message.chat, listMessage, {
-		quoted: message.data
+	await message.send(`And ${listbutton.length} More Results...`, 'text', {
+		quoted: message.data,
+		...listMessage
 	})
 });
 
@@ -209,10 +207,8 @@ Function({
 				return await message.reply('*Failed to Download*\n_File size is more is than 100MB_\nClick this url to download manually : ' + url)
 			}
 			if (quality) {
-				return await message.client.sendMessage(message.jid, {
-					video: await getBuffer(result.dl_link),
-					caption: result.title
-				}, {
+				return await message.send(result.dl_link, 'video', {
+					caption: result.title,
 					quoted: message.data
 				})
 			}
@@ -270,10 +266,8 @@ Function({
 			const url = await getJson('https://tinyurl.com/api-create.php?url=' + result.dl_link)
 			return await message.reply('*Failed to Download*\n_File size is more is than 100MB_\nClick this url to download manually : ' + url)
 		}
-		return await message.client.sendMessage(message.jid, {
-			video: await getBuffer(result.dl_link),
-			caption: result.title
-		}, {
+		return await message.send(result.dl_link, 'video', {
+			caption: result.title,
 			quoted: message.data
 		})
 	} catch (error) {
