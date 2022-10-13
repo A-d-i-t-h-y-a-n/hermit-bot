@@ -91,7 +91,7 @@ Function({
 		let ytId = ytIdRegex.exec(match)
 		let media
 		try {
-			result = await yt('https://youtu.be/' + ytId[1], '360p', 'mp4', '360', 'en412')
+			media = await yt('https://youtu.be/' + ytId[1], '360p', 'mp4', '360', 'en412')
 		} catch (error) {
 			media = await getJson(apiUrl + 'api/ytv/' + ytId[1])
 		}
