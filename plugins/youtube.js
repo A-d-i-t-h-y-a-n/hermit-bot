@@ -96,7 +96,8 @@ Function({
 			media = await getJson(apiUrl + 'api/ytv/' + ytId[1])
 		}
 		await message.send(media.dl_link, 'video', {
-			quoted: message.data
+			quoted: message.data,
+			caption: media.title,
 		})
 		return;
 	}
