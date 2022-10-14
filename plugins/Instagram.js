@@ -1,7 +1,8 @@
 const {
 	Function,
 	isPublic,
-	instagram
+	instagram,
+	postJson
 } = require('../lib/')
 Function({
 	pattern: 'insta ?(.*)',
