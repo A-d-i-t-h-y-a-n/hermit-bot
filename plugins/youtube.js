@@ -97,7 +97,7 @@ Function({
 		}
 		await message.send(media.dl_link, 'video', {
 			quoted: message.data,
-			caption: media.title,
+			caption: media.title
 		})
 		return;
 	}
