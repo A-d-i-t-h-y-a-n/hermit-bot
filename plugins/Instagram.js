@@ -52,6 +52,7 @@ Function({
 			}
 		}
 	} catch (error) {
+		console.log(error)
 		await message.send('*_Failed to download_*\n_Server meybe down_\n_Please try again later_')
 	}
 })
