@@ -63,7 +63,7 @@ const msg = message.reply_message.text || AUTOUNMUTE_MSG
 if (!match) {
 let istrue = isMute?.enabled ? true : false
 const buttonMessage = {
-text: 'AutoMute Manager',
+text: 'AutoUNMute Manager',
 footer: 'Group Name : ' + groupMetadata.subject + '\nAutoMute status : ' + istrue,
 buttons: [{buttonId: prefix + 'autounmute on', buttonText: {displayText: 'ON'}, type: 1},{buttonId: prefix + 'autounmute off', buttonText: {displayText: 'OFF'}, type: 1},{buttonId: prefix + 'autounmute get', buttonText: {displayText: 'GET'}, type: 1}],
 headerType: 1
@@ -80,12 +80,12 @@ const meridiem = time.toUpperCase().match(/[A-Z]/gm).join('')
 return await message.send(`*Time :* ${_time}${meridiem}\n*Status :* ${enabled ? 'on' : 'off'}\nMessage : ${schedule.message}`)
 }
 if (match == 'on' || match == 'off') {
-if (!isMute) return await message.send('_AutoMute is Not Scheduled in this chat_')
+if (!isMute) return await message.send('_AutounMute is Not Scheduled in this chat_')
 const schedule = await getSchedule(message.jid, 'unmute')
 if (!schedule && !schedule.time) return await message.send('_AutoMute is Not Scheduled in this chat_')
 if (match == 'off') {schedule.time = 'off'}
 const isScheduled = await addSchedule(message.jid, schedule.time, 'unmute', groupMetadata.subject, schedule.message, client)
-if (!isScheduled) return await message.send('_AutoMute Already Disabled_')
+if (!isScheduled) return await message.send('_AutounMute Already Disabled_')
 return await message.send(`_AutoMute ${match == 'on' ? 'Enabled' : 'Disabled'}._`)
 }
 if (!match.includes(':') || !match.toUpperCase().includes('AM') && !match.toUpperCase().includes('PM')) {
