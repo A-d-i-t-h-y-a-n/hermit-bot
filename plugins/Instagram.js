@@ -13,7 +13,7 @@ Function({
 }, async (message, match, client) => {
 	match = getUrl(match || message.reply_message.text)
 	if (!match) return await message.reply('_*Need instagram link!*_')
-	const response = await instagram(match)
+	var response = await instagram(match)
 	if  (response.length < 1) {
 		const { result, status } = await postJson('https://hermit-md.vercel.app/api/instagram', { url: match})
 		if (status) response = result
