@@ -1,5 +1,5 @@
 const {Function,isPublic} = require("../lib/");
-const jimp = require('jimp')
+const jimp = require('jimp') 
 const QRReader = require('qrcode-reader')
 Function({pattern: 'qr ?(.*)', fromMe: isPublic, desc: 'qr code reader', type: 'plugin'}, async (message, match, client) => {
 if (!message.reply_message) return await message.reply("_Reply to a  qr image_")
