@@ -77,9 +77,10 @@ Function({
 		if (match == 'off') {
 			schedule.time = 'off'
 		}
-		const isScheduled = await addSchedule(message.jid, schedule.time, 'mute', groupMetadata.subject, schedule.message, client)
-		if (!isScheduled) return await message.send('_AutoMute Already Disabled_')
-		return await message.send(`_AutoMute ${hour == 'on' ? 'Enabled' : 'Disabled'}._`)
+		const isScheduled = await addSchedule(message.jid, schedule.time, 'mute', schedule.subject, schedule.message, client)
+		if (!isScheduled) return await message.send('_AutoMute Already ' + (match == 'on' ? 'Enabled' : 'Disabled') + '_')
+		await setSchedule(message.jid, isMute.time, 'mute', schedule.subject, schedule.message, match == 'on')
+		return await message.send(`_AutoMute ${match == 'on' ? 'Enabled' : 'Disabled'}._`)
 	}
 	if (!match.includes(':') || !match.toUpperCase().includes('AM') && !match.toUpperCase().includes('PM')) {
 		return await message.reply('_Wrong Format!_\n*Example : automute 6:00 AM || automute 12:00 PM*')
@@ -106,7 +107,7 @@ Function({
 	if (!match) {
 		let istrue = isMute?.enabled ? true : false
 		const buttonMessage = {
-			text: 'AutoUNMute Manager',
+			text: 'Autounmute Manager',
 			footer: 'Group Name : ' + groupMetadata.subject + '\nAutoMute status : ' + istrue,
 			buttons: [{
 				buttonId: prefix + 'autounmute on',
@@ -134,7 +135,7 @@ Function({
 	}
 	if (match == 'get') {
 		const schedule = await getSchedule(message.jid, 'unmute')
-		if (!schedule) return await message.send('_AutoMute is Not Scheduled in this chat_')
+		if (!schedule) return await message.send('_Autounmute is Not Scheduled in this chat_')
 		const {
 			time,
 			enabled
@@ -144,15 +145,16 @@ Function({
 		return await message.send(`*Time :* ${_time}${meridiem}\n*Status :* ${enabled ? 'on' : 'off'}\nMessage : ${schedule.message}`)
 	}
 	if (match == 'on' || match == 'off') {
-		if (!isMute) return await message.send('_AutounMute is Not Scheduled in this chat_')
+		if (!isMute) return await message.send('_Autounmute is Not Scheduled in this chat_')
 		const schedule = await getSchedule(message.jid, 'unmute')
-		if (!schedule && !schedule.time) return await message.send('_AutoMute is Not Scheduled in this chat_')
+		if (!schedule && !schedule.time) return await message.send('_Autounmute is Not Scheduled in this chat_')
 		if (match == 'off') {
 			schedule.time = 'off'
 		}
-		const isScheduled = await addSchedule(message.jid, schedule.time, 'unmute', groupMetadata.subject, schedule.message, client)
-		if (!isScheduled) return await message.send('_AutounMute Already Disabled_')
-		return await message.send(`_AutoMute ${match == 'on' ? 'Enabled' : 'Disabled'}._`)
+		const isScheduled = await addSchedule(message.jid, schedule.time, 'unmute', schedule.subject, schedule.message, client)
+		if (!isScheduled) return await message.send('_AutounMute Already ' + (match == 'on' ? 'Enabled' : 'Disabled') + '_')
+		await setSchedule(message.jid, isMute.time, 'unmute', schedule.subject, schedule.message, match == 'on')
+		return await message.send(`_Autounmute ${match == 'on' ? 'Enabled' : 'Disabled'}._`)
 	}
 	if (!match.includes(':') || !match.toUpperCase().includes('AM') && !match.toUpperCase().includes('PM')) {
 		return await message.reply('_Wrong Format!_\n*Example : autounmute 6:00 AM || autounmute 12:00 PM*')
@@ -162,7 +164,7 @@ Function({
 	const time12h = match.toUpperCase()
 	const _time = time12h.match(/[^A-Za-z]/gm).join('')
 	const meridiem = time12h.match(/[A-Z]/gm).join('')
-	return await message.send(`_Group will UnMute at ${_time} ${meridiem}_`)
+	return await message.send(`_Group will unmute at ${_time} ${meridiem}_`)
 })
 
 Function({
@@ -173,22 +175,21 @@ Function({
 }, async (message, match, client) => {
 	const schedules = await getAllSchedule()
 	var msg = ' '
-	var no = 1
-	schedules.map(async (schedule) => {
+	schedules.map(async (schedule, index) => {
 		const {
 			mute,
 			unmute
 		} = JSON.parse(schedule.dataValues.content)
-		const mutetime = mute.time
-		const unmutetime = unmute.time
-		const _mutetime = mutetime.toUpperCase().match(/[^A-Za-z]/gm).join('')
-		const mutemeridiem = mutetime.toUpperCase().match(/[A-Z]/gm).join('')
-		const _unmutetime = unmutetime.toUpperCase().match(/[^A-Za-z]/gm).join('')
-		const unmutemeridiem = unmutetime.toUpperCase().match(/[A-Z]/gm).join('')
-		msg += `*${no++}. Group:* ${mute.groupName}
-*Mute*: ${_mutetime}${mutemeridiem}
-*Unmute*: ${_unmutetime}${unmutemeridiem}
-*Status*: ${mute.enabled}\n\n`
+		const mutetime = mute.time || ''
+		const unmutetime = unmute.time || ''
+		const _mutetime = mutetime.toUpperCase().match(/[^A-Za-z]/gm).join('') || 'null'
+		const mutemeridiem = mutetime.toUpperCase().match(/[A-Z]/gm).join('') || 'null'
+		const _unmutetime = unmutetime.toUpperCase().match(/[^A-Za-z]/gm).join('') || 'null'
+		const unmutemeridiem = unmutetime.toUpperCase().match(/[A-Z]/gm).join('') || 'null'
+		msg += `*${index}. Group:* ${mute.groupName || 'null'}
+*Mute*: ${_mutetime || 'null'}${mutemeridiem || 'null'}
+*Unmute*: ${_unmutetime || 'null'}${unmutemeridiem || 'null'}
+*Status*: ${mute.enabled || 'null'}\n\n`
 	})
 	await message.send(msg.trim())
 })
