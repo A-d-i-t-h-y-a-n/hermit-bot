@@ -240,7 +240,7 @@ Function({
 	const [link, invite] = match.match(/chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i) || []
 	if (!invite) return await message.reply('*Invalid invite link*')
 	try {
-		const response = await client.groupGetInviteInfo(invite)
+		const response = await message.client.groupGetInviteInfo(invite)
 		await message.send("id: " + response.id + "\nsubject: " + response.subject + "\nowner: " + `${response.owner ? response.owner.split('@')[0] : 'unknown'}` + "\nsize: " + response.size + "\nrestrict: " + response.restrict + "\nannounce: " + response.announce + "\ncreation: " + require('moment-timezone')(response.creation * 1000).tz('Asia/Kolkata').format('DD/MM/YYYY HH:mm:ss') + "\ndesc" + response.desc)
 	} catch (error) {
 		await message.reply('*Invalid invite link*')
