@@ -1,12 +1,14 @@
 const {
 	Function
 } = require('../lib/')
+
 const isBotAdmins = async a => {
 	var i = a.isGroup ? await a.client.groupMetadata(a.chat).catch(a => {}) : "";
 	const t = a.isGroup ? await i.participants : "",
 		s = a.isGroup ? await t.filter(a => null !== a.admin).map(a => a.id) : "";
 	return !!a.isGroup && s.includes(a.user_id)
 };
+
 Function({
 	pattern: 'pp$',
 	fromMe: true,
