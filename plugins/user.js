@@ -119,3 +119,23 @@ Function({
 	await message.pinMsg(message.chat, false)
 	await message.send('_Unpined_')
 })
+
+Function({
+	pattern: 'setbio ?(.*)',
+	fromMe: true,
+	desc: 'To change your profile status',
+	type: 'whatsapp'
+}, async (message, match) => {
+	await message.client.updateProfileStatus(match)
+	await message.send('_Profile status updated_')
+})
+
+Function({
+	pattern: 'setname ?(.*)',
+	fromMe: true,
+	desc: 'To change your profile name',
+	type: 'whatsapp'
+}, async (message, match) => {
+	await message.client.updateProfileName(match)
+	await message.send('_Profile name updated_')
+})
