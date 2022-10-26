@@ -126,6 +126,8 @@ Function({
 	desc: 'To change your profile status',
 	type: 'whatsapp'
 }, async (message, match) => {
+	match = match || message.reply_message.text
+	if (!match) return await message.send('*Need Status!*\n*Example: setbio Hey there! I am using WhatsApp*.')
 	await message.client.updateProfileStatus(match)
 	await message.send('_Profile status updated_')
 })
@@ -136,6 +138,25 @@ Function({
 	desc: 'To change your profile name',
 	type: 'whatsapp'
 }, async (message, match) => {
+	match = match || message.reply_message.text
+	if (!match) return await message.send('*Need Name!*\n*Example: setname your name*.')
 	await message.client.updateProfileName(match)
 	await message.send('_Profile name updated_')
+})
+
+Function({
+	pattern: 'onwa ?(.*)',
+	fromMe: true,
+	desc: 'To check if a given ID is on WhatsApp',
+	type: 'whatsapp'
+}, async (message, match) => {
+match = match || message.reply_message.text
+if (!match) return await message.send('*Need Number!*\n*Example: onwa 123456*')
+match = match.replace(/[^0-9]/g, '')
+if (!match) return await message.send('*Need Number!*\n*Example: onwa 123456*')
+const [result] = await message.client.onWhatsApp(match)
+if (!result) await message.send(match + " doest exists on WhatsApp")
+if (result && result.exists) {
+return await message.send("*" + match + " exists on WhatsApp*,\njid: " + result.jid)
+}
 })
