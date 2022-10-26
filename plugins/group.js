@@ -310,6 +310,46 @@ Function({
 })
 
 Function({
+	pattern: 'gname ?(.*)',
+	fromMe: true,
+	desc: "To change the group's subject",
+	type: 'group'
+}, async (message, match, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	match = match || message.reply_message.text
+	if (!match) return await message.send('*Need Subject!*\n*Example: gname New Subject!*.')
+	const meta = await message.client.groupMetadata(message.chat)
+	if (!meta.restrict) {
+		await client.groupUpdateSubject(message.chat, match)
+		return await message.send("*Subject updated*")
+	}
+	const isbotAdmin = await isBotAdmins(message)
+	if (!isbotAdmin) return await message.send("I'm not an admin")
+	await client.groupUpdateSubject(message.chat, match)
+	return await message.send("*Subject updated*")
+})
+
+Function({
+	pattern: 'gdesc ?(.*)',
+	fromMe: true,
+	desc: "To change the group's description",
+	type: 'group'
+}, async (message, match, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	match = match || message.reply_message.text
+	if (!match) return await message.send('*Need Description!*\n*Example: gname New Description!*.')
+	const meta = await message.client.groupMetadata(message.chat)
+	if (!meta.restrict) {
+		await client.groupUpdateDescription(message.chat, match)
+		return await message.send("*Description updated*")
+	}
+	const isbotAdmin = await isBotAdmins(message)
+	if (!isbotAdmin) return await message.send("I'm not an admin")
+	await client.groupUpdateDescription(message.chat, match)
+	return await message.send("*Description updated*")
+})
+
+Function({
 	pattern: 'pdm ?(.*)',
 	fromMe: true,
 	desc: 'promote demote message',
