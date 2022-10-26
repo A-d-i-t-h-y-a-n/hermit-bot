@@ -234,86 +234,17 @@ Function({
 	fromMe: true,
 	desc: 'Shows group invite info',
 	type: 'group'
-}, async (m, match) => {
-	match = match || m.reply_message.text
-	if (!match) return await m.reply('*Need Group Link*\n_Example : ginfo group link_')
+}, async (message, match) => {
+	match = match || message.reply_message.text
+	if (!match) return await message.reply('*Need Group Link*\n_Example : ginfo group link_')
 	const [link, invite] = match.match(/chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i) || []
-	if (!invite) return await m.reply('_Invalid invite link_')
-
-	function _0x4bc6() {
-		const t = ["VbyuC", "attrs", "query", "14214350QEqxqg", "zOhwM", "1700566BQcIUx", "2ByYevk", "@g.us", "63rDYZYi", "content", "pPSgk", "203010eYGGtc", "2226855ATgjOY", "w:g2", "6gKGuKc", "get", "813224jTWfOm", "invite", "85906stAgHr", "client", "AEFVY", "1473588dlVYEq"];
-		return (_0x4bc6 = function() {
-			return t
-		})()
+	if (!invite) return await message.reply('*Invalid invite link*')
+	try {
+		const response = await client.groupGetInviteInfo(invite)
+		await message.send("id: " + response.id + "\nsubject: " + response.subject + "\nowner: " + `${response.owner ? response.owner.split('@')[0] : 'unknown'}` + "\nsize: " + response.size + "\nrestrict: " + response.restrict + "\nannounce: " + response.announce + "\ncreation: " + require('moment-timezone')(response.creation * 1000).tz('Asia/Kolkata').format('DD/MM/YYYY HH:mm:ss') + "\ndesc" + response.desc)
+	} catch (error) {
+		await message.reply('*Invalid invite link*')
 	}
-
-	function _0x4174(t, n) {
-		const r = _0x4bc6();
-		return (_0x4174 = function(t, n) {
-			return r[t -= 106]
-		})(t, n)
-	}
-	async function inviteinfo(t) {
-		const n = _0x4174,
-			r = {
-				VbyuC: n(111),
-				pPSgk: n(109),
-				AEFVY: n(125),
-				zOhwM: n(113)
-			},
-			e = {
-				tag: "iq",
-				attrs: {
-					type: r[n(118)],
-					xmlns: r[n(106)],
-					to: r[n(116)]
-				},
-				content: [{
-					tag: r[n(122)],
-					attrs: {
-						code: t
-					}
-				}]
-			};
-		return (await m[n(115)][n(120)](e))?.[n(127)][0]?.[n(119)]
-	}! function(t, n) {
-		const r = _0x4174,
-			e = _0x4bc6();
-		for (;;) try {
-			if (390324 === parseInt(r(124)) / 1 * (-parseInt(r(114)) / 2) + -parseInt(r(107)) / 3 + -parseInt(r(117)) / 4 + -parseInt(r(108)) / 5 * (-parseInt(r(110)) / 6) + -parseInt(r(123)) / 7 + -parseInt(r(112)) / 8 * (parseInt(r(126)) / 9) + parseInt(r(121)) / 10) break;
-			e.push(e.shift())
-		} catch (t) {
-			e.push(e.shift())
-		}
-	}();
-	const res = await inviteinfo(invite)
-	const _0x35fd9b = _0x51bc;
-
-	function _0x51bc(n, t) {
-		const c = _0xcccb();
-		return (_0x51bc = function(n, t) {
-			return c[n -= 161]
-		})(n, t)
-	}
-
-	function _0xcccb() {
-		const n = ["/M/YYYY", "205644YhmOxf", "35700EKoEpr", "11601288aotFNq", "unix", "moment", "18FrSBOW", "87572WFIIMr", "7mGpHeB", "1904452MVcsPn", "4248gLsmqB", "hh:mm a, D", "8916245QKhseR", "format", "4986728jkPRVz", "243bazbqx"];
-		return (_0xcccb = function() {
-			return n
-		})()
-	}! function(n, t) {
-		const c = _0x51bc,
-			r = _0xcccb();
-		for (;;) try {
-			if (981235 === -parseInt(c(174)) / 1 * (parseInt(c(163)) / 2) + -parseInt(c(172)) / 3 * (parseInt(c(164)) / 4) + parseInt(c(169)) / 5 + parseInt(c(176)) / 6 + parseInt(c(165)) / 7 * (-parseInt(c(171)) / 8) + parseInt(c(167)) / 9 * (parseInt(c(175)) / 10) + -parseInt(c(166)) / 11) break;
-			r.push(r.shift())
-		} catch (n) {
-			r.push(r.shift())
-		}
-	}();
-	const moment = require(_0x35fd9b(162)),
-		time = n => moment[_0x35fd9b(161)](n)[_0x35fd9b(170)](_0x35fd9b(168) + _0x35fd9b(173));
-	await m.reply(`Name : ${res.subject}\nJid : ${res.id}@g.us\nOwner : ${res.creator.split('@')[0]}\nMembers : ${res.size}\nCreated : ${time(res.creation)}`)
 })
 Function({
 	pattern: 'join ?(.*)',
