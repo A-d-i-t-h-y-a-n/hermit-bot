@@ -204,11 +204,11 @@ Function({
 	await message.client.groupSettingUpdate(message.chat, 'announcement')
 	await message.send('*Group Closed.*')
 })
-indec = "Provides the group's invitation link."
+
 Function({
 	pattern: 'invite ?(.*)',
 	fromMe: true,
-	desc: indec,
+	desc: "Provides the group's invitation link.",
 	type: 'group'
 }, async (m, text, client) => {
 	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
@@ -265,10 +265,50 @@ Function({
 	fromMe: true,
 	desc: 'Left from group',
 	type: 'group'
-}, async (m, text, client) => {
-	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-	await client.groupLeave(m.chat)
+}, async (message, text, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	await client.groupLeave(message.chat)
 })
+Function({
+	pattern: 'left ?(.*)',
+	fromMe: true,
+	desc: 'Left from group',
+	type: 'group'
+}, async (message, text, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	await client.groupLeave(message.chat)
+})
+
+Function({
+	pattern: 'lock',
+	fromMe: true,
+	desc: "only allow admins to modify the group's settings",
+	type: 'group'
+}, async (message, match, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	const isbotAdmin = await isBotAdmins(message)
+	if (!isbotAdmin) return await message.send("I'm not an admin")
+	const meta = await message.client.groupMetadata(message.chat)
+	if (meta.restrict) return await message.send("_Already only admin can modify group settings_")
+	await client.groupSettingUpdate(message.chat, 'locked')
+	return await message.send("*Only admin can modify group settings*")
+})
+
+Function({
+	pattern: 'unlock',
+	fromMe: true,
+	desc: "allow everyone to modify the group's settings -- like display picture etc.",
+	type: 'group'
+}, async (message, match, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	const isbotAdmin = await isBotAdmins(message)
+	if (!isbotAdmin) return await message.send("I'm not an admin")
+	const meta = await message.client.groupMetadata(message.chat)
+	if (!meta.restrict) return await message.send("_Already everyone can modify group settings_")
+	await client.groupSettingUpdate(message.chat, 'unlocked')
+	return await message.send("*Everyone can modify group settings*")
+})
+
 Function({
 	pattern: 'pdm ?(.*)',
 	fromMe: true,
