@@ -337,7 +337,7 @@ Function({
 }, async (message, match, client) => {
 	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	match = match || message.reply_message.text
-	if (!match) return await message.send('*Need Description!*\n*Example: gname New Description!*.')
+	if (!match) return await message.send('*Need Description!*\n*Example: gdesc New Description!*.')
 	const meta = await message.client.groupMetadata(message.chat)
 	if (!meta.restrict) {
 		await client.groupUpdateDescription(message.chat, match)
