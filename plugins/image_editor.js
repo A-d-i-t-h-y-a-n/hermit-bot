@@ -1,7 +1,7 @@
 const {
 	Function
 } = require('../lib/');
-const {
+/* const {
 	createCanvas,
 	loadImage
 } = require('canvas')
@@ -27,4 +27,4 @@ Function({
 	await message.client.sendMessage(message.jid, {
 		image: new Buffer.from(canvas.toDataURL().replace('data:image/png;base64,', ''), 'base64')
 	})
-})
+}) */
