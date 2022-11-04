@@ -38,7 +38,7 @@ Function({
 	desc: Lang.STOP_DESC,
 	type: 'group'
 }, async (message, match, client) => {
-	if (!match) return await message.reply(`*Need text!*\nExample: filter hi`)
+	if (!match) return await message.reply(`*Need text!*\nExample: stop hi`)
 	del = await FilterDb.deleteFilter(message.jid, match);
 	if (!del) return await message.reply(Lang.ALREADY_NO_FILTER)
 	await message.reply(Lang.DELETED)
