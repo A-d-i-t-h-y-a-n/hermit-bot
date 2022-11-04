@@ -10,7 +10,7 @@ Function({
 	pattern: 'filter ?(.*)',
 	fromMe: true,
 	desc: Lang.FILTER_DESC,
-	type: 'user'
+	type: 'group'
 }, async (message, text, client) => {
 	match = text.match(/[\'\"\“](.*?)[\'\"\“]/gsm);
 
@@ -19,13 +19,13 @@ Function({
 		if (filtreler === false) {
 			await message.reply(Lang.NO_FILTER)
 		} else {
-			var mesaj = Lang.FILTERS + '\n';
-			filtreler.map((filter) => mesaj += '```' + filter.dataValues.pattern + '```\n');
-			await message.reply(mesaj);
+			var msg = Lang.FILTERS + '\n';
+			filtreler.map((filter) => msg += '```' + filter.dataValues.pattern + '```\n');
+			await message.reply(msg);
 		}
 	} else {
 		if (match.length < 2) {
-			return await message.reply(Lang.NEED_REPLY + ' ```.filter "sa" "as"');
+			return await message.reply(`*Need text!*\nExample: filter 'hi' 'hello'`)
 		}
 		await FilterDb.setFilter(message.jid, match[0].replace(/['"“]+/g, ''), match[1].replace(/['"“]+/g, ''), match[0][0] === "'" ? true : false);
 		await message.reply(Lang.FILTERED.replace('{}', match[0].replace(/['"]+/g, '')));
@@ -36,20 +36,12 @@ Function({
 	pattern: 'stop ?(.*)',
 	fromMe: true,
 	desc: Lang.STOP_DESC,
-	type: 'user'
-}, async (message, text, client) => {
-	match = text.match(/[\'\"\“](.*?)[\'\"\“]/gsm);
-	if (match === null) {
-		return await message.reply(Lang.NEED_REPLY + '\n*Example:* ```.stop "hello"```')
-	}
-
-	del = await FilterDb.deleteFilter(message.jid, match[0].replace(/['"“]+/g, ''));
-
-	if (!del) {
-		await message.reply(Lang.ALREADY_NO_FILTER)
-	} else {
-		await message.reply(Lang.DELETED)
-	}
+	type: 'group'
+}, async (message, match, client) => {
+	if (!match) return await message.reply(`*Need text!*\nExample: filter hi`)
+	del = await FilterDb.deleteFilter(message.jid, match);
+	if (!del) return await message.reply(Lang.ALREADY_NO_FILTER)
+	await message.reply(Lang.DELETED)
 });
 
 
