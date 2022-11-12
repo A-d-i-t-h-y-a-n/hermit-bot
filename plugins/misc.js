@@ -7,6 +7,7 @@ const {
 	getString,
 	prefix
 } = require("../lib/");
+const { downloadMediaMessage } = require('@adiwajshing/baileys')
 const { fromBuffer } = require('file-type')
 const config = require('../config');
 const fs = require('fs');
@@ -150,8 +151,8 @@ await message.send(i, 'image')
 Function({pattern: 'doc ?(.*)', fromMe: isPublic, desc: 'media to document', type: 'misc'}, async (message, match) => {
 if (!message.reply_message) return await message.reply('_Reply to a media_')
 const fileName = match || 'File'
-const file = await message.reply_message.download()
-await message.send(file, 'document', { fileName })
+const buffer = await downloadMediaMessage(message.quoted.data, 'buffer', { }, { })
+await message.send(buffer, 'document', { fileName })
 })
 
 let gis=require("g-i-s");async function gimage(n,i=5){let s=[];return new Promise((g,e)=>{gis(n,async(e,n)=>{for(var r=0;r<(n.length<i?n.length:i);r++)s.push(n[r].url),g(s)})})}
