@@ -150,7 +150,7 @@ await message.send(i, 'image')
 
 Function({pattern: 'doc ?(.*)', fromMe: isPublic, desc: 'media to document', type: 'misc'}, async (message, match) => {
 if (!message.reply_message) return await message.reply('_Reply to a media_')
-const fileName = match || 'File'
+const fileName = match || ''
 const buffer = await downloadMediaMessage(message.quoted.data, 'buffer', { }, { })
 await message.send(buffer, 'document', { fileName })
 })
