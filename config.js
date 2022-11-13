@@ -7,6 +7,7 @@ function convertToBool(text, fault = 'true') {
 }
 
 const toBool = (x) => x == 'true'
+
 global.apikey = {'https://hermit-network.herokuapp.com': 'free'}
 global.apiUrl = 'https://hermit-network.herokuapp.com/'
 
