@@ -15,7 +15,7 @@ Function({
 	if (!match) return await message.reply('_*Need instagram link!*_')
 	var response = await instagram(match)
 	if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
-		const { result, status } = await postJson('https://hermit-md.vercel.app/api/instagram', { url: match})
+		const { result, status } = await postJson('https://api.hermit-md.tk/instagram', { url: match})
 		if (status) response = result
 	}
 	if (response.length < 1) return await message.reply("*No media found!*")
