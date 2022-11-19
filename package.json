@@ -55,6 +55,7 @@
     "qrcode-reader": "^1.0.4",
     "pdfkit": "^0.13.0",
     "youtubei.js": "^1.4.2-d.5",
-    "hermit-md": "^1.2.1"
+    "hermit-md": "^1.2.1",
+    "express": "latest"
   }
 }
