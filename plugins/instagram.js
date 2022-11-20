@@ -40,7 +40,7 @@ Function({
 			match = match.substring(lastIndex, index)
 		}
 		const response = await postJson(apiUrl + 'api/instagram', {url: 'https://instagram.com/stories/' + match})
-		if (!response.status) return await message.reply("*No media found!*")
+		if (!response.length) return await message.reply("*No media found!*")
 		for (let i of response.result) {
 			if (i.includes('mp4')) {
 				await message.send(i, 'video', {
