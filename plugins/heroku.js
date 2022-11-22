@@ -206,7 +206,7 @@ Function({
 		await git.reset("hard",["HEAD"])
         await git.pull()
         await m.send('_Updated_')
-        await m.send('_Rebooting...')
+        await m.send('_Rebooting..._')
         return require('pm2').restart('index.js');
         }
 		if (n === 500) return await m.send('_Bot is completely up-to-date!_')
