@@ -8,7 +8,7 @@ Function({
 	desc: 'tag participants in the group',
 	type: 'group'
 }, async (m, text, client) => {
-	if (!m.isGroup) return await message.reply('_This command only works in group chats_')
+	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
 	const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
 	const participants = m.isGroup ? await groupMetadata.participants : ''
 	if (text == 'all') {
