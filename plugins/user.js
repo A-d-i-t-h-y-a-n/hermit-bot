@@ -153,9 +153,9 @@ Function({
 	type: 'whatsapp'
 }, async (message, match) => {
 match = match || message.reply_message.text
-if (!match) return await message.send('*Need Number!*\n*Example: onwa 123456789*')
+if (!match) return await message.send('*Need Number!*\n*Example: onwa +1 (123) 456-7890*')
 match = match.replace(/[^0-9]/g, '')
-if (!match) return await message.send('*Need Number!*\n*Example: onwa 123456789*')
+if (!match) return await message.send('*Need Number!*\n*Example: onwa +1 (123) 456-7890*')
 const [result] = await message.client.onWhatsApp(match)
 if (!result) await message.send(match + " doest exists on WhatsApp")
 if (result && result.exists) {
