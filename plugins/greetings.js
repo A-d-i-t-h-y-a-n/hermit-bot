@@ -157,6 +157,6 @@ Function({
 		update.participants = [m.sender]
 		update.action = 'remove'
 		await client.ev.emit('group-participants.update', update)
-		await m.reply('_goodbye Updated_')
+		await m.reply('_Goodbye Updated_')
 	}
 })
