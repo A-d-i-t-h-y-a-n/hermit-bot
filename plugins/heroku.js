@@ -175,7 +175,6 @@ Function({
 Function({
 	pattern: 'update ?(.*)',
 	fromMe: true,
-	dontAddCommandList: true,
 	desc: 'Checks or start bot updates',
 	type: 'heroku'
 }, async (m, text, client) => {
@@ -203,6 +202,11 @@ Function({
 		await client.sendMessage(m.chat, buttonMessage)
 	} else if (text === 'start' || text === 'now') {
 		let n = await updatecheck()
+		if (Config.HEROKU.API_KEY == '' && Config.HEROKU.APP_NAME == '') {
+		await git.reset("hard",["HEAD"])
+        await git.pull()
+        return await m.send('_Updated_')
+        }
 		if (n === 500) return await m.send('_Bot is completely up-to-date!_')
 		await m.send('_Build started_')
 		let us = await updatestart(m)
