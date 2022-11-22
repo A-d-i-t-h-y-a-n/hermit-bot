@@ -16,7 +16,8 @@ const heroku = new Heroku({
 	token: Config.HEROKU.API_KEY
 })
 let baseURI = '/apps/' + Config.HEROKU.APP_NAME
-const Lang = getString('heroku');
+const Lang = getString('heroku')
+
 Function({
 	pattern: 'restart ?(.*)',
 	fromMe: true,
