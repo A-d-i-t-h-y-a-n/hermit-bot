@@ -15,7 +15,6 @@ const Heroku = require('heroku-client');
 const heroku = new Heroku({
 	token: Config.HEROKU.API_KEY
 })
-
 let baseURI = '/apps/' + Config.HEROKU.APP_NAME
 const Lang = getString('heroku');
 Function({
