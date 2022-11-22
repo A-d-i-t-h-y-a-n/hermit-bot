@@ -206,7 +206,9 @@ Function({
 		if (Config.HEROKU.API_KEY == '' && Config.HEROKU.APP_NAME == '') {
 		await git.reset("hard",["HEAD"])
         await git.pull()
-        return await m.send('_Updated_')
+        await m.send('_Updated_')
+        await m.send('_Rebooting...')
+        return require('pm2').restart('index.js');
         }
 		if (n === 500) return await m.send('_Bot is completely up-to-date!_')
 		await m.send('_Build started_')
