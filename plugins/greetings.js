@@ -3,8 +3,8 @@ const {
 	getString,
 	prefix
 } = require('../lib/')
-const sql = require('../lib/database/greetings');
-const Lang = getString('greetings');
+const sql = require('../lib/database/greetings')
+const Lang = getString('greetings')
 Function({
 	pattern: 'welcome ?(.*)',
 	fromMe: true,
