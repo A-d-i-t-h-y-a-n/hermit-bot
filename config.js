@@ -8,8 +8,8 @@ function convertToBool(text, fault = 'true') {
 }
 
 const toBool = (x) => x == 'true'
-global.apikey = {'https://hermit-network.herokuapp.com': 'free'}
-global.apiUrl = 'https://hermit-network.herokuapp.com/'
+global.apikey = {'https://api.adithyan.ml': 'free'}
+global.apiUrl = 'https://api.adithyan.ml/'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 process.env.NODE_OPTIONS = '--max_old_space_size=2560'
