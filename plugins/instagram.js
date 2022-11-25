@@ -15,7 +15,7 @@ Function({
 	if (!match) return await message.reply('_*Need instagram link!*_')
 	var response = await instagram(match)
 	if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
-		const { result, status } = await postJson('https://api.hermit-md.tk/instagram', { url: match})
+		const { result, status } = await postJson(apiUrl + 'instagram', { url: match})
 		if (status) response = result
 	}
 	if (response.length < 1) return await message.reply("*No media found!*")
@@ -39,7 +39,7 @@ Function({
 			const lastIndex = match.lastIndexOf("/")
 			match = match.substring(lastIndex, index)
 		}
-		const response = await postJson(apiUrl + 'api/instagram', {url: 'https://instagram.com/stories/' + match})
+		const response = await postJson(apiUrl + 'instagram', {url: 'https://instagram.com/stories/' + match})
 		if (!response.status) return await message.reply("*No media found!*")
 		for (let i of response.result) {
 			if (i.includes('mp4')) {
