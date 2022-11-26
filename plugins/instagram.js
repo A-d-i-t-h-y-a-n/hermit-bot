@@ -57,3 +57,16 @@ Function({
 		await message.send('*_Failed to download_*\n_Server meybe down_\n_Please try again later_')
 	}
 })
+
+Function({
+	pattern: 'fb ?(.*)',
+	fromMe: isPublic,
+	desc: 'download Facebook videos',
+	type: 'download'
+}, async (message, match) => {
+	match = getUrl(match || message.reply_message.text)
+	if (!match) return await message.reply('_*Need link!*_')
+	const response = await postJson(apiUrl + 'fb', {url: match})
+	if (!response.status) return await message.reply("*No media found!*")
+	await message.send(response.HD, 'video')
+})
