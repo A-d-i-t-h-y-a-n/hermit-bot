@@ -19,7 +19,7 @@ module.exports = {
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: process.env.MODE || 'public',
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
-    SEND_READ: process.env.READ_COMMAND || false, 
+    SEND_READ: process.env.READ_COMMAND || false,
     READ_MSG: process.env.READ_MSG === 'true', 
     MSG_LOG: convertToBool(process.env.LOG_MSG) || false, 
     BLOCKCHAT: process.env.BLOCK_CHAT === undefined ? false : process.env.BLOCK_CHAT,
