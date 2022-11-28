@@ -29,4 +29,4 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 2. Now Deploy
     <br>
-<a href='https://app.koyeb.com/apps/deploy?name=hermit-md&type=docker&image=quay.io/hermit/hermit-md:latest&env[SESSION_ID]=&env[DATABASE_URL]=&env[SUDO]=null&env[MODE]=public&env[ALWAYS_ONLINE]=false&env[LOG_MSG]=false&env[PREFIX]=.&env[BOT_INFO]=𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/pbNNWfM.jpeg&env[STICKER_DATA]=𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮&env[AUDIO_DATA]=𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;https://i.imgur.com/pbNNWfM.jpeg&env[WARN]=4&env[READ_MSG]=false&env[ERROR_MESSAGE]=true&env[EXPRESS]=true&env[PORT]=8080' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>  
+<a href='https://hermit.adithyan.ml/koyeb-deploy' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>  
