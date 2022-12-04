@@ -209,7 +209,7 @@ Function({
 		await client.sendMessage(m.chat, buttonMessage)
 	} else if (text === 'start' || text === 'now') {
 		let n = await updatecheck()
-		if (Config.HEROKU.API_KEY == '' && Config.HEROKU.APP_NAME == '') {
+		if (!Config.HEROKU.API_KEY && !Config.HEROKU.APP_NAME) {
 		await git.reset("hard",["HEAD"])
         await git.pull()
         await m.send('_Updated_')
