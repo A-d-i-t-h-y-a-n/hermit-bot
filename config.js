@@ -38,10 +38,12 @@ module.exports = {
     WARN: process.env.WARN || '4',
     EXPRESS: toBool(process.env.EXPRESS),
     REJECT_CALL: toBool(process.env.REJECT_CALL),
+    KOYEB_API_KEY: process.env.KOYEB_API_KEY || '',
+    KOYEB_APP_NAME: process.env.KOYEB_APP_NAME || '',
     HEROKU: {
         HEROKU: process.env.HEROKU === undefined ? false : convertToBool(process.env.HEROKU),
-        API_KEY: process.env.HEROKU_API_KEY || '',
-        APP_NAME: process.env.HEROKU_APP_NAME || ''
+        API_KEY: process.env.HEROKU_API_KEY,
+        APP_NAME: process.env.HEROKU_APP_NAME
        },
        DATABASE_URL: DATABASE_URL,
        DATABASE:
