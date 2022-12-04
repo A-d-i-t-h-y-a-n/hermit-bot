@@ -12,6 +12,9 @@ const {
 	prefix
 } = require('../lib/');
 const Heroku = require('heroku-client');
+if (!Config.HEROKU.API_KEY) {
+require('../lib/koyeb')
+}
 if (Config.HEROKU.API_KEY && Config.HEROKU.APP_NAME) {
 const heroku = new Heroku({
 	token: Config.HEROKU.API_KEY
