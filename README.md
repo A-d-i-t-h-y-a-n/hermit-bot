@@ -27,6 +27,8 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 3. Get [DATABASE_URL](https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki/DATABASE_URL) and copy it
 
+4. Get [Koyeb api key](https://app.koyeb.com/account/api)
+
 2. Now Deploy
     <br>
 <a href='https://hermit.adithyan.ml/deploy-koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>  
