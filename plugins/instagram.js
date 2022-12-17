@@ -13,7 +13,12 @@ Function({
 }, async (message, match, client) => {
 	match = getUrl(match || message.reply_message.text)
 	if (!match) return await message.reply('_*Need instagram link!*_')
+	try {
 	var response = await instagram(match)
+	} catch (error) {
+	let { result, status } = await postJson(apiUrl + 'instagram', { url: match})
+	if (status) response = result
+	} 
 	if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
 		const { result, status } = await postJson(apiUrl + 'instagram', { url: match})
 		if (status) response = result
