@@ -260,15 +260,7 @@ Function({
 	if (!res) return await message.reply('_Invalid Group Link!_')
 	if (res) return await message.reply('_Joined!_')
 })
-Function({
-	pattern: 'left ?(.*)',
-	fromMe: true,
-	desc: 'Left from group',
-	type: 'group'
-}, async (message, text, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
-	await client.groupLeave(message.chat)
-})
+
 Function({
 	pattern: 'left ?(.*)',
 	fromMe: true,
