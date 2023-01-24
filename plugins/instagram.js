@@ -13,20 +13,24 @@ Function({
 }, async (message, match, client) => {
 	match = getUrl(match || message.reply_message.text)
 	if (!match) return await message.reply('_*Need instagram link!*_')
-	try {
+	/* try {
 	var response = await instagram(match)
 	} catch (error) {
 	let { result, status } = await postJson(apiUrl + 'instagram', { url: match})
 	if (status) response = result
-	} 
-	if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
+	} */
+	// if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
 		const { result, status } = await postJson(apiUrl + 'instagram', { url: match})
-		if (status) response = result
-	}
+    if (status) response = result
+	// }
 	if (response.length < 1) return await message.reply("*No media found!*")
-	for (let i of response) {
-		await message.client.sendFromUrl(message.chat, i, message.reply_message.data || message.data)
-	}
+		for (let i of response) {
+			if (i.includes('mp4')) {
+				await message.send(i, 'video', { quoted: message.reply_message.data || message.data })
+			} else {
+				await message.send(i, 'image', { quoted: message.reply_message.data || message.data })
+			}
+		}
 })
 
 Function({
