@@ -17,7 +17,7 @@ DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBU
 module.exports = {
 	VERSION: 'v4.3.2', 
     SESSION_ID: process.env.SESSION_ID || '',
-    MODE: (process.env.MODE || 'public').toLowerCase()
+    MODE: (process.env.MODE || 'public').toLowerCase(),
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
     SEND_READ: process.env.READ_COMMAND || false,
     READ_MSG: process.env.READ_MSG === 'true', 
