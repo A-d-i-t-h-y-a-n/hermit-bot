@@ -75,7 +75,7 @@ Function({
 	if (isUrl(match) && match.includes('youtu')) {
 		let ytId = ytIdRegex.exec(match)
 		const media = await combineYouTubeVideoAndAudio(ytId[1])
-		await message.send(media.dl_link, 'video', { quoted: message.data, caption: media.title })
+		await message.send(media.file, 'video', { quoted: message.data, caption: media.title })
 		return;
 	}
 	let search = await yts(match)
