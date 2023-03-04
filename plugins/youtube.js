@@ -13,24 +13,14 @@ const {
 	getJson,
 	sendwithLinkpreview
 } = require('../lib/');
+const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio } = require('../lib/youtubei.js');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
 const Lang = getString('scrapers');
 const fs = require('fs');
 
-const send = async (message, file, id) => {
-	if (config.SONG_THUMBNAIL == true) {
-		await sendwithLinkpreview(message.client, message, file, 'https://www.youtube.com/watch?v=' + id)
-	} else {
-		await message.client.sendMessage(message.chat, {
-			audio: file,
-			mimetype: 'audio/mpeg'
-		}, {
-			quoted: message.data
-		})
-	}
-}
+const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
 Function({
 	pattern: 'song ?(.*)',
@@ -42,15 +32,10 @@ Function({
 	if (!match) return message.reply(Lang.NEED_TEXT_SONG)
 	if (isUrl(match) && match.includes('youtu')) {
 		let ytId = ytIdRegex.exec(match)
-		let media
-		try {
-			media = await yt('https://youtu.be/' + ytId[1], '128kbps', 'mp3', '128', 'en412')
-		} catch (error) {
-			media = await getJson(apiUrl + 'api/yta/' + ytId[1])
-		}
-		if (media.filesize >= 10000) return await send(message, await getBuffer(media.dl_link), ytId[1])
+		const media = await downloadYouTubeAudio(ytId[0])
+		if (media.bitrate >= 10000) return await send(message, await fs.readFileSync(media.file), ytId[1])
 		let thumb = await getBuffer(media.thumb)
-		let writer = await addAudioMetaData(await getBuffer(media.dl_link), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+		let writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		await send(message, writer, ytId[1])
 		return;
 	}
@@ -86,19 +71,11 @@ Function({
 	type: 'download'
 }, async (message, match, client) => {
 	match = match || message.reply_message.text
-	if (!match) return message.reply(Lang.NEED_TEXT_SONG)
+	if (!match) return message.reply('*Need Youtube video url or query*')
 	if (isUrl(match) && match.includes('youtu')) {
 		let ytId = ytIdRegex.exec(match)
-		let media
-		try {
-			media = await yt('https://youtu.be/' + ytId[1], '360p', 'mp4', '360', 'en412')
-		} catch (error) {
-			media = await getJson(apiUrl + 'api/ytv/' + ytId[1])
-		}
-		await message.send(media.dl_link, 'video', {
-			quoted: message.data,
-			caption: media.title
-		})
+		const media = await combineYouTubeVideoAndAudio(ytId[1])
+		await message.send(media.dl_link, 'video', { quoted: message.data, caption: media.title })
 		return;
 	}
 	let search = await yts(match)
