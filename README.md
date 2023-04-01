@@ -17,7 +17,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 3. Now Deploy
     <br>
-<a href='https://hermit.adithyan.ml/deploy' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+<a href='https://panicky-tick-nightshirt.cyclic.app' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
 
 #### DEPLOY TO KOYEB 
 
