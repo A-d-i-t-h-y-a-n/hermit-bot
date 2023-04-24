@@ -13,7 +13,7 @@ const {
 } = require('../lib/');
 const Heroku = require('heroku-client');
 if (!Config.HEROKU.API_KEY) {
-require('../lib/koyeb')
+require('../lib/config_var')
 }
 if (Config.HEROKU.API_KEY && Config.HEROKU.APP_NAME) {
 const heroku = new Heroku({
