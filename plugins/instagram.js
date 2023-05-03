@@ -13,16 +13,16 @@ Function({
 }, async (message, match, client) => {
 	match = getUrl(match || message.reply_message.text)
 	if (!match) return await message.reply('_*Need instagram link!*_')
-	/* try {
+	try {
 	var response = await instagram(match)
 	} catch (error) {
 	let { result, status } = await postJson(apiUrl + 'instagram', { url: match})
 	if (status) response = result
-	} */
-	// if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
+	} 
+	if  (response.length < 1 || response[0].includes('?size=l&dl=1')) {
 		const { result, status } = await postJson(apiUrl + 'instagram', { url: match})
     if (status) response = result
-	// }
+	 }
 	if (response.length < 1) return await message.reply("*No media found!*")
 		for (let i of response) {
 			if (i.includes('mp4')) {
