@@ -2,6 +2,7 @@ const {
 	Function,
 	isPublic,
 	instagram,
+	getJson,
 	postJson,
 	getUrl
 } = require('../lib/')
@@ -75,7 +76,7 @@ Function({
 }, async (message, match) => {
 	match = getUrl(match || message.reply_message.text)
 	if (!match) return await message.reply('_*Need link!*_')
-	const response = await postJson(apiUrl + 'fb', {url: match})
+	const response = await getJson(apiUrl + 'api/convert?url=' + match)
 	if (!response.status) return await message.reply("*No media found!*")
-	await message.send(response.HD, 'video')
+	await message.send(response.hd.url || response.sd.url, 'video', { captain: response.meta.title || '' })
 })
