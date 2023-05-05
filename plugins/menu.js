@@ -74,26 +74,10 @@ Function({
 	const image = img[Math.floor(Math.random() * img.length)]
 	const type = image.endsWith('mp4') ? 'video' : 'image'
 	const buttonMessage = {
-		[type]: {
-			url: image
-		},
+		[type]: { url: image },
 		caption: `${msg}`,
 		footer: `${BOT_INFO.split(";")[0] || ' '}`,
-		buttons: [{
-				buttonId: prefix + 'ping',
-				buttonText: {
-					displayText: 'Speed Test'
-				},
-				type: 1
-			},
-			{
-				buttonId: prefix + 'list',
-				buttonText: {
-					displayText: 'List Commands'
-				},
-				type: 1
-			}
-		]
+		buttons: [{buttonId: prefix + 'ping', buttonText: { displayText: 'Speed Test' }, type: 1},{ buttonId: prefix + 'list', buttonText: { displayText: 'List Commands' }, type: 1}]
 	}
 	await message.client.sendMessage(message.chat, buttonMessage)
 });
