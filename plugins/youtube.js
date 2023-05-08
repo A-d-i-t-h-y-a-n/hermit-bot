@@ -85,7 +85,7 @@ Function({
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
 	const listbutton = [];
 	const num = 1;
-	for (const x of search.videos) {
+	for (let x of search.videos) {
 		let button = {
 			title: 'Result - ' + num++ + ' ',
 			rows: [{
