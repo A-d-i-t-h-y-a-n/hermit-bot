@@ -74,17 +74,14 @@ Function({
 	if (!match) return message.reply('*Need Youtube video url or query*')
 	if (isUrl(match) && match.includes('youtu')) {
 		const id = ytIdRegex.exec(match)
-		const result = await getJson(apiUrl + 'api/convert?url=https://youtu.be/' + id[1])
-		if (!result.status) return await message.reply('_Failed to download_')
-		const url = result.url
-			.filter(video => video.quality === '360' && !video.no_audio)
-			.map(video => video.url);
-		return await message.send(url[0], 'video', { quoted: message.data, caption: result.meta.title });
+		const result = await ytv('https://youtu.be/' + id[1], '360p');
+		if (!result) return await message.reply('_Failed to download_')
+		return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
 	}
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
 	const listbutton = [];
-	const num = 1;
+	var num = 1;
 	for (let x of search.videos) {
 		let button = {
 			title: 'Result - ' + num++ + ' ',
