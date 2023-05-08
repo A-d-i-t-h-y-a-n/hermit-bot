@@ -87,7 +87,7 @@ Function({
 	const num = 1;
 	for (const x of search.videos) {
 		let button = {
-			title: 'Result - ' + no++ + ' ',
+			title: 'Result - ' + num++ + ' ',
 			rows: [{
 				title: x.title,
 				rowId: prefix + 'video ' + x.url
