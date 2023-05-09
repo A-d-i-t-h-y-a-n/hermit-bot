@@ -69,6 +69,19 @@ Function({
 })
 
 Function({
+	pattern: 'ig ?(.*)',
+	fromMe: true,
+	fromMe: isPublic,
+	type: 'info'
+}, async (message, match, client) => {
+match = match.match(/\/([^\/]+)\//)?.[1] || match;
+if (!match) return await message.reply("*Need instagram an profile url or username.*")
+const result = await getJson(apiUrl + 'ig/' + match)
+if (!result.status) return await message.send('*Invalid username or url*')
+return await message.send(result.profile, 'image', { caption: `*Name* : ${result.name}\n*Username* : ${result.username}\n*Followers* : ${result.followers}\n*Following* : ${result.following}\n*Post* : ${result.post}\n*Bio* : ${result.bio}`})
+})
+
+Function({
 	pattern: 'fb ?(.*)',
 	fromMe: isPublic,
 	desc: 'download Facebook videos',
