@@ -34,14 +34,13 @@ Function({
 		let ytId = ytIdRegex.exec(match)
 		const media = await downloadYouTubeAudio(ytId[1])
 		if (media.bitrate >= 10000) return await send(message, await fs.readFileSync(media.file), ytId[1])
-		let thumb = await getBuffer(media.thumb)
-		let writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
-		await send(message, writer, ytId[1])
-		return;
+		const thumb = await getBuffer(media.thumb)
+		const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+		return await send(message, writer, ytId[1])
 	}
-	let search = await yts(match)
+	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-	let listbutton = [];
+	const listbutton = [];
 	let no = 1;
 	for (var z of search.videos) {
 		let button = {
