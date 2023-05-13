@@ -188,7 +188,7 @@ Function({
 	if (!text || text === 'check') {
 		let n = await updatecheck()
 		if (n === 500) return await m.send('_Bot is completely up-to-date!_')
-		var up = 'ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ʙᴏᴛ!\n\nᴄʜᴀɴɢᴇs:\n'
+		var up = 'New update available!\n\nChanges:\n'
 		let no = 1
 		n['all'].map((c) => {
 			up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';
