@@ -193,7 +193,7 @@ Function({
 		n['all'].map((c) => {
 			up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';
 		});
-		await m.send(up + '\ntype ' + perfix + 'update now');
+		await m.send(up + '\ntype ' + prefix + 'update now');
 		/* let buttons = [{
 			buttonId: prefix + 'update now',
 			buttonText: {
