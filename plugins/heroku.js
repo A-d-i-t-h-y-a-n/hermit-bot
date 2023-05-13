@@ -193,7 +193,8 @@ Function({
 		n['all'].map((c) => {
 			up += '' + no++ + '. ' + '[' + c.date.substring(0, 10) + ']: ' + c.message + '\n';
 		});
-		let buttons = [{
+		await m.send(up + '\ntype ' + perfix + 'update now');
+		/* let buttons = [{
 			buttonId: prefix + 'update now',
 			buttonText: {
 				displayText: 'UPDATE START'
@@ -206,7 +207,8 @@ Function({
 			buttons: buttons,
 			headerType: 1
 		}
-		await client.sendMessage(m.chat, buttonMessage)
+		await client.sendMessage(m.chat, buttonMessage) 
+		*/
 	} else if (text === 'start' || text === 'now') {
 		let n = await updatecheck()
 		if (!Config.HEROKU.API_KEY && !Config.HEROKU.APP_NAME) {
@@ -224,6 +226,8 @@ Function({
 		if (n === 200) return await m.send('_Successfully Updated!_')
 	} else {
 		let n = await updatecheck()
+		await m.send(n == 500 ? '*Bot is up-to-date.*' : n.total + ' New Updates are available')
+		/*
 		let buttons = [{
 				buttonId: prefix + 'update now',
 				buttonText: {
@@ -246,5 +250,6 @@ Function({
 			headerType: 1
 		}
 		await client.sendMessage(m.chat, buttonMessage)
+		*/
 	}
 });
