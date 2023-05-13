@@ -6,6 +6,7 @@ const {
 	getAllSchedule,
 	addSchedule
 } = require('../lib/')
+
 const {
 	AUTOMUTE_MSG,
 	AUTOUNMUTE_MSG
