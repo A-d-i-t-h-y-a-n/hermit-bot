@@ -61,7 +61,7 @@ Function({
 	let no = 1;
 	const t = "```";
 	let listText = `${t}Search results for ${match}:${t}\n\n`;
-	for (let i of searchResults.all) {
+	for (let i of search.all) {
     listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
     }
     await message.send(listText);
