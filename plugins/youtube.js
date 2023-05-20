@@ -11,7 +11,8 @@ const {
 	yt,
 	ytIdRegex,
 	getJson,
-	sendwithLinkpreview
+	sendwithLinkpreview,
+	toAudio
 } = require('../lib/');
 const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio } = require('../lib/youtubei.js');
 const ffmpeg = require('fluent-ffmpeg')
@@ -36,7 +37,7 @@ Function({
   const media = await downloadYouTubeAudio(ytId[1]);
   if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1]);
   const thumb = await getBuffer(media.thumb);
-  const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `hermit-md`, 'Hermit Official');
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
 });
 
