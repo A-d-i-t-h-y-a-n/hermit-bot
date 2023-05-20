@@ -23,6 +23,24 @@ const fs = require('fs');
 const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
 Function({
+  on: 'text',
+  fromMe: isPublic,
+}, async (message, match, client) => {
+  if (message.text.includes('Search results')) return;
+  if (!message.reply_message || !message.reply_message.isBaileys) return;
+  const urls = message.reply_message.text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/gi);
+  if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
+  const index = message.text;
+  if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
+  let ytId = ytIdRegex.exec(urls[index - 1]);
+  const media = await downloadYouTubeAudio(ytId[1]);
+  if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1]);
+  const thumb = await getBuffer(media.thumb);
+  const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `hermit-md`, 'Hermit Official');
+  return await send(message, writer, ytId[1]);
+});
+
+Function({
 	pattern: 'song ?(.*)',
 	fromMe: isPublic,
 	desc: Lang.SONG_DESC,
@@ -33,14 +51,20 @@ Function({
 	if (isUrl(match) && match.includes('youtu')) {
 		let ytId = ytIdRegex.exec(match)
 		const media = await downloadYouTubeAudio(ytId[1])
-		if (media.bitrate >= 10000) return await send(message, await fs.readFileSync(media.file), ytId[1])
+		if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1])
 		const thumb = await getBuffer(media.thumb)
 		const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await send(message, writer, ytId[1])
 	}
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-	const listbutton = [];
+	let no = 1;
+	let listText = `${t}Search results for ${match}:${t}\n\n`;
+	for (let i of searchResults.all) {
+    listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
+    }
+    await message.send(listText);
+	/* const listbutton = [];
 	let no = 1;
 	for (var z of search.videos) {
 		let button = {
@@ -60,7 +84,7 @@ Function({
 	await message.send(`And ${listbutton.length} More Results...`, 'text', {
 		quoted: message.data,
 		...listMessage
-	})
+	}) */
 });
 
 Function({
@@ -110,7 +134,7 @@ Function({
 	if (isUrl(match) && match.includes('youtu')) {
 		const ytId = ytIdRegex.exec(match)
 		const result = await downloadYouTubeAudio(ytId[1])
-		if (result.bitrate >= 10000) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
+		if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 		const thumbnail = await getBuffer(result.thumb)
 		const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: file, mimetype: 'audio/mpeg'}, {quoted: message.data})
@@ -119,7 +143,7 @@ Function({
 	if (search.all.length < 1) return await message.reply('_Not Found_');
 	const result = await downloadYouTubeAudio(search.videos[0].videoId)
 	const thumbnail = await getBuffer(result.thumb)
-	if (result.bitrate >= 10000) return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
+	if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 	const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 	return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 });
