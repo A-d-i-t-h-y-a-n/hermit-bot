@@ -14,7 +14,7 @@ const {
 	sendwithLinkpreview,
 	toAudio
 } = require('../lib/');
-const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio } = require('../lib/youtubei.js');
+const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail } = require('../lib/youtubei.js');
 const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
@@ -53,7 +53,7 @@ Function({
 		let ytId = ytIdRegex.exec(match)
 		const media = await downloadYouTubeAudio(ytId[1])
 		if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1])
-		const thumb = await getBuffer(media.thumb)
+		const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]))
 		const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await send(message, writer, ytId[1])
 	}
@@ -137,7 +137,7 @@ Function({
 		const ytId = ytIdRegex.exec(match)
 		const result = await downloadYouTubeAudio(ytId[1])
 		if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
-		const thumbnail = await getBuffer(result.thumb)
+		const thumbnail = await getBuffer(await getYoutubeThumbnail(ytId[1]))
 		const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: file, mimetype: 'audio/mpeg'}, {quoted: message.data})
 	}
