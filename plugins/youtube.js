@@ -27,7 +27,7 @@ Function({
   on: 'text',
   fromMe: isPublic,
 }, async (message, match, client) => {
-  if (!message.reply_message.text.includes('Search results')) return;
+  if (message.reply_message && !message.reply_message.text.includes('Search results')) return;
   if (!message.reply_message || !message.reply_message.isBaileys) return;
   const urls = message.reply_message.text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/gi);
   if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
