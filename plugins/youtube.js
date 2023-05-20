@@ -59,6 +59,7 @@ Function({
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
 	let no = 1;
+	const t = "```";
 	let listText = `${t}Search results for ${match}:${t}\n\n`;
 	for (let i of searchResults.all) {
     listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
