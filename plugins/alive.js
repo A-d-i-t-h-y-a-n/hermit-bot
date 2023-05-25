@@ -2,13 +2,13 @@ const {
 	Function,
 	isPublic,
 	sendAlive,
-	RandomFancy,
 	runtime,
 	chatBot,
 	isChatBot,
 	chatbot
 } = require("../lib/");
 const config = require('../config')
+
 Function({
 	pattern: 'ping ?(.*)',
 	fromMe: isPublic,
@@ -16,9 +16,10 @@ Function({
 	type: 'info'
 }, async (message, match, client) => {
 	var start = new Date().getTime();
-	var msg = await message.reply('*Testing Speed..*');
+	var msg = await message.reply('*Pinging...*');
 	var end = new Date().getTime();
-	await message.reply('⟪ *Response in ' + (end - start) + ' msec* ⟫');
+	var responseTime = end - start;
+	await msg.edit(`*Pong!*\nLatency: ${responseTime}ms`);
 });
 
 Function({

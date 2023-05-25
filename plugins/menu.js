@@ -97,3 +97,5 @@ const runtime = function(seconds) {
 	var sDisplay = s > 0 ? s + (s == 1 ? " s" : " s") : "";
 	return dDisplay + hDisplay + mDisplay + sDisplay;
 }
+
+exports.runtime = runtime;
