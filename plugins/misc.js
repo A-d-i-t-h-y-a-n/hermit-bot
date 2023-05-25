@@ -122,7 +122,7 @@ let user = message.reply_message ? message.reply_message.sender : match.replace(
 if (!user) return message.send('_Need a User!_')
 try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'}
 let {status} = await message.client.fetchStatus(user)
-await message.send(pp, 'image', { caption: `*Name :* ${await client.getName(user)}\n*About :* ${status}`})
+await message.send(pp, 'image', { caption: `*Name :* ${await message.client.getName(user)}\n*About :* ${status}`})
 })
 
 Function({pattern: 'mode ?(.*)', fromMe: true, type: 'heroku'}, async (message, match) => {
