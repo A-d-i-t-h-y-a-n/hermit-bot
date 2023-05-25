@@ -121,8 +121,11 @@ Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'info'}, async (messag
 let user = message.reply_message ? message.reply_message.sender : match.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 if (!user) return message.send('_Need a User!_')
 try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'}
-let {status} = await message.client.fetchStatus(user)
-await message.send(pp, 'image', { caption: `*Name :* ${await message.client.getName(user)}\n*About :* ${status}`})
+let status = await message.client.fetchStatus(user)
+const date = new Date(status.setAt);
+const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+const setAt = date.toLocaleString('en-US', options);
+await message.send(pp, 'image', { caption: `*Name :* ${await message.client.getName(user)}\n*About :* ${status.status}\n*About Set Date :* ${setAt}`})
 })
 
 Function({pattern: 'mode ?(.*)', fromMe: true, type: 'heroku'}, async (message, match) => {
