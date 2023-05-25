@@ -1,5 +1,4 @@
-const { Function, getMessage } = require('../lib/');
-const { runtime } = require('../menu');
+const { Function, getMessage, formatDuration } = require('../lib/');
 
 Function({
 	pattern: 'msgs ?(.*)',
@@ -17,13 +16,13 @@ Function({
     msg += '*Number :* ' + userId.split("@")[0] + '\n*Name :* ' + (user.name || 'Unknown') + '\n';
     Object.keys(user.type).map(item => msg += '*' + item + ' :* ' + user.type[item] + '\n');
     msg += '*Total :* ' + user.total + '\n';
-    msg += '*lastActivity :*' + runtime((timeNow - user.time) / 1000) + ' ago\n\n';
+    msg += '*lastActivity :*' + formatDuration((timeNow - user.time) / 1000) + ' ago\n\n';
   } else {
     Object.keys(data).map(user => {
       const { name, total, type, time } = data[user];
       msg += '*Number :* ' + user.split("@")[0] + '\n*Name :* ' + (name || 'Unknown') + '\n*Total Msgs :* ' + total + '\n';
       Object.keys(type).map(item => msg += '*' + item + ' :* ' + type[item] + '\n');
-      msg += '*lastActivity :* ' + runtime((timeNow - time) / 1000) + ' ago\n\n';
+      msg += '*lastActivity :* ' + formatDuration((timeNow - time) / 1000) + ' ago\n\n';
     });
   }
   return await message.send(msg.trim());
