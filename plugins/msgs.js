@@ -13,10 +13,10 @@ Function({
   let msg = '';
   if (userId) {
     const user = await getMessage(message.jid, userId);
-    msg += '*Number :* ' + userId.split("@")[0] + '\n*Name :* ' + (user.name || 'Unknown') + '\n';
+    msg += '*Number :* ' + userId.split("@")[0] + '\n*Name :* ' + (user.name.replace( /[\r\n]+/gm, "") || 'Unknown') + '\n';
     Object.keys(user.type).map(item => msg += '*' + item + ' :* ' + user.type[item] + '\n');
     msg += '*Total :* ' + user.total + '\n';
-    msg += '*lastActivity :*' + formatDuration((timeNow - user.time) / 1000) + ' ago\n\n';
+    msg += '*lastActivity :* ' + formatDuration((timeNow - user.time) / 1000) + ' ago\n\n';
   } else {
     Object.keys(data).map(user => {
       const { name, total, type, time } = data[user];
