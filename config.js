@@ -15,7 +15,7 @@ const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : 
 process.env.NODE_OPTIONS = '--max_old_space_size=2560'
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG)
 module.exports = {
-	VERSION: 'v4.3.7', 
+	VERSION: 'v4.3.8', 
     SESSION_ID: process.env.SESSION_ID || '',
     MODE: (process.env.MODE || 'public').toLowerCase(),
     HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
