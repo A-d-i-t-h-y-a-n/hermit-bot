@@ -1,8 +1,12 @@
 const {
 	Function,
 	antiWord,
-	antiLink
+	antiLink,
+	Database,
+	isBotAdmin,
+	isAdmin
 } = require('../lib/');
+const antibot = new Database('antibot');
 
 Function({
 	pattern: 'antiword ?(.*)',
