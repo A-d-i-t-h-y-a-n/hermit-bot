@@ -20,8 +20,9 @@ Function({
   } else {
     Object.keys(data).map(user => {
       const { name, total, type, time } = data[user];
-      msg += '*Number :* ' + user.split("@")[0] + '\n*Name :* ' + (name.replace( /[\r\n]+/gm, "") || 'Unknown') + '\n*Total Msgs :* ' + total + '\n';
+      msg += '*Number :* ' + user.split("@")[0] + '\n*Name :* ' + (name.replace( /[\r\n]+/gm, "") || 'Unknown') + '\n';
       Object.keys(type).map(item => msg += '*' + item + ' :* ' + type[item] + '\n');
+      msg += '*Total :* ' + user.total + '\n';
       msg += '*lastActivity :* ' + formatDuration((timeNow - time) / 1000) + ' ago\n\n';
     });
   }
