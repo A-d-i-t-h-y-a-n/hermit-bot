@@ -55,7 +55,7 @@ Function({
 		const media = await downloadYouTubeAudio(ytId[1])
 		if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1])
 		const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]))
-		const writer = await addAudioMetaData(await fs.readFileSync(media.file), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await send(message, writer, ytId[1])
 	}
 	const search = await yts(match)
