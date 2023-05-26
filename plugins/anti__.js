@@ -2,9 +2,7 @@ const {
 	Function,
 	antiWord,
 	antiLink,
-	Database,
-	isBotAdmin,
-	isAdmin
+	Database
 } = require('../lib/');
 const antibot = new Database('antibot');
 
@@ -25,3 +23,20 @@ Function({
 }, async (message, match, client) => {
 	await antiLink(message, match, client)
 })
+
+Function({
+  pattern: 'antibot ?(.*)',
+  fromMe: true,
+  desc: 'set antibot',
+  type: 'group'
+}, async (message, match, client) => {
+  if (!message.isGroup) return await message.reply('*This cmd only for groups*')
+  if (!match || (match !== 'on' && match !== 'off')) return await message.reply('_Please provide a valid match option._ *Use either "on" or "off".*');
+  if (match === 'on') {
+    await antibot.set(message.chat, true);
+    await message.send('_Antibot Activated_');
+  } else if (match === 'off') {
+    await antibot.delete(message.chat)
+    await message.send('_Antifake Deactivated_');
+  }
+});
