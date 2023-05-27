@@ -31,8 +31,9 @@ Function({
   if (!(message.reply_message && message.reply_message.text)) return;
   const text = message.reply_message.text;
   const index = message.text;
+  const ytRegex = /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/gi
   if (text.includes('Search results') && text.includes('Format: audio')) {
-  const urls = message.reply_message.text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/gi);
+  const urls = message.reply_message.text.match(ytRegex);
   if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   let ytId = ytIdRegex.exec(urls[index - 1]);
@@ -41,6 +42,14 @@ Function({
   const thumb = await getBuffer(media.thumb);
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
+  } else if (text.includes('Search results') && text.includes('Format: video')) {
+  const urls = message.reply_message.text.match(ytRegex);
+  if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
+  if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
+  let id = ytIdRegex.exec(urls[index - 1]);
+  const result = await ytv('https://youtu.be/' + id[1], '360p');
+  if (!result) return await message.reply('_Failed to download_');
+  return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
   } else if (text.includes('Available quality')) {
   const id = text.match(/\*id:\s(.*?)\*/m)[1].trim();
   const qualityMatches = Array.from(text.matchAll(/(\d+)\.\s(.*?)\s-\s([\d.]+)?\s?(\w{1,2})?/mg));
@@ -52,7 +61,7 @@ Function({
   const result = await ytv('https://youtu.be/' + id, quality);
   if (!result) return await message.reply('_Failed to download_');
   return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
-  } 
+  }
 });
 
 Function({
