@@ -37,6 +37,6 @@ Function({
     await message.send('_Antibot Activated_');
   } else if (match === 'off') {
     await antibot.delete(message.chat)
-    await message.send('_Antifake Deactivated_');
+    await message.send('_Antibot Deactivated_');
   }
 });
