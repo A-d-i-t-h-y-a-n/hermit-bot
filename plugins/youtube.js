@@ -15,11 +15,11 @@ const {
 	toAudio
 } = require('../lib/');
 const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail } = require('../lib/youtubei.js');
-const ffmpeg = require('fluent-ffmpeg')
 const yts = require("yt-search")
 const config = require('../config');
 const Lang = getString('scrapers');
 const fs = require('fs');
+const t = "```";
 
 const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
@@ -28,10 +28,12 @@ Function({
   fromMe: isPublic,
 }, async (message, match, client) => {
   if (!message.reply_message.isBaileys) return;
-  if (message.reply_message && message.reply_message.text && message.reply_message.text.includes('Search results')) {
+  if (!(message.reply_message && message.reply_message.text)) return;
+  const text = message.reply_message.text;
+  const index = message.text;
+  if (text.includes('Search results') && text.includes('Format: audio')) {
   const urls = message.reply_message.text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/gi);
   if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
-  const index = message.text;
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   let ytId = ytIdRegex.exec(urls[index - 1]);
   const media = await downloadYouTubeAudio(ytId[1]);
@@ -39,7 +41,18 @@ Function({
   const thumb = await getBuffer(media.thumb);
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
-  }
+  } else if (text.includes('Available quality')) {
+  const id = text.match(/\*id:\s(.*?)\*/m)[1].trim();
+  const qualityMatches = Array.from(text.matchAll(/(\d+)\.\s(.*?)\s-\s([\d.]+)?\s?(\w{1,2})?/mg));
+  const qualityOptions = qualityMatches.map(match => ({
+    quality: match[2]
+  }));  
+  if (isNaN(index) || index < 1 || index > qualityOptions.length) return await message.send('*Invalid number.*\n_Please provide a valid number from the available options._');
+  const { quality } = qualityOptions[index - 1]
+  const result = await ytv('https://youtu.be/' + id, quality);
+  if (!result) return await message.reply('_Failed to download_');
+  return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
+  } 
 });
 
 Function({
@@ -61,33 +74,22 @@ Function({
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
 	let no = 1;
-	const t = "```";
-	let listText = `${t}Search results for ${match}:${t}\n\n`;
+	let listText = `${t}Search results for ${match}:${t}\n\n*Format: audio*\n\n`;
 	for (let i of search.all) {
     listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
     }
     await message.send(listText);
-	/* const listbutton = [];
+    /* 
+	const listbutton = [];
 	let no = 1;
 	for (var z of search.videos) {
-		let button = {
-			title: 'Result - ' + no++ + ' ',
-			rows: [{
-				title: z.title,
-				rowId: prefix + 'song ' + z.url
-			}]
-		};
-		listbutton.push(button)
+		let button = { title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: prefix + 'song ' + z.url}]
 	};
-	const listMessage = {
-		title: search.videos[0].title,
-		buttonText: 'Select song',
-		sections: listbutton
-	}
-	await message.send(`And ${listbutton.length} More Results...`, 'text', {
-		quoted: message.data,
-		...listMessage
-	}) */
+	listbutton.push(button)
+	};
+	const listMessage = { title: search.videos[0].title, buttonText: 'Select song', sections: listbutton }
+	await message.send(`And ${listbutton.length} More Results...`, 'text', { quoted: message.data, ...listMessage })
+	 */
 });
 
 Function({
@@ -106,24 +108,22 @@ Function({
 	}
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-	const listbutton = [];
+	let no = 1;
+	let listText = `${t}Search results for ${match}:${t}\n\n*Format: video*\n\n`;
+	for (let i of search.all) {
+    listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
+    }
+    await message.send(listText);
+	/* const listbutton = [];
 	var num = 1;
-	for (let x of search.videos) {
-		let button = {
-			title: 'Result - ' + num++ + ' ',
-			rows: [{
-				title: x.title,
-				rowId: prefix + 'video ' + x.url
-			}]
-		};
-		listbutton.push(button)
+	for (var z of search.videos) {
+		let button = { title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: prefix + 'video ' + z.url}]
 	};
-	const listMessage = {
-		title: search.videos[0].title,
-		buttonText: 'Select video',
-		sections: listbutton
-	}
+	listbutton.push(button)
+	};
+	const listMessage = { title: search.videos[0].title, buttonText: 'Select video', sections: listbutton }
 	return await message.send(`And ${listbutton.length} More Results...`, 'text', { quoted: message.data, ...listMessage });
+	*/
 });
 
 Function({
@@ -183,7 +183,13 @@ Function({
 					quoted: message.data
 				})
 			}
-			const sections = [{
+			let list = '';
+			let no = 1;
+			for (i in result.list) {
+				if (i !== '.mp3') list += `${no++}. ${i} - ${result.list[i]}\n`
+				}
+			await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`)
+			/* const sections = [{
 				title: result.title,
 				rows: [{
 						title: '1080p',
@@ -224,7 +230,10 @@ Function({
 				sections: sections
 			}
 			return await message.client.sendMessage(message.jid, listMessage);
+			*/
+		return 
 		}
+		
 		const search = await yts(match)
 		if (search.all.length < 1) return await message.reply('_Not Found_');
 		let result
@@ -242,6 +251,7 @@ Function({
 			quoted: message.data
 		})
 	} catch (error) {
+		console.log(error)
 		await message.send('*Failed to download*\n_try .video cmd_')
 	}
 });
