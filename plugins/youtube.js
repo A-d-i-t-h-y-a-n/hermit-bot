@@ -195,43 +195,10 @@ Function({
 			let list = '';
 			let no = 1;
 			for (i in result.list) {
-				if (i !== '.mp3') list += `${no++}. ${i} - ${result.list[i]}\n`
-				}
-			await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`)
-			/* const sections = [{
-				title: result.title,
-				rows: [{
-						title: '1080p',
-						description: result.list['1080p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {1080p}`
-					},
-					{
-						title: '720p',
-						description: result.list['720p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {720p}`
-					},
-					{
-						title: '480p',
-						description: result.list['480p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {480p}`
-					},
-					{
-						title: '360p',
-						description: result.list['360p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {360p}`
-					},
-					{
-						title: '240p',
-						description: result.list['240p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {240p}`
-					},
-					{
-						title: '144p',
-						description: result.list['144p'] || 'Not Available',
-						rowId: `${prefix}ytv https://youtu.be/${ytId[1]} {144p}`
-					}
-				]
-			}]
+			if (i !== '.mp3') list += `${no++}. ${i} - ${result.list[i]}\n`;
+			}
+			return await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`);
+			/* const sections=[{title:result.title,rows:[{title:"1080p",description:result.list["1080p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {1080p}`},{title:"720p",description:result.list["720p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {720p}`},{title:"480p",description:result.list["480p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {480p}`},{title:"360p",description:result.list["360p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {360p}`},{title:"240p",description:result.list["240p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {240p}`},{title:"144p",description:result.list["144p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {144p}`}]}];
 			const listMessage = {
 				text: 'Select The Quality Below',
 				title: result.title,
@@ -239,10 +206,8 @@ Function({
 				sections: sections
 			}
 			return await message.client.sendMessage(message.jid, listMessage);
-			*/
-		return 
-		}
-		
+			*/ 
+		};
 		const search = await yts(match)
 		if (search.all.length < 1) return await message.reply('_Not Found_');
 		let result
