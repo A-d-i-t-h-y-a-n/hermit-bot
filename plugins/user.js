@@ -2,11 +2,11 @@ const {
 	Function
 } = require('../lib/')
 
-const isBotAdmins = async a => {
-	var i = a.isGroup ? await a.client.groupMetadata(a.chat).catch(a => {}) : "";
-	const t = a.isGroup ? await i.participants : "",
-		s = a.isGroup ? await t.filter(a => null !== a.admin).map(a => a.id) : "";
-	return !!a.isGroup && s.includes(a.user_id)
+const isBotAdmins = async (message) => {
+  const groupMetadata = message.isGroup ? await message.client.groupMetadata(message.chat).catch(() => {}) : "";
+  const participants = message.isGroup ? await groupMetadata.participants : "";
+  const adminIds = message.isGroup ? await participants.filter(a => null !== a.admin).map(a => a.id) : "";
+  return !!message.isGroup && adminIds.includes(message.user_id);
 };
 
 Function({
