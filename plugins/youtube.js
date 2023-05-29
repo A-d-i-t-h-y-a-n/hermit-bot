@@ -47,9 +47,13 @@ Function({
   if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   let id = ytIdRegex.exec(urls[index - 1]);
+  try {
   const result = await video(id[1]);
   if (!result) return await message.reply('_Failed to download_');
   return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
+  } catch (error) {
+  await message.send('```' + error.message + '```')
+  }
   } else if (text.includes('Available quality')) {
   const id = text.match(/\*id:\s(.*?)\*/m)[1].trim();
   const qualityMatches = Array.from(text.matchAll(/(\d+)\.\s(.*?)\s-\s([\d.]+)?\s?(\w{1,2})?/mg));
