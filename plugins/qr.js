@@ -10,8 +10,8 @@ Function({
 	desc: 'qr code reader',
 	type: 'plugin'
 }, async (message, match, client) => {
-	if (!message.reply_message) return await message.reply("_Reply to a  qr image_")
-	if (!message.reply_message.image) return await message.reply("_Reply to a  qr image_")
+	if (!message.reply_message) return await message.reply("_Reply to a qr image_")
+	if (!message.reply_message.image) return await message.reply("_Reply to a qr image_")
 	const {
 		bitmap
 	} = await jimp.read(await message.reply_message.downloadAndSaveMedia())
