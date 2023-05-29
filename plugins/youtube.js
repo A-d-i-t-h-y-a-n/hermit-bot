@@ -14,7 +14,7 @@ const {
 	sendwithLinkpreview,
 	toAudio
 } = require('../lib/');
-const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail } = require('../lib/youtubei.js');
+const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail, video } = require('../lib/youtubei.js');
 const yts = require("yt-search")
 const config = require('../config');
 const Lang = getString('scrapers');
@@ -47,9 +47,9 @@ Function({
   if (!urls) return await message.send('*The replied message does not contain any YouTube search results.*');
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   let id = ytIdRegex.exec(urls[index - 1]);
-  const result = await ytv('https://youtu.be/' + id[1], '360p');
+  const result = await video(id[1]);
   if (!result) return await message.reply('_Failed to download_');
-  return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
+  return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
   } else if (text.includes('Available quality')) {
   const id = text.match(/\*id:\s(.*?)\*/m)[1].trim();
   const qualityMatches = Array.from(text.matchAll(/(\d+)\.\s(.*?)\s-\s([\d.]+)?\s?(\w{1,2})?/mg));
@@ -111,9 +111,9 @@ Function({
 	if (!match) return message.reply('*Need Youtube video url or query*')
 	if (isUrl(match) && match.includes('youtu')) {
 		const id = ytIdRegex.exec(match)
-		const result = await ytv('https://youtu.be/' + id[1], '360p');
-		if (!result) return await message.reply('_Failed to download_')
-		return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
+		const result = await video(id[1]);
+		if (!result) return await message.reply('_Failed to download_');
+		return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
 	}
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
