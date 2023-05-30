@@ -172,54 +172,24 @@ Function({
 	desc: 'download videos from youtube',
 	type: 'download'
 }, async (message, match, client) => {
-		match = match || message.reply_message.text
-		if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
-		if (isUrl(match) && match.includes('youtu')) {
-			/* const ytId = ytIdRegex.exec(match)
-			var quality = match.match('\\{([a-z0-9]+)\\}')
-			if (quality) {
-				quality = quality[1]
-			}
-			const resol = quality || '360p'
-			let result
-			try {
-				result = await yt('https://youtu.be/' + ytId[1], resol, 'mp4', resol.endsWith('p') ? resol.replace(/p/g, '') : resol, 'en412')
-			} catch (error) {
-				result = await getJson(apiUrl + 'api/ytv/' + ytId[1] + '?quality=' + resol)
-			}
-			if (result.filesize > 100000) {
-				const url = await getJson('https://tinyurl.com/api-create.php?url=' + result.dl_link)
-				return await message.reply('*Failed to Download*\n_File size is more is than 100MB_\nClick this url to download manually : ' + url)
-			}
-			if (quality) {
-				return await message.send(result.dl_link, 'video', {
-					caption: result.title,
-					quoted: message.data
-				})
-			} */
-			let list = '';
-			let no = 1;
-			for (i in result.list) {
-			if (i !== '.mp3') list += `${no++}. ${i} - ${result.list[i]}\n`;
-			}
-			return await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`);
-			/* const sections=[{title:result.title,rows:[{title:"1080p",description:result.list["1080p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {1080p}`},{title:"720p",description:result.list["720p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {720p}`},{title:"480p",description:result.list["480p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {480p}`},{title:"360p",description:result.list["360p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {360p}`},{title:"240p",description:result.list["240p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {240p}`},{title:"144p",description:result.list["144p"]||"Not Available",rowId:`${prefix}ytv https://youtu.be/${ytId[1]} {144p}`}]}];
-			const listMessage = {
-				text: 'Select The Quality Below',
-				title: result.title,
-				buttonText: 'Select Quality',
-				sections: sections
-			}
-			return await message.client.sendMessage(message.jid, listMessage);
-			*/ 
-		};
-		const search = await yts(match)
-		if (search.all.length < 1) return await message.reply('_Not Found_');
-		try {
-		  const result = await video(search.videos[0].videoId);
-		  if (!result) return await message.reply('_Failed to download_');
-		  return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
-		  } catch (error) {
-		  return await message.send('```' + error.message + '```')
-		 }
+	match = match || message.reply_message.text
+	if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
+	if (isUrl(match) && match.includes('youtu')) {
+	const result = await download(match, '360p', 'mp4');
+	let list = '';
+	let no = 1;
+	for (i of result.video) {
+	list += `${no++}. ${i.fquality} - ${i.filesize}\n`;
+	}
+	return await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`);
+	};
+	const search = await yts(match)
+	if (search.all.length < 1) return await message.reply('_Not Found_');
+	try {
+	const result = await video(search.videos[0].videoId);
+	if (!result) return await message.reply('_Failed to download_');
+	return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
+	} catch (error) {
+	return await message.send('```' + error.message + '```')
+	}
 });
