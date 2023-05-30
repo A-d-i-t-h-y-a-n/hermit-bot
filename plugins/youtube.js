@@ -6,13 +6,11 @@ const {
 	prefix,
 	getString,
 	isPublic,
-	yta,
-	ytv,
-	yt,
 	ytIdRegex,
 	getJson,
 	sendwithLinkpreview,
-	toAudio
+	toAudio,
+	download
 } = require('../lib/');
 const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail, video } = require('../lib/youtubei.js');
 const yts = require("yt-search")
@@ -62,9 +60,9 @@ Function({
   }));  
   if (isNaN(index) || index < 1 || index > qualityOptions.length) return await message.send('*Invalid number.*\n_Please provide a valid number from the available options._');
   const { quality } = qualityOptions[index - 1]
-  const result = await ytv('https://youtu.be/' + id, quality);
+  const result = await download('https://youtu.be/' + id, quality, 'mp4');
   if (!result) return await message.reply('_Failed to download_');
-  return await message.send(result.dl_link, 'video', { quoted: message.data, caption: result.title });
+  return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
   }
 });
 
@@ -174,11 +172,10 @@ Function({
 	desc: 'download videos from youtube',
 	type: 'download'
 }, async (message, match, client) => {
-	try {
 		match = match || message.reply_message.text
 		if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
 		if (isUrl(match) && match.includes('youtu')) {
-			const ytId = ytIdRegex.exec(match)
+			/* const ytId = ytIdRegex.exec(match)
 			var quality = match.match('\\{([a-z0-9]+)\\}')
 			if (quality) {
 				quality = quality[1]
@@ -199,7 +196,7 @@ Function({
 					caption: result.title,
 					quoted: message.data
 				})
-			}
+			} */
 			let list = '';
 			let no = 1;
 			for (i in result.list) {
@@ -218,22 +215,11 @@ Function({
 		};
 		const search = await yts(match)
 		if (search.all.length < 1) return await message.reply('_Not Found_');
-		let result
 		try {
-			result = await yt('https://youtu.be/' + search.videos[0].videoId, '360p', 'mp4', '360', 'en412')
-		} catch (error) {
-			result = await getJson(apiUrl + 'api/ytv/' + search.videos[0].videoId)
-		}
-		if (result.filesize > 100000) {
-			const url = await getJson('https://tinyurl.com/api-create.php?url=' + result.dl_link)
-			return await message.reply('*Failed to Download*\n_File size is more is than 100MB_\nClick this url to download manually : ' + url)
-		}
-		return await message.send(result.dl_link, 'video', {
-			caption: result.title,
-			quoted: message.data
-		})
-	} catch (error) {
-		console.log(error)
-		await message.send('*Failed to download*\n_try .video cmd_')
-	}
+		  const result = await video(search.videos[0].videoId);
+		  if (!result) return await message.reply('_Failed to download_');
+		  return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
+		  } catch (error) {
+		  return await message.send('```' + error.message + '```')
+		 }
 });
