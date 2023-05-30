@@ -175,6 +175,7 @@ Function({
 	match = match || message.reply_message.text
 	if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
 	if (isUrl(match) && match.includes('youtu')) {
+	const ytId = ytIdRegex.exec(match)
 	const result = await download(match, '360p', 'mp4');
 	let list = '';
 	let no = 1;
