@@ -45,7 +45,7 @@ Function({
 		buttons: buttons,
 		headerType: 1
 	}
-	if (!match) return await m.client.sendMessage(m.chat, buttonMessage)
+	if (!match) return await m.send('_Need input!_\n*Example: antifake on/off*')
 	if (match == 'list') {
 		if (!isAntiFake) return await m.reply("_You don't set the Antifake yet.!_\n__To set:__ ```.antifake 1,44,972...```")
 		return await m.reply(await antiFakeList(m.jid))

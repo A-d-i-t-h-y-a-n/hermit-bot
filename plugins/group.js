@@ -373,10 +373,7 @@ Function({
 		headerType: 1
 	}
 
-	if (!match) {
-		await message.client.sendMessage(message.jid, buttonMessage)
-		return;
-	}
+	if (!match) return await message.send('_Need input!_\n*Example: pdm on/off*')
 	if (match == 'on' || match == 'off') {
 		await setPDM(message.jid, match)
 		await message.send(`_pdm ${match == 'on' ? 'Activated' : 'Deactivated'}_`)
