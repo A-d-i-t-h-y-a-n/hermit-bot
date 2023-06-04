@@ -44,10 +44,7 @@ Function({
 		headerType: 1
 	}
 
-	if (!text) {
-		await m.client.sendMessage(m.chat, buttonMessage)
-		return;
-	}
+	if (!text) return await message.send('_Need input!_\n*Example: .welcome on/off/delete*\n*.welcome Hey &mention, Welcome to &gname*\n\n```For more information visit:```https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki/greetings')
 	if (text === "on") {
 		let msg = await sql.enableMessage(m.jid);
 		if (!msg) return m.reply(Lang.NOT_SET_WELCOME)
@@ -122,10 +119,7 @@ Function({
 		headerType: 1
 	}
 
-	if (!text) {
-		await m.client.sendMessage(m.chat, buttonMessage)
-		return;
-	}
+	if (!text) return await message.send('_Need input!_\n*Example: .goodbye on/off/delete*\n*.goodbye Bye &mention*\n\n```For more information visit:```https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki/greetings')
 	if (text === "on") {
 		let msg = await sql.enableMessage(m.jid);
 		if (!msg) return m.reply(Lang.NOT_SET_GOODBYE)
