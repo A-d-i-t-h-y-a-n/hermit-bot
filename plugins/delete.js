@@ -43,3 +43,22 @@ Function({
 		}
 	})
 })
+
+Function({
+	pattern: 'edit ?(.*)',
+	fromMe: true,
+	desc: 'edit message that sended by bot',
+	type: 'whatsapp'
+}, async (message, match, client) => {
+	if (!message.reply_message) return await message.reply('_Reply to a message_')
+	if (!match) return await message.reply('_Need text!_\n*Example: edit hi*')
+	await client.relayMessage(message.jid, {
+		protocolMessage: {
+			key: message.quoted.data.key,
+			type: 14,
+			editedMessage: {
+				conversation: match
+			}
+		}
+	}, {})
+})
