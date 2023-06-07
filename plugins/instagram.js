@@ -26,12 +26,8 @@ Function({
         if (status) response = result
 	// } 
 	if (response.length < 1) return await message.reply("*No media found!*")
-		for (let i of response) {
-			if (i.includes('mp4')) {
-				await message.send(i, 'video', { quoted: message.reply_message.data || message.data })
-			} else {
-				await message.send(i, 'image', { quoted: message.reply_message.data || message.data })
-			}
+		for (let url of response) {
+			await message.sendFromUrl(url)
 		}
 })
 
@@ -52,16 +48,8 @@ Function({
 		}
 		const response = await getJson(apiUrl + 'story?url=https://instagram.com/stories/' + match)
 		if (!response.status) return await message.reply("*No media found!*")
-		for (let i of response.result) {
-			if (i.includes('mp4')) {
-				await message.send(i, 'video', {
-					quoted: message.reply_message.data || message.data
-				})
-			} else {
-				await message.send(i, 'image', {
-					quoted: message.reply_message.data || message.data
-				})
-			}
+			for (let url of response.result) {
+			await message.sendFromUrl(url)
 		}
 	} catch (error) {
 		console.log(error)
