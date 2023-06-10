@@ -165,19 +165,29 @@ Function({
 	if (!match) return message.reply('_Need url or song name!_\n*Example: .yta url/song name*')
 	if (isUrl(match) && match.includes('youtu')) {
 		const ytId = ytIdRegex.exec(match)
+		try {
 		const result = await downloadYouTubeAudio(ytId[1])
 		if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 		const thumbnail = await getBuffer(await getYoutubeThumbnail(ytId[1]))
 		const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: file, mimetype: 'audio/mpeg'}, {quoted: message.data})
+		} catch {
+		const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
+		if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data })
+	   }
 	}
 	const search = await yts(match)
 	if (search.all.length < 1) return await message.reply('_Not Found_');
+	try {
 	const result = await downloadYouTubeAudio(search.videos[0].videoId)
 	const thumbnail = await getBuffer(result.thumb)
 	if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 	const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 	return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
+	} catch {
+	const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
+	if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data })
+	}
 });
 
 Function({
