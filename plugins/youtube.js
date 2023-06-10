@@ -194,9 +194,7 @@ Function({
 	let list = '';
 	let no = 1;
 	for (i of result.video) {
-	if (i.type == 'video') {
 	list += `${no++}. ${i.fquality} - ${i.filesize}\n`;
-	}
 	}
 	return await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`);
 	};
