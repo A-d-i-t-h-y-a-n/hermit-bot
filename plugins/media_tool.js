@@ -135,10 +135,10 @@ Function({
     desc: 'Convert image or text to pdf',
     type: 'media'
 }, async (message, match, client) => {
-	const files = fs.readdirSync('./media/pdf');
 	 if (!fs.existsSync("./media/pdf")) {
         fs.mkdirSync("./media/pdf");
     }
+    const files = fs.readdirSync('./media/pdf');
 	if (!match && !message.reply_message && files.length == 0) return await message.reply('*Need image or text!*');
 	if (match || (message.reply_message && !message.reply_message.image && message.reply_message.text)) {
     const margin = 36;
