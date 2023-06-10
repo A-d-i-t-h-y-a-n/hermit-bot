@@ -187,7 +187,7 @@ Function({
 		const mutemeridiem = mutetime.toUpperCase().match(/[A-Z]/gm).join('') || 'null'
 		const _unmutetime = unmutetime.toUpperCase().match(/[^A-Za-z]/gm).join('') || 'null'
 		const unmutemeridiem = unmutetime.toUpperCase().match(/[A-Z]/gm).join('') || 'null'
-		msg += `*${index}. Group:* ${mute.groupName || 'null'}
+		msg += `*${index + 1}. Group:* ${mute.groupName || 'null'}
 *Mute*: ${_mutetime || 'null'}${mutemeridiem || 'null'}
 *Unmute*: ${_unmutetime || 'null'}${unmutemeridiem || 'null'}
 *Status*: ${mute.enabled || 'null'}\n\n`
