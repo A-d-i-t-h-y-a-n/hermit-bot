@@ -92,6 +92,7 @@ Function({
 	desc: 'play youtube audio and video',
 	type: 'download'
 }, async (message, match, client) => {
+match = match || message.reply_message.text
 if (!match) return await message.reply('*Need text!*\n_Example: .play astronaut in the ocean_');
 const search = await yts(match)
 const audio = await downloadYouTubeAudio(search.videos[0].videoId, false);
