@@ -10,9 +10,10 @@ const {
 	getJson,
 	sendwithLinkpreview,
 	toAudio,
-	download
+	download,
+	h2k
 } = require('../lib/');
-const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail, video } = require('../lib/youtubei.js');
+const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail, video, bytesToSize } = require('../lib/youtubei.js');
 const yts = require("yt-search")
 const config = require('../config');
 const Lang = getString('scrapers');
@@ -68,8 +69,45 @@ Function({
   const result = await download('https://youtu.be/' + id, quality, 'mp4');
   if (!result) return await message.reply('_Failed to download_');
   return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
+  } else if (/\*⬡ ID :\* (\w+)/.test(text)) {
+  const id = text.match(/\*⬡ ID :\* (\w+)/);
+  if (!id) return;
+  if (isNaN(index) || index < 1 || index > 2) return
+  if (index == '2') {
+  const result = await video(id[1]);
+  return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
+  } else if (index == '1') {
+  const media = await downloadYouTubeAudio(id[1]);
+  if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), id[1]);
+  const thumb = await getBuffer(media.thumb);
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
+  return await send(message, writer, id[1]);
+  }
   }
 });
+
+Function({
+	pattern: 'play ?(.*)',
+	fromMe: isPublic,
+	desc: 'play youtube audio and video',
+	type: 'download'
+}, async (message, match, client) => {
+const search = await yts(match)
+const audio = await downloadYouTubeAudio(search.videos[0].videoId, false);
+const { content_length } = await video(search.videos[0].videoId, false);
+const msg = `*${search.videos[0].title}* 
+
+*⬡ ID :* ${search.videos[0].videoId}
+*⬡ Duration :* ${search.videos[0].timestamp}
+*⬡ Viewers :* ${h2k(search.videos[0].views)}
+*⬡ Author :* ${search.videos[0].author.name}
+*⬡ Audio Size :* ${bytesToSize(audio.content_length)}
+*⬡ Video Size :* ${bytesToSize(content_length)}
+
+1. *Audio*
+2. *Video*`
+await message.send(await getYoutubeThumbnail(search.videos[0].videoId), 'image', { caption: msg})
+})
 
 Function({
 	pattern: 'song ?(.*)',
