@@ -58,7 +58,7 @@
     "translate-google-api": "^1.0.4",
     "util": "^0.12.4",
     "yargs": "^17.2.1",
-    "youtubei.js": "^2.9.0",
+    "youtubei.js": "^5.1.0",
     "yt-search": "^2.10.2"
   }
 }
