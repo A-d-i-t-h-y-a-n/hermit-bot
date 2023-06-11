@@ -69,17 +69,22 @@ Function({
   if (!result) return await message.reply('_Failed to download_');
   return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
   } else if (/\*⬡ ID :\* (\w+)/.test(text)) {
-  const id = text.match(/\*⬡ ID :\* (\w+)/);
+  const id = text.match(/\*⬡ ID :\* ([\w-]+)/);
   if (!id) return;
   if (isNaN(index) || index < 1 || index > 2) return
   if (index == '2') {
   const result = await video(id[1]);
   return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
   } else if (index == '1') {
+  try {
   const media = await downloadYouTubeAudio(id[1]);
   if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), id[1]);
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, id[1]);
+  } catch {
+  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1]);
+  if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+  }
   }
   }
 });
