@@ -39,8 +39,7 @@ Function({
   try {
   const media = await downloadYouTubeAudio(ytId[1]);
   if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1]);
-  const thumb = await getBuffer(media.thumb);
-  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
   } catch {
   const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1]);
@@ -79,8 +78,7 @@ Function({
   } else if (index == '1') {
   const media = await downloadYouTubeAudio(id[1]);
   if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), id[1]);
-  const thumb = await getBuffer(media.thumb);
-  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `hermit-md`, 'Hermit Official');
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, id[1]);
   }
   }
@@ -208,8 +206,7 @@ Function({
 		try {
 		const result = await downloadYouTubeAudio(ytId[1])
 		if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
-		const thumbnail = await getBuffer(await getYoutubeThumbnail(ytId[1]))
-		const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+		const file = await addAudioMetaData(await fs.readFileSync(result.file), result.thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: file, mimetype: 'audio/mpeg'}, {quoted: message.data})
 		} catch {
 		const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
@@ -220,9 +217,8 @@ Function({
 	if (search.all.length < 1) return await message.reply('_Not Found_');
 	try {
 	const result = await downloadYouTubeAudio(search.videos[0].videoId)
-	const thumbnail = await getBuffer(result.thumb)
 	if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
-	const file = await addAudioMetaData(await fs.readFileSync(result.file), thumbnail, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+	const file = await addAudioMetaData(await fs.readFileSync(result.file), result.thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 	return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 	} catch {
 	const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
