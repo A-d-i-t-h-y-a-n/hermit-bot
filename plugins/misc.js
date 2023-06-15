@@ -181,7 +181,7 @@ Function({
 	desc: 'Optical Character Recognition',
 	type: 'media'
 }, async (message, match, client) => {
-if (!message.reply_message && !message.reply_message) return await message.reply('*Reply to an image*')
+if (!message.reply_message && !message.reply_message.image) return await message.reply('*Reply to an image*')
 var msg = await message.reply('_Recognising..._');
   try {
     const imageBuffer = await message.reply_message.download();
