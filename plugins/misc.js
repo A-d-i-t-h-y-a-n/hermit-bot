@@ -192,7 +192,6 @@ var msg = await message.reply('_Recognising..._');
     });
   await msg.edit(response.data.text)
   } catch (error) {
-  await message.send(await jsonformat(error.message));
   await message.edit('*Failed to recognise*');
   }
 })
