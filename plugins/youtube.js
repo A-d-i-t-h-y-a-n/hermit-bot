@@ -82,7 +82,7 @@ Function({
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, id[1]);
   } catch {
-  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1]);
+  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
   if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
   }
   }
