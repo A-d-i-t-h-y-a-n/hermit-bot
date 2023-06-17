@@ -1,6 +1,6 @@
 {
   "name": "hermit-md",
-  "version": "4.3.8",
+  "version": "4.3.9",
   "description": "Hermit-md - Simple whatsapp Multi Device bot based on @adiwajshing/baileys.",
   "main": "index.js",
   "scripts": {
