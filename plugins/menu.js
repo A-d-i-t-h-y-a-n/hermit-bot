@@ -48,7 +48,6 @@ Function({
 ┃✵│ Plugins : ${commands.length}
 ┃✵│ Runtime : ${runtime(process.uptime())}
 ┃✵│ Mode : ${MODE}
-┃✵│ Host Name : heroku
 ┃✵│ Platform : ${os.platform()}
 ┃✵│ Ram : ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
 ┃✵│ Version : ${VERSION}
