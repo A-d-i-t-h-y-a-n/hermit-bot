@@ -5,6 +5,7 @@ const {
 	prefix,
 	parsedUrl
 } = require("../lib/");
+const t = "```";
 Function({
 	pattern: 'ringtone ?(.*)',
 	fromMe: isPublic,
@@ -12,27 +13,23 @@ Function({
 	type: 'download'
 }, async (message, match) => {
 	if (!match) return await message.reply('_Example : ringtone the box_')
-	const res = await ringtone(match)
-	const buttons = [];
-	for (var main = 0; main < res.length; main++) {
-		buttons.push({
-			title: res[main].title,
-			rowId: prefix + 'upload ' + res[main].audio
-		})
-	};
-	const listMessage = {
-		text: 'And ' + buttons.length + ' More Results...',
-		title: res[0].title,
-		buttonText: 'Select Ringtone',
-		sections: [{
-			title: 'Ringtone Downloader',
-			rows: buttons
-		}]
-	};
-	await message.client.sendMessage(message.jid, listMessage, {
-		quoted: m.data
-	})
+	const result = await ringtone(match)
+	if (result) {
+	const list = [];
+	let no = 1;
+	let msg = `${t}Search results for ${match}:${t}\n_To download, please reply with the desired ringtone number._\n\n`;
+		const indices = new Set();
+		for (var main = 0; main < result.length; main++) {
+		const randomIndex = Math.floor(Math.random() * result.length);
+		if (!indices.has(randomIndex)) {
+			indices.add(randomIndex);
+			msg += `${no++}. *${result[randomIndex].title}*\n*link* : ${result[randomIndex].source}\n*mp3* : ${result[randomIndex].audio}\n\n`
+			}
+		}
+	await message.send(msg, { quoted: m.data })
+	}
 })
+
 
 Function({
 	pattern: 'upload ?(.*)',
