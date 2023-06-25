@@ -211,7 +211,8 @@ Function({
 		try {
 		const result = await downloadYouTubeAudio(ytId[1])
 		if (result.content_length >= 10485760) return await message.client.sendMessage(message.jid, { audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
-		const file = await addAudioMetaData(await fs.readFileSync(result.file), result.thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
+		const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]))
+		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: file, mimetype: 'audio/mpeg'}, {quoted: message.data})
 		} catch {
 		const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
