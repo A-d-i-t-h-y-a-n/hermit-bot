@@ -41,7 +41,7 @@ module.exports = {
     KOYEB_APP_NAME: process.env.KOYEB_APP_NAME || '',
     TERMUX_VPS: toBool(process.env.TERMUX || process.env.VPS),
     AUTO_STATUS_VIEW: toBool(process.env.AUTO_STATUS_VIEW),
-    APIKEY: process.env.APIKEY || '',
+    APIKEY: process.env.APIKEY || 'free',
     HEROKU: {
         HEROKU: process.env.HEROKU === undefined ? false : convertToBool(process.env.HEROKU),
         API_KEY: process.env.HEROKU_API_KEY,
