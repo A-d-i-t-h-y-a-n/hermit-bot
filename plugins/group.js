@@ -5,8 +5,10 @@ const {
 	setPDM,
 	getPDM,
 	prefix,
-	getUrl
+	getUrl,
+	Database
 } = require('../lib/')
+const arm = new Database('arm');
 
 const isBotAdmins = async (message) => {
 	const groupMetadata = await message.client.groupMetadata(message.chat)
@@ -391,10 +393,10 @@ Function({
   if (!match) return await message.send('_Need input!_\n*Example: arm on/off*')
   if (match == 'on') {
     await arm.set(message.chat, true);
-    await message.send(`_Approve reject ${match == 'on' ? 'Activated' : 'Deactivated'}_`)
+    await message.send(`_Approve reject msg ${match == 'on' ? 'Activated' : 'Deactivated'}_`)
   } else if (match == 'off') {
     await arm.delete(message.chat)
-    await message.send(`_Approve reject ${match == 'on' ? 'Activated' : 'Deactivated'}_`)
+    await message.send(`_Approve reject msg ${match == 'on' ? 'Activated' : 'Deactivated'}_`)
   } else {
     await message.send('_Need input!_\n*Example: arm on/off*')
   }
