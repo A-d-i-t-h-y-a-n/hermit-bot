@@ -80,6 +80,7 @@ Function({
   const [cmd, tog] = match.split(' ');
   if (!cmd) return await message.reply('*Need a cmd!*\n_Example: toggle ping off/on_');
   if (!tog || (tog !== 'on' && tog !== 'off')) return await message.reply('*Need an action!*\n_Example: toggle ping off/on_');
+  if (cmd == 'toggle') return await message.reply("*I can't tog toggle*");
   const iscmd = commands.some(command => command.pattern !== undefined && command.pattern.test(PREFIX + cmd));
   if (!iscmd) return await message.reply('cmd *'+cmd+'* not found');
   await toggle.set(cmd, tog == 'off');
