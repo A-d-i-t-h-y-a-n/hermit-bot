@@ -4,7 +4,10 @@ const {
 	PluginDB,
 	Plugin,
 	removeCommand,
-	getJson
+	getJson,
+	Database,
+	commands,
+	PREFIX
 } = require('../lib/');
 const Config = require('../config');
 const axios = require('axios');
@@ -65,3 +68,20 @@ Function({
 		await message.send('*Not found*')
 	}
 })
+
+const toggle = new Database('toggle');
+Function({
+  pattern: 'toggle ?(.*)',
+  fromMe: true,
+  desc: 'To switch commands on/off',
+  type: 'group'
+}, async (message, match, client) => {
+  if (!match) return await message.reply('*Need a cmd and action!*\n_Example: toggle ping off/on');
+  const [cmd, tog] = match.split(' ');
+  if (!cmd) return await message.reply('*Need a cmd!*\n_Example: toggle ping off/on');
+  if (!tog || (tog !== 'on' && tog !== 'off')) return await message.reply('*Need an action!*\n_Example: toggle ping off/on');
+  const iscmd = commands.some(command => command.pattern !== undefined && command.pattern.test(PREFIX + cmd));
+  if (!iscmd) return await message.reply('cmd *ping* not found');
+  await toggle.set(cmd, tog == 'on');
+  return await message.reply(`_${cmd.charAt(0).toUpperCase() + cmd.slice(1)} ${tog == 'on' ? 'Activated' : 'Deactivated'}_`);
+});
