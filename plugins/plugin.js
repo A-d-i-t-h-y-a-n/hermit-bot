@@ -76,12 +76,12 @@ Function({
   desc: 'To switch commands on/off',
   type: 'group'
 }, async (message, match, client) => {
-  if (!match) return await message.reply('*Need a cmd and action!*\n_Example: toggle ping off/on');
+  if (!match) return await message.reply('*Need a cmd and action!*\n_Example: toggle ping off/on_');
   const [cmd, tog] = match.split(' ');
-  if (!cmd) return await message.reply('*Need a cmd!*\n_Example: toggle ping off/on');
-  if (!tog || (tog !== 'on' && tog !== 'off')) return await message.reply('*Need an action!*\n_Example: toggle ping off/on');
+  if (!cmd) return await message.reply('*Need a cmd!*\n_Example: toggle ping off/on_');
+  if (!tog || (tog !== 'on' && tog !== 'off')) return await message.reply('*Need an action!*\n_Example: toggle ping off/on_');
   const iscmd = commands.some(command => command.pattern !== undefined && command.pattern.test(PREFIX + cmd));
-  if (!iscmd) return await message.reply('cmd *ping* not found');
-  await toggle.set(cmd, tog == 'on');
+  if (!iscmd) return await message.reply('cmd *'+cmd+'* not found');
+  await toggle.set(cmd, tog == 'off');
   return await message.reply(`_${cmd.charAt(0).toUpperCase() + cmd.slice(1)} ${tog == 'on' ? 'Activated' : 'Deactivated'}_`);
 });
