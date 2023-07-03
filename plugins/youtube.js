@@ -42,8 +42,13 @@ Function({
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
   } catch {
-  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1]);
-  if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
+  if (!response.status) return await message.send('*Failed to download*');
+  if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+  const buffer = await getBuffer(response.result);
+  await fs.writeFileSync('./' + response.file, buffer);
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
+  return await send(message, writer, id[1]);
   }
   } else if (text.includes('Search results') && text.includes('Format: video')) {
   const urls = message.reply_message.text.match(ytRegex);
@@ -83,7 +88,12 @@ Function({
   return await send(message, writer, id[1]);
   } catch {
   const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
-  if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+  if (!response.status) return await message.send('*Failed to download*');
+  if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+  const buffer = await getBuffer(response.result);
+  await fs.writeFileSync('./' + response.file, buffer);
+  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
+  return await send(message, writer, id[1]);
   }
   }
   } else if (text.includes('the desired ringtone number')) {
@@ -136,8 +146,13 @@ Function({
 		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await send(message, writer, ytId[1])
 		} catch {
-			const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
-			if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data })
+			  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
+			  if (!response.status) return await message.send('*Failed to download*');
+			  if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+			  const buffer = await getBuffer(response.result);
+			  await fs.writeFileSync('./' + response.file, buffer);
+			  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
+			  return await send(message, writer, id[1]);
 	   }
 	}
 	const search = await yts(match)
