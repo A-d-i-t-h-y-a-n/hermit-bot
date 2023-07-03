@@ -34,7 +34,7 @@ Function({
 	})
 })
 
-Function({
+/* Function({
 	on: 'button',
 	fromMe: isPublic
 }, async (message, match) => {
@@ -52,4 +52,4 @@ Function({
 			caption: msg
 		})
 	}
-})
+}) */
