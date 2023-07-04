@@ -65,7 +65,6 @@ Function({
 		AFK.lastseen = 0;
 		AFK.reason = false;
 		AFK.isAfk = false;
-
 		await message.send(Lang.IM_NOT_AFK);
 	}
 });
