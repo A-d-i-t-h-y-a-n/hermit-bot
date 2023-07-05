@@ -23,56 +23,48 @@ const isAdmin = async (message, user) => {
 }
 
 Function({
-	pattern: 'add ?(.*)',
-	fromMe: true,
-	desc: 'Adds someone to the group.',
-	type: 'group'
-}, async (m, text, client) => {
-	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-	const isbotAdmin = await isBotAdmins(m, client)
-	if (!isbotAdmin) return await m.reply("I'm not an admin")
-	if (!text && !m.quoted) return await m.reply('_Enter the number you want to add_')
-	let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-	if (!users) return m.reply('_Enter the number you want to add_')
-	let v = await client.onWhatsApp(users);
-	n = v.map((n_jid) => n_jid.jid);
-	if (!n.includes(users)) return await m.reply("_This number doesn't exists on whatsapp_");
-	let vs = await client.GroupParticipantsUpdate(m, users)
-	if (vs == '403') {
-		await client.sendMessage(m.chat, {
-			text: `_Couldn't add. Invite sent!_`,
-			mentions: [users]
-		})
-	} else if (vs == '408') {
-		await client.sendMessage(m.chat, {
-			text: `_Couldn't add @${users.split('@')[0]} because they left the group recently. Try again later._`,
-			mentions: [users]
-		}, {
-			quoted: m.data
-		})
-	} else if (vs == '401') {
-		await client.sendMessage(m.chat, {
-			text: `_Couldn't add @${users.split('@')[0]} because they blocked the bot number._`,
-			mentions: [users]
-		}, {
-			quoted: m.data
-		})
-	} else if (vs == '200') {
-		await client.sendMessage(m.chat, {
-			text: `@${users.split('@')[0]}, Added to The Group`,
-			mentions: [users]
-		})
-	} else if (vs == '409') {
-		await client.sendMessage(m.chat, {
-			text: `@${users.split('@')[0]}, Already in Group`,
-			mentions: [users]
-		})
-	} else {
-		await client.sendMessage(m.chat, {
-			text: vs
-		})
-	}
-})
+		pattern: 'add ?(.*)',
+		fromMe: true,
+		onlyGroup: true,
+		desc: 'Adds someone to the group.',
+		type: 'group'
+	},
+	async (message, match, client) => {
+		if (!(await isBotAdmins(message, client))) return await message.reply("I'm not an admin.");
+		const num = message.quoted.sender || match.replace(/[^0-9,]/g, '')
+		if (!num) return await message.reply('_Enter the numbers you want to add separated by commas._');
+		const messages = {
+			'403': '_Couldn\'t add. Invite sent!_',
+			'408': 'Couldn\'t add {name} because they left the group recently. Try again later.',
+			'401': 'Couldn\'t add {name} because they blocked the bot number.',
+			'200': '{name}, Added to the group.',
+			'409': '{name}, Already in the group.',
+		};
+		const numbers = num?.split(',').map((num) => num.trim() + '@s.whatsapp.net');
+		const onwa = await client.onWhatsApp(...numbers);
+		const users = onwa.map((p) => {
+			if (p.jid !== client.user.jid) {
+				return p.jid;
+			}
+		});
+
+		if (!users || numbers.length == 0) return await message.reply("_This number doesn't exist on WhatsApp._");
+		const participantUpdate = await client.groupParticipantsUpdate(message.jid, users, 'add');
+		let msg = '';
+		for (result of participantUpdate) {
+			if (result.status) msg += `${messages[result.status]?.replace('{name}', `
+			@$ {
+				result.jid.split('@')[0]
+			}
+			`)}\n`
+		}
+		await message.send(msg.trim(), 'text', {
+			mentions: users,
+			quoted: message.data
+		});
+	});
+	
+	
 Function({
 	pattern: 'kick ?(.*)',
 	fromMe: true,
