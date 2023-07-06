@@ -52,7 +52,7 @@ Function({
 		const participantUpdate = await client.groupParticipantsUpdate(message.jid, users, 'add');
 		let msg = '';
 		for (result of participantUpdate) {
-			if (result.status) msg += `${messages[result.status]?.replace('{name}', `@${result.jid.split('@')[0]}\n`)}`
+			if (result.status) msg += `${messages[result.status]?.replace('{name}', `@${result.jid.split('@')[0]}`)}\n`
 		}
 		await message.send(msg.trim(), 'text', {
 			mentions: users,
