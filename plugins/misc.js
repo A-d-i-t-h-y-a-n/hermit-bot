@@ -217,7 +217,7 @@ Function({
 	fromMe: true,
 	desc: 'filter numbers',
 	type: 'misc'
-}, async (message, match) => {
+}, async (message, match, client) => {
     if (!match) return await message.reply("*Need number and x parameter!*\n_Example: iswa 687822xxx_\n_You can use up to 4 x_");
     const xCount = (match.match(/x/g) || []).length;
     if (xCount < 0) return await message.reply("*Need number and x parameter!*\n_Example: iswa 687822xxx_\n_You can use up to 4 x_");
