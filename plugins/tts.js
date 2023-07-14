@@ -36,13 +36,13 @@ Function({
     desc: 'It converts text to sound.',
     type: 'misc'
 }, async (message, match) => {
-    match = match || message.reply_message.text;
-    if (!match) return await message.reply('_Need Text!_\n_Example: tts Hello_\n_tts Hello {en}_');
+    if (!(match || message.quoted.text)) return await message.reply('_Need Text!_\n_Example: tts Hello_\n_tts Hello {en}_');
     let LANG = config.LANG.toLowerCase();
     const lang = match.match("\\{([a-z]+)\\}");
     if (lang) {
       match = match.replace(lang[0], '');
       LANG = lang[1];
+      if (message.quoted.text) match = message.reply_message.text;
     }
     const audioData = await convertTextToSound(match, LANG);
     await message.client.sendMessage(message.chat, { audio: audioData, mimetype: 'audio/ogg; codecs=opus', ptt: true }, { quoted: message.data });
