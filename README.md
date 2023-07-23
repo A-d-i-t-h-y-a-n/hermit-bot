@@ -34,3 +34,14 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 <a href='https://hermit.adithyan.xyz/deploy-koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>  
 ***
 <a href="https://chat.whatsapp.com/Czc4zb42smmHIkso3Od0ir"><img alt="WhatsApp" src="https://img.shields.io/badge/-Whatsapp%20Group-blue?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
+
+## Support Me
+
+If you find this project helpful and would like to support my efforts, consider buying me a coffee! ☕️ Your support will help me stay motivated and continue working on exciting projects like this one.
+
+<a href="https://www.buymeacoffee.com/adithyanr">
+  <img src="https://i.ibb.co/KNnhcvX/bmc-button.png" alt="Buy Me Coffee" height="40" width="150">
+</a>
+
+
+Your generosity is greatly appreciated!
