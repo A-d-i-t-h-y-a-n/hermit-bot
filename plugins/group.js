@@ -427,5 +427,5 @@ Function({
   const db = new Database('bannedNumbers');
   const groupBans = db.get(message.chat) || [];
   if (groupBans.length === 0) return await message.reply('_No users are banned in this group_');
-  return await message.reply(`_Banned Users in this Group:_\n${match.map((element) => groupBans.split('@')[0]).join('\n')}`);
+  return await message.reply(`_Banned Users in this Group:_\n${groupBans.map((element) => groupBans.split('@')[0]).join('\n')}`);
 });
