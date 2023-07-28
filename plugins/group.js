@@ -64,10 +64,10 @@ Function({
 Function({
 	pattern: 'kick ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'kick someone in the group. Reply to message or tag a person to use command.',
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message, message.client)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
@@ -95,10 +95,10 @@ Function({
 Function({
 	pattern: 'promote ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Makes any person an admin.',
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message, message.client)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
@@ -127,10 +127,10 @@ Function({
 Function({
 	pattern: 'demote ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Takes the authority of any admin.',
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message, message.client)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
@@ -158,10 +158,10 @@ Function({
 Function({
 	pattern: 'mute ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Mute the group chat. Only the admins can send a message.',
 	type: 'group'
 }, async (message, match) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const iamAdmin = await isBotAdmins(message)
 	if (!iamAdmin) return await message.reply("I'm not an admin")
 	if (!match || isNaN(match)) {
@@ -178,10 +178,10 @@ Function({
 Function({
 	pattern: 'unmute ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Unmute the group chat. Anyone can send a message.',
 	type: 'group'
 }, async (message, match) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	if (!isBotAdmins) return await message.reply("I'm not an admin")
 	if (!match || isNaN(match)) {
 		await message.client.groupSettingUpdate(message.chat, 'not_announcement')
@@ -198,6 +198,7 @@ Function({
 Function({
 	pattern: 'invite ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: "Provides the group's invitation link.",
 	type: 'group'
 }, async (m, text, client) => {
@@ -210,10 +211,10 @@ Function({
 Function({
 	pattern: 'revoke ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Revoke Group invite link.',
 	type: 'group'
 }, async (message, match) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message, message.client)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	await message.client.groupRevokeInvite(message.jid)
@@ -222,6 +223,7 @@ Function({
 Function({
 	pattern: 'ginfo ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Shows group invite info',
 	type: 'group'
 }, async (message, match) => {
@@ -254,20 +256,20 @@ Function({
 Function({
 	pattern: 'left ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'Left from group',
 	type: 'group'
 }, async (message, text, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	await client.groupLeave(message.chat)
 })
 
 Function({
 	pattern: 'lock',
 	fromMe: true,
+    onlyGroup: true,
 	desc: "only allow admins to modify the group's settings",
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	const meta = await message.client.groupMetadata(message.chat)
@@ -279,10 +281,10 @@ Function({
 Function({
 	pattern: 'unlock',
 	fromMe: true,
+    onlyGroup: true,
 	desc: "allow everyone to modify the group's settings -- like display picture etc.",
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	const isbotAdmin = await isBotAdmins(message)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	const meta = await message.client.groupMetadata(message.chat)
@@ -294,10 +296,10 @@ Function({
 Function({
 	pattern: 'gname ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: "To change the group's subject",
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	match = match || message.reply_message.text
 	if (!match) return await message.send('*Need Subject!*\n*Example: gname New Subject!*.')
 	const meta = await message.client.groupMetadata(message.chat)
@@ -314,10 +316,10 @@ Function({
 Function({
 	pattern: 'gdesc ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: "To change the group's description",
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
 	match = match || message.reply_message.text
 	if (!match) return await message.send('*Need Description!*\n*Example: gdesc New Description!*.')
 	const meta = await message.client.groupMetadata(message.chat)
@@ -334,35 +336,10 @@ Function({
 Function({
 	pattern: 'pdm ?(.*)',
 	fromMe: true,
+    onlyGroup: true,
 	desc: 'promote demote message',
 	type: 'group'
 }, async (message, match, client) => {
-	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
-	const groupMetadata = await message.client.groupMetadata(message.jid)
-	let pdm = await getPDM(message.jid);
-	let buttons = [{
-			buttonId: prefix + 'pdm on',
-			buttonText: {
-				displayText: 'ON'
-			},
-			type: 1
-		},
-		{
-			buttonId: prefix + 'pdm off',
-			buttonText: {
-				displayText: 'OFF'
-			},
-			type: 1
-		}
-	]
-	let ispdm = pdm ? true : false
-	const buttonMessage = {
-		text: 'Pdm Manager',
-		footer: 'Group Name : ' + groupMetadata.subject + '\nPdm status : ' + ispdm,
-		buttons: buttons,
-		headerType: 1
-	}
-
 	if (!match) return await message.send('_Need input!_\n*Example: pdm on/off*')
 	if (match == 'on' || match == 'off') {
 		await setPDM(message.jid, match)
@@ -374,7 +351,6 @@ Function({
 Function({
   pattern: 'arm ?(.*)',
   fromMe: true,
-  onlyGroup: true,
   desc: 'approve and reject message',
   type: 'group'
 }, async (message, match, client) => {
@@ -388,4 +364,68 @@ Function({
   } else {
     await message.send('_Need input!_\n*Example: arm on/off*')
   }
+});
+
+Function({
+  pattern: 'ban ?(.*)',
+  fromMe: true,
+  onlyGroup: true,
+  desc: 'Ban users in the group. Use: .ban @user1 @user2...',
+  type: 'group',
+}, async (message, match, client) => {
+  const isbotAdmin = await isBotAdmins(message, message.client)
+  if (!isbotAdmin) return await message.reply("I'm not an admin")
+  const db = new Database('bannedNumbers');
+  const groupBans = db.get(message.chat) || [];
+  const usersToBan = message.reply_message?.sender ? [message.reply_message.sender] : (message.mention ? message.mention : false);
+  if (!usersToBan) return await message.reply('*Give me a user!*');
+  usersToBan.forEach((userJid) => {
+    if (!groupBans.includes(userJid)) {
+      groupBans.push(userJid);
+    }
+  });
+
+  db.set(groupJid, groupBans);
+  await message.client.sendMessage(message.jid, { text: `@${usersToBan[0].split('@')[0]}, *Banned From The Group*`, mentions: usersToBan })
+  await message.client.groupParticipantsUpdate(message.jid, usersToBan, 'remove')
+});
+
+Function({
+  pattern: 'unban ?(.*)',
+  fromMe: true,
+  onlyGroup: true,
+  desc: 'Unban users in the group. Use: .unban @user1 @user2...',
+  type: 'group',
+}, async (message, match, client) => {
+  match = message.reply_message?.sender ? [message.reply_message.sender] : (message.mention ? message.mention : match.replace(/\+\d+/g, (match) => `${match}@s.whatsapp.net`))
+  const db = new Database('bannedNumbers');
+  const groupBans = db.get(message.chat) || [];
+  if (!match) return await message.send('*Need user!*\n_Example: .unban +1 (440) 111-0000_');
+  const unbannedUsers = [];
+
+  match.forEach((userJid) => {
+    const index = groupBans.indexOf(userJid);
+    if (index !== -1) {
+      groupBans.splice(index, 1);
+      unbannedUsers.push(userJid);
+    }
+  });
+  if (unbannedUsers.length === 0) {
+    return await message.reply('*This user is not banned.*');
+  }
+  db.set(groupJid, groupBans);
+  return await message.client.sendMessage(message.jid, { text: `@${match.map((element) => element.split('@')[0]).join(',')}, _unbanned_`, mentions: match })
+});
+
+Function({
+  pattern: 'listban',
+  fromMe: true,
+  onlyGroup: true,
+  desc: 'List all banned users in the group.',
+  type: 'group',
+}, async (message, match, client) => {
+  const db = new Database('bannedNumbers');
+  const groupBans = db.get(message.chat) || [];
+  if (groupBans.length === 0) return await message.reply('_No users are banned in this group_');
+  return await message.reply(`_Banned Users in this Group:_\n${match.map((element) => groupBans.split('@')[0]).join('\n')}`);
 });
