@@ -397,7 +397,7 @@ Function({
   desc: 'Unban users from group.',
   type: 'group',
 }, async (message, match, client) => {
-  match = message.reply_message?.sender ? [message.reply_message.sender] : (message.mention ? message.mention : match.replace(/\+\d+/g, (match) => `${match}@s.whatsapp.net`))
+  match = message.reply_message?.sender ? [message.reply_message.sender] : (message.mention ? message.mention : [match.replace(/[^0-9,]/g, '')].map((num) => num.trim() + '@s.whatsapp.net'))
   const db = new Database('bannedNumbers');
   const groupBans = db.get(message.chat) || [];
   if (!match) return await message.send('*Need user!*\n_Example: .unban +1 (440) 111-0000_');
