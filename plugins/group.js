@@ -370,7 +370,7 @@ Function({
   pattern: 'ban ?(.*)',
   fromMe: true,
   onlyGroup: true,
-  desc: 'Ban users in the group. Use: .ban @user1 @user2...',
+  desc: 'Ban users from group.',
   type: 'group',
 }, async (message, match, client) => {
   const isbotAdmin = await isBotAdmins(message, message.client)
@@ -394,7 +394,7 @@ Function({
   pattern: 'unban ?(.*)',
   fromMe: true,
   onlyGroup: true,
-  desc: 'Unban users in the group. Use: .unban @user1 @user2...',
+  desc: 'Unban users from group.',
   type: 'group',
 }, async (message, match, client) => {
   match = message.reply_message?.sender ? [message.reply_message.sender] : (message.mention ? message.mention : match.replace(/\+\d+/g, (match) => `${match}@s.whatsapp.net`))
@@ -427,5 +427,5 @@ Function({
   const db = new Database('bannedNumbers');
   const groupBans = db.get(message.chat) || [];
   if (groupBans.length === 0) return await message.reply('_No users are banned in this group_');
-  return await message.reply(`_Banned Users in this Group:_\n${groupBans.map((element) => groupBans.split('@')[0]).join('\n')}`);
+  return await message.reply(`_Banned Users in this Group:_\n${groupBans.map((element) => element.split('@')[0]).join('\n')}`);
 });
