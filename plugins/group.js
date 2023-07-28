@@ -385,7 +385,7 @@ Function({
     }
   });
 
-  db.set(groupJid, groupBans);
+  db.set(message.chat, groupBans);
   await message.client.sendMessage(message.jid, { text: `@${usersToBan[0].split('@')[0]}, *Banned From The Group*`, mentions: usersToBan })
   await message.client.groupParticipantsUpdate(message.jid, usersToBan, 'remove')
 });
@@ -413,7 +413,7 @@ Function({
   if (unbannedUsers.length === 0) {
     return await message.reply('*This user is not banned.*');
   }
-  db.set(groupJid, groupBans);
+  db.set(message.chat, groupBans);
   return await message.client.sendMessage(message.jid, { text: `@${match.map((element) => element.split('@')[0]).join(',')}, _unbanned_`, mentions: match })
 });
 
