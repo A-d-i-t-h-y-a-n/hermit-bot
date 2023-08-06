@@ -1,5 +1,5 @@
 {
-  "name": "whatsapp-bot (hermit-md)",
+  "name": "hermit-md",
   "description": " Whatsapp bot.",
   "keywords": [
     "whatsapp bot"
@@ -13,14 +13,14 @@
       "value": ""
     },
     "SUDO": {
-      "description": "admin",
+      "description": "owner number of the bot",
       "required": true,
       "value": "null"
     },
     "MODE": {
-      "description": "mode",
+      "description": "mode public or private",
       "required": true,
-      "value": "public"
+      "value": "private"
     },
     "ALWAYS_ONLINE": {
       "description": "show bot number last seen as online",
@@ -48,24 +48,44 @@
     "BOT_INFO": {
       "description": "botname;ownername;ownernumber;image url",
       "required": true,
-      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;972528277755;https://i.imgur.com/pbNNWfM.jpeg"
+      "value": "ʜᴇʀᴍɪᴛ;ᴀᴅɪᴛʜyᴀɴ;972528277755;https://i.imgur.com/pbNNWfM.jpeg"
     },
     "STICKER_DATA": {
       "description": "sticker package name",
       "required": true,
-      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮"
+      "value": "ʜᴇʀᴍɪᴛ;ᴀᴅɪᴛʜyᴀɴ"
     },
     "AUDIO_DATA": {
       "description": "audio package name",
       "required": true,
-      "value": "𝛨𝛯𝑅𝛭𝛪𝑇;𝛥𝐷𝛪𝑇𝛨𝑌𝛥𝛮;https://i.imgur.com/pbNNWfM.jpeg"
+      "value": "ʜᴇʀᴍɪᴛ;ᴀᴅɪᴛʜyᴀɴ;https://i.imgur.com/pbNNWfM.jpeg"
     },
-    "READ_COMMAND": {
-      "description": "Read all commands",
+    "READ_MSG": {
+      "description": "Read all messages",
       "required": false,
       "value": "false"
     },
-  "ERROR_MESSAGE": {
+    "AUTO_STATUS_VIEW": {
+      "description": "automatic read status",
+      "required": false,
+      "value": "false"
+    },
+    "REJECT_CALL": {
+      "description": "automatic reject call",
+      "required": false,
+      "value": "false"
+    },
+    "WARN": {
+      "description": "warn count",
+      "required": false,
+      "value": "4"
+    },
+    "SONG_THUMBNAIL": {
+      "description": "show youtube video thumbnail in song cmd",
+      "required": false,
+      "value": "false"
+    },
+    "ERROR_MESSAGE": {
       "description": "get error alert",
       "required": false,
       "value": "true"

@@ -161,3 +161,25 @@ Function({
     await message.send(await pdf(), 'document', { fileName: 'document.pdf' });
 }
 });
+
+Function({
+	pattern: 'black ?(.*)',
+	fromMe: isPublic,
+	desc: 'convert audio to black video',
+	type: 'media'
+}, async (message, match, client) => {
+	if (!(message.reply_message && message.reply_message.audio)) return await message.reply('*Reply to a audio*');
+	const msg = await message.reply('_Converting.._');
+	const media = await message.reply_message.downloadAndSaveMedia();
+	exec('ffmpeg -y -i ' + media + ' audio.aac', () => {
+		exec("ffmpeg -y -loop 1 -framerate 1 -i media/media_tools/black.jpg -i audio.aac -map 0 -map 1:a -c:v libx264 -preset ultrafast -profile:v baseline -tune stillimage -vf \"scale='min(360,iw)':-2,format=yuv420p\" -c:a copy -shortest black.mp4", (error) => {
+			if (error) {
+				msg.edit(`Error: ${error.message}`);
+				return;
+			}
+			message.send('black.mp4', 'video')
+			msg.edit('_Audio to black video conversion successful._')
+			fs.unlinkSync('black.mp4')
+		});
+	});
+})
