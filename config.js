@@ -2,12 +2,13 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 
 if (fs.existsSync('config.env')) require('dotenv').config({ path: './config.env', override: true });
-
 function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
 
 const toBool = (x) => x == 'true'
+global.apikey = {'https://api.adithyan.xyz': 'free'}
+global.apiUrl = 'https://api.adithyan.xyz/'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 process.env.NODE_OPTIONS = '--max_old_space_size=2560'
