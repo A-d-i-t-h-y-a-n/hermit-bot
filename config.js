@@ -6,7 +6,7 @@ function convertToBool(text, fault = 'true') {
     return text === fault ? true : false;
 }
 
-const toBool = (x) => x.toLowerCase() == 'true'
+const toBool = (x) => (x && x.toLowerCase() === 'true') || false;
 
 global.apikey = {'https://api.adithyan.xyz': 'free'}
 global.apiUrl = 'https://api.adithyan.xyz/'
