@@ -42,6 +42,7 @@ module.exports = {
     TERMUX_VPS: toBool(process.env.TERMUX || process.env.VPS),
     AUTO_STATUS_VIEW: toBool(process.env.AUTO_STATUS_VIEW),
     APIKEY: process.env.APIKEY || 'free',
+    AUTH_FILE: process.env.AUTH_FILE || false,
     HEROKU: {
         HEROKU: process.env.HEROKU === undefined ? false : convertToBool(process.env.HEROKU),
         API_KEY: process.env.HEROKU_API_KEY,
