@@ -43,6 +43,36 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
     <br>
 <a href='https://railway.app/template/q20OfH?referralCode=b9IKyc' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=railway&logoColor=white'/></a>
 
+#### RUN ON VPS/UBUNTU/WINDOWS
+
+1. Install NodeJs,ffmpeg
+2. Installation
+   ```
+   $ npm i -global pm2
+   $ git clone https://github.com/A-d-i-t-h-y-a-n/hermit-md.git
+   $ cd hermit-md
+   $ npm install
+   ```
+3. Configuration
+   ```
+   $ echo "VPS = true
+     SESSION_ID = null
+     AUTH_FILE = true
+     SUDO = null
+     PREFIX = .
+     MODE = private
+     LOG_MSG = true" > config.env
+   ```
+- Start
+  ```
+  $ npm start
+  ```
+- Stop
+  ```
+  $ pm2 delete hermit-md
+  ```
+<br>
+
 For help visit [Github wiki](https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki)
 
 ***
