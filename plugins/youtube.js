@@ -152,7 +152,7 @@ Function({
 			  const buffer = await getBuffer(response.result);
 			  await fs.writeFileSync('./' + response.file, buffer);
 			  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
-			  return await send(message, writer, id[1]);
+			  return await send(message, writer, ytId[1])
 	   }
 	}
 	const search = await yts(match)
