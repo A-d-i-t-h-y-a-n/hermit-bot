@@ -1,4 +1,4 @@
-const {
+> const {
 	Function,
 	addAudioMetaData,
 	isUrl,
@@ -10,10 +10,10 @@ const {
 	getJson,
 	sendwithLinkpreview,
 	toAudio,
-	download,
 	h2k
 } = require('../lib/');
 const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYouTubeVideoAndAudio, getYoutubeThumbnail, video, bytesToSize } = require('../lib/youtubei.js');
+const { getInfo, getAudio, getVideo } = require('../lib/y2mate');
 const yts = require("yt-search")
 const config = require('../config');
 const Lang = getString('scrapers');
@@ -42,7 +42,7 @@ Function({
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, ytId[1]);
   } catch {
-  const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + id[1]);
+  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
   if (!response.status) return await message.send('*Failed to download*');
   if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
   const buffer = await getBuffer(response.result);
@@ -70,7 +70,7 @@ Function({
   }));  
   if (isNaN(index) || index < 1 || index > qualityOptions.length) return await message.send('*Invalid number.*\n_Please provide a valid number from the available options._');
   const { quality } = qualityOptions[index - 1]
-  const result = await download('https://youtu.be/' + id, quality, 'mp4');
+  const result = await getVideo('https://youtu.be/' + id, quality);
   if (!result) return await message.reply('_Failed to download_');
   return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
   } else if (/\*⬡ ID :\* (\w+)/.test(text)) {
@@ -87,7 +87,7 @@ Function({
   const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file), 'mp4'), media.thumb, media.title, `hermit-md`, 'Hermit Official');
   return await send(message, writer, id[1]);
   } catch {
-  const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + id[1]);
+  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
   if (!response.status) return await message.send('*Failed to download*');
   if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
   const buffer = await getBuffer(response.result);
@@ -146,7 +146,7 @@ Function({
 		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await send(message, writer, ytId[1])
 		} catch {
-			  const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + id[1]);
+			  const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + id[1]);
 			  if (!response.status) return await message.send('*Failed to download*');
 			  if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
 			  const buffer = await getBuffer(response.result);
@@ -235,7 +235,7 @@ Function({
 		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(result.file)), thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 		return await message.client.sendMessage(message.jid, {audio: writer, mimetype: 'audio/mpeg'}, {quoted: message.data})
 		} catch {
-		const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + ytId[1])
+		const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
 		if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data })
 	   }
 	}
@@ -247,7 +247,7 @@ Function({
 	const file = await addAudioMetaData(await fs.readFileSync(result.file), result.thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
 	return await message.client.sendMessage(message.jid, {audio: await fs.readFileSync(result.file), mimetype: 'audio/mpeg'}, {quoted: message.data})
 	} catch {
-	const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + ytId[1])
+	const response = await getJson('https://api.adithyan.ml/ytaudio?id=' + ytId[1])
 	if (response.status) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data })
 	}
 });
@@ -262,11 +262,13 @@ Function({
 	if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
 	if (isUrl(match) && match.includes('youtu')) {
 	const ytId = ytIdRegex.exec(match)
-	const result = await download(match, '360p', 'mp4');
-	let list = '';
+	const { result } = await getInfo(match);
+	let msg = '';
 	let no = 1;
-	for (i of result.video) {
-	list += `${no++}. ${i.fquality} - ${i.filesize}\n`;
+	for (let i of result) {
+	if (i.video) {
+	msg += `${no++}. ${i.quality} - ${i.size}\n`;
+	}
 	}
 	return await message.send(`*${result.title}*\n\n*id: ${ytId[1]}*\n\n${t}Available quality${t}\n\n${list}\n_To download, please reply with the desired quality number._`);
 	};
