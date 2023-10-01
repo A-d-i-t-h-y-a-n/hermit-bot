@@ -1,4 +1,4 @@
-> const {
+const {
 	Function,
 	addAudioMetaData,
 	isUrl,
