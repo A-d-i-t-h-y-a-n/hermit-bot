@@ -63,7 +63,7 @@ Function({
 	fromMe: isPublic,
 	type: 'info'
 }, async (message, match, client) => {
-match = match.match(/\/([^\/]+)\//)?.[1] || match;
+match = match.match(/instagram\.com\/([a-zA-Z0-9_]+)/)?.[1]; || match;
 if (!match) return await message.reply("*Need instagram an profile url or username.*")
 const result = await getJson(apiUrl + 'ig/' + match)
 if (!result.status) return await message.send('*Invalid username or url*')
