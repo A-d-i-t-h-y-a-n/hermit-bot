@@ -34,7 +34,7 @@ Function({
 	await m.reply(sender)
 });
 
-Function({
+/* Function({
 	pattern: 'attp ?(.*)',
 	fromMe: isPublic,
 	desc: 'Text to animated sticker',
@@ -49,8 +49,7 @@ Function({
 	}, {
 		quoted: m.data
 	})
-})
-
+}) */
 Function({
 	pattern: 'emix ?(.*)',
 	fromMe: isPublic,
