@@ -43,7 +43,7 @@ module.exports = {
     AUTO_STATUS_VIEW: toBool(process.env.AUTO_STATUS_VIEW),
     APIKEY: process.env.APIKEY || 'free',
     AUTH_FILE: process.env.AUTH_FILE || false,
-    START_MSG: convertToBool(process.env.START_MSG) || true, 
+    START_MSG: toBool(process.env.START_MSG || 'true')
     HEROKU: {
         HEROKU: process.env.HEROKU === undefined ? false : convertToBool(process.env.HEROKU),
         API_KEY: process.env.HEROKU_API_KEY,
