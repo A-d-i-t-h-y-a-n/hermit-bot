@@ -8,7 +8,7 @@ Function({
 	pattern: 'qr ?(.*)',
 	fromMe: isPublic,
 	desc: 'qr code reader',
-	type: 'plugin'
+	type: 'misc'
 }, async (message, match, client) => {
 	if (!message.reply_message) return await message.reply("_Reply to a qr image_")
 	if (!message.reply_message.image) return await message.reply("_Reply to a qr image_")
@@ -24,7 +24,7 @@ Function({
 	pattern: 'gqr ?(.*)',
 	fromMe: isPublic,
 	desc: 'text to qr code',
-	type: 'converter'
+	type: 'misc'
 }, async (message, match, client) => {
 	match = match || message.reply_message.text
 	if (!match) return await message.reply("_eg .gqr Hermit_")
