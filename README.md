@@ -57,7 +57,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
    ```
    $ echo "VPS = true
      SESSION_ID = null
-     AUTH_FILE = true
+     AUTH_FILE = session
      SUDO = null
      PREFIX = .
      MODE = private
