@@ -32,7 +32,7 @@ Function({
 			mentions: parseMention(msg)
 		})
 	}
-	if (text) return await m.reply(text || m.reply_message.text, {
+	if (text) return await m.send(text || m.reply_message.text, 'text', {
 		mentions: participants.map(a => a.id)
 	})
 	if (!m.reply_message) return await m.reply('_Example : \ntag all\ntag admin\ntag text\nReply to a message_')
