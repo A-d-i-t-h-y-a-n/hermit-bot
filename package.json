@@ -26,7 +26,7 @@
     "google-it": "^1.6.3",
     "google-tts-api": "^2.0.2",
     "got": "^11.8.3",
-    "hermit-md": "^1.2.1",
+    "hermit-md": "^1.2.3",
     "heroku-client": "^3.1.0",
     "human-readable": "^0.2.1",
     "imgbb-uploader": "^1.4.0",
@@ -56,6 +56,7 @@
     "translate-google-api": "^1.0.4",
     "util": "^0.12.4",
     "yargs": "^17.2.1",
-    "youtubei.js": "^5.1.0"
+    "youtubei.js": "^5.1.0",
+    "yt-search": "^2.10.4"
   }
 }
