@@ -130,52 +130,46 @@ await message.send(await getYoutubeThumbnail(search.videos[0].videoId), 'image',
 })
 
 Function({
-	pattern: 'song ?(.*)',
-	fromMe: isPublic,
-	desc: Lang.SONG_DESC,
-	type: 'download'
+  pattern: 'song ?(.*)',
+  fromMe: isPublic,
+  desc: Lang.SONG_DESC,
+  type: 'download'
 }, async (message, match, client) => {
-	match = match || message.reply_message.text
-	if (!match) return message.reply(Lang.NEED_TEXT_SONG)
-	if (isUrl(match) && match.includes('youtu')) {
-		let ytId = ytIdRegex.exec(match)
-		try {
-		const media = await downloadYouTubeAudio(ytId[1])
-		if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1])
-		const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]))
-		const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official')
-		return await send(message, writer, ytId[1])
-		} catch {
-			  const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + ytId[1]);
-			  if (!response.status) return await message.send('*Failed to download*');
-			  if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
-			  const buffer = await getBuffer(response.result);
-			  await fs.writeFileSync('./' + response.file, buffer);
-			  const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
-			  return await send(message, writer, ytId[1])
-	   }
-	}
-	const search = await yts(match)
-	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-	let no = 1;
-	let listText = `${t}Search results for ${match}:${t}\n\n*Format: audio*\n_To download, please reply with the desired title number._\n\n`;
-	for (let i of search.all) {
-	if (i.type == 'video') {
-    listText += `${no++}. *${i.title}*\nhttps://youtu.be/${i.url.match(/(?<=\?v=)[^&]+/)[0]}\n\n`;
+  match = match || message.reply_message.text;
+  if (!match) return message.reply(Lang.NEED_TEXT_SONG);
+  if (isUrl(match) && match.includes('youtu')) {
+    let ytId = ytIdRegex.exec(match);
+    try {
+      const media = await downloadYouTubeAudio(ytId[1]);
+      if (media.content_length >= 10485760) return await send(message, await fs.readFileSync(media.file), ytId[1]);
+      const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]));
+      const writer = await addAudioMetaData(await toAudio(await fs.readFileSync(media.file)), thumb, media.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official');
+      return await send(message, writer, ytId[1]);
+    } catch {
+      const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + ytId[1]);
+      if (!response.status) return await message.send('*Failed to download*');
+      if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+      const buffer = await getBuffer(response.result);
+      await fs.writeFileSync('./' + response.file, buffer);
+      const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
+      return await send(message, writer, ytId[1]);
     }
-    }
-    await message.send(listText);
-    /* 
-	const listbutton = [];
-	let no = 1;
-	for (var z of search.videos) {
-		let button = { title: 'Result - ' + no++ + ' ', rows: [{title: z.title, rowId: prefix + 'song ' + z.url}]
-	};
-	listbutton.push(button)
-	};
-	const listMessage = { title: search.videos[0].title, buttonText: 'Select song', sections: listbutton }
-	await message.send(`And ${listbutton.length} More Results...`, 'text', { quoted: message.data, ...listMessage })
-	 */
+  }
+  
+  const search = await yts(match);
+  if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
+  
+  const buttons = search.all.filter(result => result.type === 'video').map((result, index) => ({
+    type: 'list',
+    title: result.title,
+    id: `${prefix}song ${result.url}`,
+  }));
+  
+  await client.interactiveMessage(message.jid, {
+    title: search.videos[0].title,
+    text: `And ${search.all.length - 1} More Results...`,
+    buttons: buttons
+  });
 });
 
 Function({
