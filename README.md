@@ -7,17 +7,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 1. Scan the QR and copy it
     <br>
-<a href='https://session-v1.koyeb.app/qr' target="_blank"><img alt='SCAN QR' src='https://img.shields.io/badge/Scan_qr-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
-
-#### DEPLOY TO HEROKU 
-
-1. If You don't have a account in Heroku. Create a account.
-    <br>
-<a href='https://signup.heroku.com/' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
-
-3. Now Deploy
-    <br>
-<a href='https://session-v1.koyeb.app/deploy-heroku' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+<a href='https://session-v1-f8d6d14b.koyeb.app/qr' target="_blank"><img alt='SCAN QR' src='https://img.shields.io/badge/Scan_qr-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
 #### DEPLOY TO KOYEB 
 
@@ -31,7 +21,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 2. Now Deploy
     <br>
-<a href='https://session-v1.koyeb.app/deploy-koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
+<a href='https://session-v1-f8d6d14b.koyeb.app/deploy-koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
 
 #### DEPLOY TO RAILWAY
 
@@ -48,14 +38,14 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 1. Install NodeJs,ffmpeg
 2. Installation
    ```
-   $ npm i -global pm2
-   $ git clone https://github.com/A-d-i-t-h-y-a-n/hermit-md.git
-   $ cd hermit-md
-   $ npm install
+   npm i -global pm2
+   git clone https://github.com/A-d-i-t-h-y-a-n/hermit-md.git
+   cd hermit-md
+   npm install
    ```
 3. Configuration
    ```
-   $ echo "VPS = true
+   echo "VPS = true
      SESSION_ID = null
      AUTH_FILE = session
      SUDO = null
@@ -65,11 +55,11 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
    ```
 - Start
   ```
-  $ npm start
+  npm start
   ```
 - Stop
   ```
-  $ pm2 delete hermit-md
+  pm2 delete hermit-md
   ```
 <br>
 
