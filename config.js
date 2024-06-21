@@ -9,7 +9,7 @@ function convertToBool(text, fault = 'true') {
 const toBool = (x) => (x && x.toLowerCase() === 'true') || false;
 
 global.apikey = {'https://api.adithyan.xyz': 'free'}
-global.apiUrl = 'https://api.adithyan.xyz/'
+global.apiUrl = 'https://hermit-api.koyeb.app/'
 
 const DATABASE_URL = process.env.DATABASE_URL === undefined ? './database.db' : process.env.DATABASE_URL
 process.env.NODE_OPTIONS = '--max_old_space_size=2560'
