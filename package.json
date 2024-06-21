@@ -37,6 +37,7 @@
     "node-cache": "^5.1.2",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
+    "node-koyeb-api": "^1.0.4",
     "node-webpmux": "^3.1.0",
     "openai": "^3.1.0",
     "os": "^0.1.2",
