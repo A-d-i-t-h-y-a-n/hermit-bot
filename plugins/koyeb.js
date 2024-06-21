@@ -39,9 +39,7 @@ Function({
 
         await message.send('_Updating..._');
 
-        await koyeb.reDeploy(config.KOYEB_APP_NAME, (status) => {
-            message.send(`_Redeployment status: ${status}_`);
-        });
+        await koyeb.reDeploy(config.KOYEB_APP_NAME);
 
         await message.send('_Successfully Updated!_');
         
