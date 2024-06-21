@@ -1,7 +1,10 @@
+const { Function } = require('../lib/');
 const config = require('../config')
+const simpleGit = require('simple-git');
 if (config.KOYEB_API_KEY) {
 const Koyeb = require('node-koyeb-api');
 const koyeb = new Koyeb(config.KOYEB_API_KEY);
+const git = simpleGit();
 
 Function({
     pattern: 'update ?(.*)',
