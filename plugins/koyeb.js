@@ -105,9 +105,9 @@ Function({
     if (!match) return await message.send('*Need Key*\n_Example: getvar PREFIX_');
     try {
         const envVars = await koyeb.getAllEnvVars(config.KOYEB_APP_NAME);
-        const var = envVars.find(v => v.key === match.trim().toUpperCase());
-        if (var) {
-            await message.send(`_${var.key} : ${var.value}_`);
+        const vars = envVars.find(v => v.key === match.trim().toUpperCase());
+        if (vars) {
+            await message.send(`_${vars.key} : ${vars.value}_`);
         } else {
             await message.send('*Key Not Found*');
         }
