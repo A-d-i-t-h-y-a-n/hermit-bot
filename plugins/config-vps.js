@@ -1,3 +1,4 @@
+const { Function } = require('../lib/')
 const fs = require('fs');
 const config = require('../config')
 if (config.TERMUX_VPS == true) {
