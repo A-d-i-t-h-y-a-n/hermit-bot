@@ -30,9 +30,9 @@ Function({
 }, async (message, match, client) => {
     if (match && match.toLowerCase() === 'check') {
         try {
-            const status = await git.fetch();
-            const diffSummary = await git.diffSummary(['HEAD', 'origin/main']);
-            if (diffSummary.total > 0) {
+            await git.fetch();
+            const commits = await git.log(['main' + '..origin/' + 'main']);
+            if (commits.total > 0) {
                 await message.send('_New updates are available!_');
             } else {
                 await message.send('_No new updates available._');
@@ -59,7 +59,7 @@ Function({
 
         await message.send('_Successfully Updated!_');
         
-        await require('pm2').delete('all');
+        await require('pm2').stop('hermit-md');
     } catch (error) {
         await message.send(`_Error during update: ${error.message}_`);
     }

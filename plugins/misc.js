@@ -116,7 +116,7 @@ message.send(result_info)
 
 Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async (m) => {
 await m.reply('_Rebooting..._')
-require('pm2').restart('index.js');
+require('pm2').restart('hermit-md')
 });
 
 Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'info'}, async (message, match) => {
