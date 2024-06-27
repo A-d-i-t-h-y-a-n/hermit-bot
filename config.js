@@ -35,7 +35,6 @@ module.exports = {
     ERROR_MESSAGE: process.env.ERROR_MESSAGE === undefined ? true : toBool(process.env.ERROR_MESSAGE), 
     SONG_THUMBNAIL: toBool(process.env.SONG_THUMBNAIL),
     WARN: process.env.WARN || '4',
-    EXPRESS: toBool(process.env.EXPRESS),
     REJECT_CALL: toBool(process.env.REJECT_CALL),
     KOYEB_API_KEY: process.env.KOYEB_API_KEY || false,
     KOYEB_APP_NAME: process.env.KOYEB_APP_NAME || '',

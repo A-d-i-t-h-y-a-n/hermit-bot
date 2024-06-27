@@ -19,7 +19,6 @@
     "child_process": "^1.0.2",
     "cookie": "^0.5.0",
     "dotenv": "^16.0.3",
-    "express": "latest",
     "file-type": "^16.5.3",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "0.0.1-security",
