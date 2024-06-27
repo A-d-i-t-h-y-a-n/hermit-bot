@@ -232,3 +232,49 @@ Function({
         (notonwaText.length > 0 ? `*Numbers Not Registered on WhatsApp:* ${result.notExisting.length}\n\n${notonwaText.join('\n').trim()}` : '')
     );
 });
+
+Function({
+	pattern: 'settings ?(.*)',
+	fromMe: true,
+	desc: 'enable or disable variables',
+	type: 'user'
+}, async (message, match) => {
+
+const booleanVars = [
+    'SEND_READ',
+    'READ_MSG',
+    'LOG_MSG',
+    'ALWAYS_ONLINE',
+    'ERROR_MESSAGE',
+    'SONG_THUMBNAIL',
+    'REJECT_CALL',
+    'AUTO_STATUS_VIEW',
+    'START_MSG',
+];
+
+const buttons = booleanVars.flatMap((variable) => [
+    {
+        type: 'list',
+        maintitle: variable,
+        header: 'ENABLE',
+        title: '',
+        description: 'Set ' + variable + ' to true',
+        id: prefix + 'setvar ' + variable + ':true'
+    },
+    {
+        type: 'list',
+        header: 'DISABLE',
+        title: '',
+        description: 'Set ' + variable + ' to false',
+        id: prefix + 'setvar ' + variable + ':false'
+    }
+]);
+
+await client.interactiveMessage(message.chat, {
+    title: 'Enable/Disable Variables',
+    text: 'Choose a variable to enable or disable:',
+    footer: 'hermit-md',
+    buttons: buttons
+});
+
+})
