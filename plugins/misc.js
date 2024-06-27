@@ -238,7 +238,7 @@ Function({
 	fromMe: true,
 	desc: 'enable or disable variables',
 	type: 'user'
-}, async (message, match) => {
+}, async (message, match, client) => {
 
 const booleanVars = [
     'SEND_READ',
