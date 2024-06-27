@@ -179,6 +179,8 @@ Function({
 
 }
 
+if (Config.KOYEB_API_KEY) return;
+
 Function({
 	pattern: 'update ?(.*)',
 	fromMe: true,
