@@ -5,7 +5,23 @@ if (config.KOYEB_API_KEY) {
 const Koyeb = require('node-koyeb-api');
 const koyeb = new Koyeb(config.KOYEB_API_KEY);
 const git = simpleGit();
-
+const pm2 = require('pm2');
+    
+pm2.connect(function(err) {
+    if (err) {
+        console.error(err);
+        process.exit(2);
+    }
+    
+    pm2.start({
+        script: 'keep_alive.js',
+        name: 'keep-alive'
+    }, function(err, apps) {
+        pm2.disconnect();
+        if (err) throw err;
+    });
+});
+    
 Function({
     pattern: 'update ?(.*)',
     fromMe: true,
