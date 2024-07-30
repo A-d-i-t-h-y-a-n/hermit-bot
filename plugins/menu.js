@@ -4,7 +4,7 @@ const {
 	Fancy,
 	prefix,
 	parsedUrl,
-	formatp,
+	formatBytes,
 	commands
 } = require('../lib/');
 const {
@@ -49,7 +49,7 @@ Function({
 ┃✵│ Runtime : ${runtime(process.uptime())}
 ┃✵│ Mode : ${MODE}
 ┃✵│ Platform : ${os.platform()}
-┃✵│ Ram : ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
+┃✵│ Ram : ${formatBytes(os.totalmem() - os.freemem())} / ${formatBytes(os.totalmem())}
 ┃✵│ Version : ${VERSION}
 ┃✵╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
