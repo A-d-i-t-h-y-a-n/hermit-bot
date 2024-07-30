@@ -23,16 +23,6 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
     <br>
 <a href='https://hermit.koyeb.app/deploy-koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
 
-#### DEPLOY TO RAILWAY
-
-1. If You don't have a account in railway. Create a account.
-    <br>
-<a href='https://railway.app/login' target="_blank"><img alt='railway' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=railway&logoColor=white'/></a>
-
-2. Now Deploy
-    <br>
-<a href='https://railway.app/template/q20OfH?referralCode=b9IKyc' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=railway&logoColor=white'/></a>
-
 #### RUN ON VPS/UBUNTU/WINDOWS
 
 1. Install NodeJs,ffmpeg
