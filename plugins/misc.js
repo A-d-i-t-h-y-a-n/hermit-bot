@@ -4,212 +4,227 @@ const {
 	isPublic,
 	getJson,
 	toPTT,
-	getString,
 	prefix
 } = require("../lib/");
 const { downloadMediaMessage } = require('@adiwajshing/baileys')
 const { fromBuffer } = require('file-type')
 const config = require('../config');
 const fs = require('fs');
-const Lang = getString('weather');
 const axios = require('axios');
 const FormData = require('form-data');
 
 Function({
-	pattern: 'readmore ?(.*)',
-	fromMe: isPublic,
-	desc: 'Readmore generator',
-	type: 'whatsapp'
-}, async (m, text, client) => {
-	await m.reply(text.replace(/\+/g, (String.fromCharCode(8206)).repeat(4001)))
+    pattern: 'readmore ?(.*)',
+    fromMe: isPublic,
+    desc: 'Readmore generator',
+    type: 'whatsapp'
+}, async (message, match, client) => {
+    await message.reply(match.replace(/\+/g, (String.fromCharCode(8206)).repeat(4001)))
 });
 
 Function({
-	pattern: 'wm ?(.*)',
-	fromMe: isPublic,
-	desc: 'wame generator',
-	type: 'whatsapp'
-}, async (m, text, client) => {
-	let sender = 'https://wa.me/' + (m.reply_message.sender || m.mention[0] || text).split('@')[0];
-	await m.reply(sender)
+    pattern: 'wm ?(.*)',
+    fromMe: isPublic,
+    desc: 'wame generator',
+    type: 'whatsapp'
+}, async (message, match, client) => {
+    let sender = 'https://wa.me/' + (message.reply_message.sender || message.mention[0] || match).split('@')[0];
+    await message.reply(sender)
 });
-
-/* Function({
-	pattern: 'attp ?(.*)',
-	fromMe: isPublic,
-	desc: 'Text to animated sticker',
-	type: 'sticker'
-}, async (m, text, client) => {
-	if (!text && !m.quoted) return m.reply("*Give me a text.*")
-	let match = text ? text : m.quoted && m.quoted.text ? m.quoted.text : text
-	await client.sendMessage(m.chat, {
-		sticker: {
-			url: `https://api.xteam.xyz/attp?file&text=${encodeURI(match)}`
-		}
-	}, {
-		quoted: m.data
-	})
-}) */
-Function({
-	pattern: 'emix ?(.*)',
-	fromMe: isPublic,
-	desc: 'emoji mix',
-	type: 'sticker'
-}, async (m, text) => {
-	if (!text) return await m.reply('_Need Emoji!_\n*Example* : 🥸,😁')
-	let [emoji1, emoji2] = text.split(',')
-	if (!emoji1) return await m.reply('_Need 2 Emojis!_\n*Example* : 🥸,😁')
-	if (!emoji2) return await m.reply('_Need 2 Emojis!_\n*Example* : 🥸,😁')
-	const {
-		results
-	} = await getJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
-	for (let res of results) {
-		let media = await m.client.sendImageAsSticker(m.chat, res.url, m.data, {
-			packname: emoji1,
-			author: emoji2,
-			categories: res.tags
-		})
-		await fs.unlinkSync(media)
-	}
-})
 
 Function({
-	pattern: 'tovn ?(.*)',
-	fromMe: isPublic,
-	desc: 'video/audio to voice',
-	type: 'converter'
-}, async (m, text, client) => {
-	if (/document/.test(m.mine) || !/video/.test(m.mine) && !/audio/.test(m.mine) || !m.reply_message) return m.reply('_Reply to a video/audio_')
-	await m.send(await m.reply_message.download(), 'audio', { mimetype: 'audio/mpeg', ptt: true, quoted: m.data })
-});
-
-Function({pattern: 'weather ?(.*)', desc: Lang.WEATHER_DESC, fromMe: isPublic,desc: 'shows weather informations', type: 'info'}, async (message, match) => {
-const got = require('got');
-if (match === '') return await message.send(Lang.NEED_LOCATION);
-const url = `http://api.openweathermap.org/data/2.5/weather?q=${match}&units=metric&appid=060a6bcfa19809c2cd4d97a212b19273&language=en`;
-try {
-const response = await got(url);
-const json = JSON.parse(response.body);
-if (response.statusCode === 200) return await message.send('*📍 ' + Lang.LOCATION +':* ```' + match + '```\n\n' +
-'*☀ ' + Lang.TEMP +':* ```' + json.main.temp_max + '°```\n' + 
-'*ℹ ' + Lang.DESC +':* ```' + json.weather[0].description + '```\n' +
-'*☀ ' + Lang.HUMI +':* ```%' + json.main.humidity + '```\n' + 
-'*💨 ' + Lang.WIND +':* ```' + json.wind.speed + 'm/s```\n' + 
-'*☁ ' + Lang.CLOUD +':* ```%' + json.clouds.all + '```\n');
-} catch {
-return await message.send(Lang.NOT_FOUND);
-}
-});
-Function({pattern: 'google ?(.*)', desc: 'Search in Google and show result in list', fromMe: isPublic, type: 'search'}, async (message, match) => {
-if (!match) return message.reply('_Example : who is Elon Musk_')
-let google = require('google-it')
-google({'query': match}).then(res => {
-let result_info = `Google Search From : ${match}\n\n`
-for (let result of res) {
-result_info += `⬡ *Title* : ${result.title}\n`
-result_info += `⬡ *Description* : ${result.snippet}\n`
-result_info += `⬡ *Link* : ${result.link}\n\n──────────────────────\n\n`
-} 
-message.send(result_info)
-})
-})
-
-Function({pattern: 'reboot ?(.*)', fromMe: true, desc: 'reboot bot.', type: 'misc'}, async (m) => {
-await m.reply('_Rebooting..._')
-require('pm2').restart('hermit-md')
-});
-
-Function({pattern: 'whois ?(.*)', fromMe: isPublic, type: 'info'}, async (message, match) => {
-let user = message.reply_message ? message.reply_message.sender : match.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-if (!user) return message.send('_Need a User!_')
-try {pp = await message.client.profilePictureUrl(user, 'image')} catch {pp = 'https://i.imgur.com/b3hlzl5.jpg'}
-let status = await message.client.fetchStatus(user)
-const date = new Date(status.setAt);
-const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-const setAt = date.toLocaleString('en-US', options);
-await message.send(pp, 'image', { caption: `*Name :* ${await message.client.getName(user)}\n*About :* ${status.status}\n*About Set Date :* ${setAt}`})
-})
-
-Function({pattern: 'mode ?(.*)', fromMe: true, type: 'heroku'}, async (message, match) => {
-let buttons = [
-  {buttonId: prefix + 'setvar mode:private', buttonText: {displayText: 'PRIVATE'}, type: 1},
-  {buttonId: prefix + 'setvar mode:public', buttonText: {displayText: 'PUBLIC'}, type: 1}
-]
-const buttonMessage = {
-footer: 'Current Mode : ' + config.MODE,
-buttons: buttons,
-headerType: 1
-}
-await message.send('Mode Manager', 'text', buttonMessage)
-})
-
-Function({
-	pattern: 'img ?(.*)',
-	fromMe: isPublic,
-	desc: 'Google Image search',
-	type: 'download'
+    pattern: 'emix ?(.*)',
+    fromMe: isPublic,
+    desc: 'emoji mix',
+    type: 'sticker'
 }, async (message, match) => {
-	if (!match) return await message.send('_Need Query!_\n*Example: .img neon anime || .img query,count*');
-	const [query, count] = match.split(',');
-	const result = await getJson(apiUrl + 'gis?text=' + encodeURI(query) + '&type=json');
-	const indices = new Set();
-	const imgs = [];
-	while (imgs.length < (count || 5)) {
-		const randomIndex = Math.floor(Math.random() * result.length);
-		if (!indices.has(randomIndex)) {
-			indices.add(randomIndex);
-			imgs.push(result[randomIndex].url);
-		}
-	}
-	await message.send(`_Downloading ${count || 5} images for ${query}_`);
-	for (let img of imgs) {
-		await message.send(img, 'image');
-	}
+    if (!match) return await message.reply('_Need Emoji!_\n*Example* : 🥸,😁')
+    let [emoji1, emoji2] = match.split(',')
+    if (!emoji1) return await message.reply('_Need 2 Emojis!_\n*Example* : 🥸,😁')
+    if (!emoji2) return await message.reply('_Need 2 Emojis!_\n*Example* : 🥸,😁')
+    const { results } = await getJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
+    for (let res of results) {
+        let media = await message.client.sendImageAsSticker(message.chat, res.url, message.data, {
+            packname: emoji1,
+            author: emoji2,
+            categories: res.tags
+        })
+        await fs.unlinkSync(media)
+    }
 });
 
-Function({pattern: 'doc ?(.*)', fromMe: isPublic, desc: 'media to document', type: 'misc'}, async (message, match) => {
-if (!message.reply_message) return await message.reply('_Reply to a media_')
-const fileName = match || ''
-const buffer = await downloadMediaMessage(message.quoted.data, 'buffer', { }, { })
-await message.send(buffer, 'document', { fileName })
-})
+Function({
+    pattern: 'tovn ?(.*)',
+    fromMe: isPublic,
+    desc: 'video/audio to voice',
+    type: 'converter'
+}, async (message, match, client) => {
+    if (/document/.test(message.mine) || !/video/.test(message.mine) && !/audio/.test(message.mine) || !message.reply_message) return message.reply('_Reply to a video/audio_')
+    await message.send(await message.reply_message.download(), 'audio', { mimetype: 'audio/mpeg', ptt: true, quoted: message.data })
+});
 
 Function({
-	pattern: 'ocr ?(.*)',
-	fromMe: isPublic,
-	desc: 'Optical Character Recognition',
-	type: 'media'
-}, async (message, match, client) => {
-if (!message.reply_message && !message.reply_message.image) return await message.reply('*Reply to an image*')
-var msg = await message.reply('_Recognising..._');
-  try {
-    const imageBuffer = await message.reply_message.download();
-    const formData = new FormData();
-    formData.append('image', imageBuffer, 'image.jpg');
-    const response = await axios.post(apiUrl + 'image-ocr', formData, {
-      headers: formData.getHeaders(),
+    pattern: 'weather ?(.*)',
+    desc: 'Shows weather information',
+    fromMe: isPublic,
+    type: 'info'
+}, async (message, match) => {
+    const got = require('got');
+    if (match === '') return await message.send('Please provide a location.');
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${match}&units=metric&appid=060a6bcfa19809c2cd4d97a212b19273&language=en`;
+    try {
+        const response = await got(url);
+        const json = JSON.parse(response.body);
+        if (response.statusCode === 200) return await message.send(
+            '*📍 Location:* ```' + match + '```\n\n' +
+            '*☀ Temperature:* ```' + json.main.temp_max + '°```\n' + 
+            '*ℹ Description:* ```' + json.weather[0].description + '```\n' +
+            '*☀ Humidity:* ```%' + json.main.humidity + '```\n' + 
+            '*💨 Wind:* ```' + json.wind.speed + 'm/s```\n' + 
+            '*☁ Cloudiness:* ```%' + json.clouds.all + '```\n'
+        );
+    } catch {
+        return await message.send('Location not found.');
+    }
+});
+
+Function({
+    pattern: 'google ?(.*)',
+    desc: 'Search in Google and show result in list',
+    fromMe: isPublic,
+    type: 'search'
+}, async (message, match) => {
+    if (!match) return message.reply('Example: who is Elon Musk');
+    let google = require('google-it');
+    google({'query': match}).then(res => {
+        let result_info = `Google Search For: ${match}\n\n`;
+        for (let result of res) {
+            result_info += `⬡ *Title:* ${result.title}\n`;
+            result_info += `⬡ *Description:* ${result.snippet}\n`;
+            result_info += `⬡ *Link:* ${result.link}\n\n──────────────────────\n\n`;
+        }
+        message.send(result_info);
     });
-  await msg.edit(response.data.text)
-  } catch (error) {
-  await message.edit('*Failed to recognise*');
-  }
-})
+});
 
 Function({
-	pattern: 'gs ?(.*)',
-	fromMe: isPublic,
-	desc: 'Search in Google',
-	type: 'search'
+    pattern: 'reboot ?(.*)',
+    fromMe: true,
+    desc: 'Reboot the bot.',
+    type: 'misc'
+}, async (message) => {
+    await message.reply('Rebooting...');
+    require('pm2').restart('hermit-md');
+});
+
+Function({
+    pattern: 'whois ?(.*)',
+    fromMe: isPublic,
+    type: 'info'
+}, async (message, match) => {
+    let user = message.reply_message ? message.reply_message.sender : match.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+    if (!user) return message.send('Need a User!');
+    try {
+        let pp = await message.client.profilePictureUrl(user, 'image');
+    } catch {
+        pp = 'https://i.imgur.com/b3hlzl5.jpg';
+    }
+    let status = await message.client.fetchStatus(user);
+    const date = new Date(status.setAt);
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const setAt = date.toLocaleString('en-US', options);
+    await message.send(pp, 'image', { caption: `*Name:* ${await message.client.getName(user)}\n*About:* ${status.status}\n*About Set Date:* ${setAt}` });
+});
+
+Function({
+    pattern: 'mode ?(.*)',
+    fromMe: true,
+    type: 'user'
+}, async (message, match) => {
+    let buttons = [
+        { buttonId: prefix + 'setvar mode:private', buttonText: { displayText: 'PRIVATE' }, type: 1 },
+        { buttonId: prefix + 'setvar mode:public', buttonText: { displayText: 'PUBLIC' }, type: 1 }
+    ];
+    const buttonMessage = {
+        footer: 'Current Mode: ' + config.MODE,
+        buttons: buttons,
+        headerType: 1
+    };
+    await message.send('Mode Manager', 'text', buttonMessage);
+});
+
+Function({
+    pattern: 'img ?(.*)',
+    fromMe: isPublic,
+    desc: 'Google Image search',
+    type: 'download'
+}, async (message, match) => {
+    if (!match) return await message.send('Need Query!\n*Example: .img neon anime || .img query,count*');
+    const [query, count] = match.split(',');
+    const result = await getJson(apiUrl + 'gis?text=' + encodeURI(query) + '&type=json');
+    const indices = new Set();
+    const imgs = [];
+    while (imgs.length < (count || 5)) {
+        const randomIndex = Math.floor(Math.random() * result.length);
+        if (!indices.has(randomIndex)) {
+            indices.add(randomIndex);
+            imgs.push(result[randomIndex].url);
+        }
+    }
+    await message.send(`_Downloading ${count || 5} images for ${query}_`);
+    for (let img of imgs) {
+        await message.send(img, 'image');
+    }
+});
+
+Function({
+    pattern: 'doc ?(.*)',
+    fromMe: isPublic,
+    desc: 'Media to document',
+    type: 'misc'
+}, async (message, match) => {
+    if (!message.reply_message) return await message.reply('Reply to a media');
+    const fileName = match || '';
+    const buffer = await downloadMediaMessage(message.quoted.data, 'buffer', {}, {});
+    await message.send(buffer, 'document', { fileName });
+});
+
+Function({
+    pattern: 'ocr ?(.*)',
+    fromMe: isPublic,
+    desc: 'Optical Character Recognition',
+    type: 'media'
 }, async (message, match, client) => {
-if (!match) return await message.reply('*Need query to search!*\n_Example: gs who is elon musk_');
-try {
-const { result, status } = await getJson(`https://api.adithyan.xyz/search?query=${encodeURIComponent(match)}`)
-if (status) return await message.reply(result);
-await message.reply(result.error);
-} catch {
-await message.reply('*Failed to search*');
-}
-})
+    if (!message.reply_message || !message.reply_message.image) return await message.reply('Reply to an image');
+    var msg = await message.reply('Recognising...');
+    try {
+        const imageBuffer = await message.reply_message.download();
+        const formData = new FormData();
+        formData.append('image', imageBuffer, 'image.jpg');
+        const response = await axios.post(apiUrl + 'image-ocr', formData, {
+            headers: formData.getHeaders(),
+        });
+        await msg.edit(response.data.text);
+    } catch (error) {
+        await msg.edit('Failed to recognise');
+    }
+});
+
+Function({
+    pattern: 'gs ?(.*)',
+    fromMe: isPublic,
+    desc: 'Search in Google',
+    type: 'search'
+}, async (message, match, client) => {
+    if (!match) return await message.reply('Need query to search!\n_Example: gs who is elon musk_');
+    try {
+        const { result, status } = await getJson(`https://api.adithyan.xyz/search?query=${encodeURIComponent(match)}`);
+        if (status) return await message.reply(result);
+        await message.reply(result.error);
+    } catch {
+        await message.reply('Failed to search');
+    }
+});
 
 Function({
 	pattern: 'iswa ?(.*)',

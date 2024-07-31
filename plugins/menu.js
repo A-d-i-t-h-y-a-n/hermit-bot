@@ -1,49 +1,48 @@
 const {
-	Function,
-	isPublic,
-	Fancy,
-	prefix,
-	parsedUrl,
-	formatBytes,
-	commands
+    Function,
+    isPublic,
+    Fancy,
+    prefix,
+    formatBytes,
+    commands
 } = require('../lib/');
 const {
-	BOT_INFO,
-	MODE,
-	PREFIX,
-	VERSION
-} = require('../config')
-const os = require('os')
+    BOT_INFO,
+    MODE,
+    PREFIX,
+    VERSION
+} = require('../config');
+const os = require('os');
+
 Function({
-	pattern: 'menu',
-	fromMe: isPublic,
-	type: 'info'
-}, async (message, match, client) => {
-	const commandslist = {}
-	commands.map(async (command, index) => {
-		if (command.dontAddCommandList === false && command.pattern !== undefined) {
-			try {
-				var match = command.pattern.toString().match(/(\W*)([A-Za-zğüşıiöç1234567890 ]*)/);
-				var mmatch = command.pattern.toString().match(/(\W*)([A-Za-züşiğ öç1234567890]*)/)[2]
-			} catch {
-				var match = [command.pattern];
-			}
+    pattern: 'menu',
+    fromMe: isPublic,
+    type: 'info'
+}, async (message) => {
+    const commandslist = {};
 
-			var HANDLER = '';
+    commands.forEach(command => {
+        if (command.dontAddCommandList === false && command.pattern !== undefined) {
+            let match;
+            let mmatch;
 
-			if (/\[(\W*)\]/.test(PREFIX)) {
-				HANDLER = PREFIX.match(/\[(\W*)\]/)[1][0];
-			} else {
-				HANDLER = '.';
-			}
-			if (!commandslist[command.type]) commandslist[command.type] = []
-			commandslist[command.type].push((match.length >= 3 ? (HANDLER + mmatch) : command.pattern).trim())
-		}
-	})
-	let msg = `╭━━━〔 ${BOT_INFO.split(";")[0]} ⁩〕━━━┈⊷
+            try {
+                match = command.pattern.toString().match(/(\W*)([A-Za-zğüşıiöç1234567890 ]*)/);
+                mmatch = command.pattern.toString().match(/(\W*)([A-Za-züşiğ öç1234567890]*)/)[2];
+            } catch {
+                match = [command.pattern];
+            }
+
+            const HANDLER = /\[(\W*)\]/.test(PREFIX) ? PREFIX.match(/\[(\W*)\]/)[1][0] : '.';
+            if (!commandslist[command.type]) commandslist[command.type] = [];
+            commandslist[command.type].push((match.length >= 3 ? (HANDLER + mmatch) : command.pattern).trim());
+        }
+    });
+
+    let msg = `╭━━━〔 ${BOT_INFO.split(";")[0]} ⁩〕━━━┈⊷
 ┃✵╭──────────────
 ┃✵│ Owner : ${BOT_INFO.split(";")[1]}
-┃✵│ User : ${m.pushName.replace( /[\r\n]+/gm, "" )}
+┃✵│ User : ${message.pushName.replace(/[\r\n]+/gm, "")}
 ┃✵│ Plugins : ${commands.length}
 ┃✵│ Runtime : ${runtime(process.uptime())}
 ┃✵│ Mode : ${MODE}
@@ -52,21 +51,25 @@ Function({
 ┃✵│ Version : ${VERSION}
 ┃✵╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
-`
-	for (const command in commandslist) {
-		msg += `╭─────────────┈⊷
-`
-		msg += `│ 「 *${await Fancy(command.toUpperCase(), 32)}* 」 `
-		msg += `╰┬────────────┈⊷\n┌┤\n`
-		for (const plugin of commandslist[command])
-			msg += `││◦➛ ${await Fancy(plugin.toLowerCase(), 32)}\n`
-		msg += `│╰────────────┈⊷
-`
-		msg += `╰─────────────┈⊷
-`
-	}
-	await message.send(msg);
+`;
+
+    for (const command in commandslist) {
+        msg += `╭─────────────┈⊷
+│ 「 *${await Fancy(command.toUpperCase(), 32)}* 」 
+╰┬────────────┈⊷\n┌┤\n`;
+
+        for (const plugin of commandslist[command]) {
+            msg += `││◦➛ ${await Fancy(plugin.toLowerCase(), 32)}\n`;
+        }
+
+        msg += `│╰────────────┈⊷
+╰─────────────┈⊷
+`;
+    }
+
+    await message.send(msg);
 });
+
 
 const runtime = function(seconds) {
 	seconds = Number(seconds);

@@ -63,7 +63,7 @@ Function({
 						await message.send('_Successfully Updated!_');
 						await message.send('_Restarting..._')
 						clearInterval(intervalId);
-						await require('pm2').stop('hermit-md');
+						await pm2.stop('hermit-md');
 					}
 				}, 5000);
 				await koyeb.reDeploy(config.KOYEB_APP_NAME);
@@ -75,7 +75,7 @@ Function({
 			await git.pull()
 			await message.send('_Updated_')
 			await message.send('_Rebooting..._')
-			return require('pm2').restart('hermit-md');
+			return await pm2.restart('hermit-md');
 		}
 	}
 });

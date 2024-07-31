@@ -4,7 +4,6 @@ const {
 	isUrl,
 	getBuffer,
 	prefix,
-	getString,
 	isPublic,
 	ytIdRegex,
 	getJson,
@@ -16,13 +15,12 @@ const { downloadYouTubeVideo, downloadYouTubeAudio, mixAudioAndVideo, combineYou
 const { yta, ytv, filterLinks, searchYouTube, getThumb } = require('../lib/y2mate');
 const yts = require("yt-search")
 const config = require('../config');
-const Lang = getString('scrapers');
 const fs = require('fs');
 const t = "```";
 
 const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
-Function({
+/* Function({
   on: 'text',
   fromMe: isPublic,
 }, async (message, match, client) => {
@@ -102,7 +100,7 @@ Function({
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   await message.send(urls[index - 1], 'audio', { quoted: message.data, mimetype: 'audio/mpeg' });
   }
-});
+}); */
 
 Function({
 	pattern: 'play ?(.*)',
@@ -164,11 +162,11 @@ await client.interactiveMessage(message.jid, interactiveMessage);
 Function({
   pattern: 'song ?(.*)',
   fromMe: isPublic,
-  desc: Lang.SONG_DESC,
+  desc: 'Download and send a song from YouTube',
   type: 'download'
 }, async (message, match, client) => {
   match = match || message.reply_message.text;
-  if (!match) return message.reply(Lang.NEED_TEXT_SONG);
+  if (!match) return message.reply('Please provide a YouTube link or search query.');
   if (isUrl(match) && match.includes('youtu')) {
     let ytId = ytIdRegex.exec(match);
     try {
@@ -179,62 +177,64 @@ Function({
       return await send(message, writer, ytId[1]);
     } catch {
       const response = await getJson('https://api.adithyan.xyz/ytaudio?id=' + ytId[1]);
-      if (!response.status) return await message.send('*Failed to download*');
-      if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: {url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
+      if (!response.status) return await message.send('Failed to download audio.');
+      if (response.content_length >= 10485760) return await client.sendMessage(message.jid, { audio: { url: response.result }, mimetype: 'audio/mpeg', ptt: false }, { quoted: message.data });
       const buffer = await getBuffer(response.result);
       await fs.writeFileSync('./' + response.file, buffer);
-      const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, `hermit-md`, 'Hermit Official');
+      const writer = await addAudioMetaData(await toAudio(await fs.readFileSync('./' + response.file), 'mp4'), response.thumb, response.title, 'hermit-md', 'Hermit Official');
       return await send(message, writer, ytId[1]);
     }
   }
-  
+
   const search = await yts(match);
-  if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-  
+  if (search.all.length < 1) return await message.reply('No results found.');
+
   const buttons = search.all.filter(result => result.type === 'video').map((result, index) => ({
     type: 'list',
     title: result.title,
     id: `${prefix}song ${result.url}`,
   }));
-  
+
   await client.interactiveMessage(message.jid, {
     title: search.videos[0].title,
     footer: 'hermit-md',
     subtitle: 'hermit-md',
-    text: `And ${search.all.length - 1} More Results...`,
+    text: `And ${search.all.length - 1} more results...`,
     buttons: buttons
   });
 });
 
 Function({
-	pattern: 'video ?(.*)',
-	fromMe: isPublic,
-	desc: Lang.VIDEO_DESC,
-	type: 'download'
+  pattern: 'video ?(.*)',
+  fromMe: isPublic,
+  desc: 'Download and send a video from YouTube',
+  type: 'download'
 }, async (message, match, client) => {
-	match = match || message.reply_message.text
-	if (!match) return message.reply('*Need Youtube video url or query*')
-	if (isUrl(match) && match.includes('youtu')) {
-		const id = ytIdRegex.exec(match)
-	 try {
-	  const result = await video(id[1]);
-	  if (!result) return await message.reply('_Failed to download_');
-	  return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
-	  } catch (error) {
-	  return await message.send('```' + error.message + '```')
-	  }
-	}
-	const search = await yts(match)
-	if (search.all.length < 1) return await message.reply(Lang.NO_RESULT);
-	const buttons = search.all.filter(result => result.type === 'video').map((result, index) => ({
+  match = match || message.reply_message.text;
+  if (!match) return message.reply('Please provide a YouTube video URL or search query.');
+  if (isUrl(match) && match.includes('youtu')) {
+    const id = ytIdRegex.exec(match);
+    try {
+      const result = await video(id[1]);
+      if (!result) return await message.reply('Failed to download video.');
+      return await message.send(result.file, 'video', { quoted: message.data, caption: result.title });
+    } catch (error) {
+      return await message.send('```' + error.message + '```');
+    }
+  }
+
+  const search = await yts(match);
+  if (search.all.length < 1) return await message.reply('No results found.');
+
+  const buttons = search.all.filter(result => result.type === 'video').map((result, index) => ({
     type: 'list',
     title: result.title,
     id: `${prefix}video ${result.url}`,
   }));
-  
+
   await client.interactiveMessage(message.jid, {
     title: search.videos[0].title,
-    text: `And ${search.all.length - 1} More Results...`,
+    text: `And ${search.all.length - 1} more results...`,
     buttons: buttons
   });
 });

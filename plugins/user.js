@@ -1,164 +1,176 @@
-const {
-	Function
-} = require('../lib/')
+const { Function } = require('../lib/');
+const config = require('../config');
 
-const isBotAdmins = async (message) => {
-  const groupMetadata = message.isGroup ? await message.client.groupMetadata(message.chat).catch(() => {}) : "";
-  const participants = message.isGroup ? await groupMetadata.participants : "";
-  const adminIds = message.isGroup ? await participants.filter(a => null !== a.admin).map(a => a.id) : "";
-  return !!message.isGroup && adminIds.includes(message.user_id);
+const isBotAdmin = async (message) => {
+    if (!message.isGroup) return false;
+
+    const groupMetadata = await message.client.groupMetadata(message.chat).catch(() => {});
+    const participants = groupMetadata ? groupMetadata.participants : [];
+    const adminIds = participants.filter(participant => participant.admin !== null).map(participant => participant.id);
+
+    return adminIds.includes(message.user_id);
 };
 
 Function({
-	pattern: 'pp$',
-	fromMe: true,
-	desc: 'set profile picture in any resolution',
-	type: 'user'
-}, async (message, match) => {
-	if (!message.reply_message || !message.reply_message.image) return await message.send('_Reply to a image._')
-	const media = await message.reply_message.downloadAndSaveMedia()
-	await message.updateProfilePicture(message.user_id, media)
-	await message.send('_Successfully Profile Picture Updated_')
-})
+    pattern: 'pp$',
+    fromMe: true,
+    desc: 'Set profile picture in any resolution',
+    type: 'whatsapp'
+}, async (message) => {
+    if (!message.reply_message || !message.reply_message.image) {
+        return await message.send('_Reply to an image._');
+    }
+    const media = await message.reply_message.downloadAndSaveMedia();
+    await message.updateProfilePicture(message.user_id, media);
+    await message.send('_Successfully updated profile picture_');
+});
 
 Function({
-	pattern: 'fullpp$',
-	fromMe: true,
-	desc: 'set profile picture in any resolution',
-	type: 'user'
-}, async (message, match) => {
-	if (!message.reply_message || !message.reply_message.image) return await message.send('_Reply to a image._')
-	const media = await message.reply_message.downloadAndSaveMedia()
-	await message.updateProfilePicture(message.user_id, media)
-	await message.send('_Successfully Profile Picture Updated_')
-})
+    pattern: 'fullpp$',
+    fromMe: true,
+    desc: 'Set profile picture in any resolution',
+    type: 'whatsapp'
+}, async (message) => {
+    if (!message.reply_message || !message.reply_message.image) {
+        return await message.send('_Reply to an image._');
+    }
+    const media = await message.reply_message.downloadAndSaveMedia();
+    await message.updateProfilePicture(message.user_id, media);
+    await message.send('_Successfully updated profile picture_');
+});
 
 Function({
-	pattern: 'gpp$',
-	fromMe: true,
-	desc: 'set group icon in any resolution',
-	type: 'group'
-}, async (message, match) => {
-	if (!message.isGroup) return await message.send('_This command only works in group chats_')
-	const isbotAdmin = await isBotAdmins(m)
-	if (!isBotAdmins) return await message.send("I'm not an admin")
-	if (!message.reply_message || !message.reply_message.image) return await message.send('_Reply to a image._')
-	const media = await message.reply_message.downloadAndSaveMedia()
-	await message.updateProfilePicture(message.jid, media)
-	await message.send('_Successfully Group icon Updated_')
-})
+    pattern: 'gpp$',
+    fromMe: true,
+    desc: 'Set group icon in any resolution',
+    type: 'group'
+}, async (message) => {
+    if (!message.isGroup) return await message.send('_This command only works in group chats_');
+    
+    if (!await isBotAdmin(message)) return await message.send("_I'm not an admin_");
+    
+    if (!message.reply_message || !message.reply_message.image) {
+        return await message.send('_Reply to an image._');
+    }
+    const media = await message.reply_message.downloadAndSaveMedia();
+    await message.updateProfilePicture(message.chat, media);
+    await message.send('_Successfully updated group icon_');
+});
 
 Function({
-	pattern: 'block$',
-	fromMe: true,
-	desc: 'Block a person',
-	type: 'user'
-}, async (message, match) => {
-	const id = message.mention[0] || message.reply_message.sender || (!message.isGroup && message.jid)
-	if (!id) return await message.send('*Give me a user*')
-	await message.send('_Blocked_')
-	await message.client.updateBlockStatus(id, 'block');
-})
+    pattern: 'block$',
+    fromMe: true,
+    desc: 'Block a person',
+    type: 'whatsapp'
+}, async (message) => {
+    const id = message.mention[0] || message.reply_message.sender || (!message.isGroup && message.jid);
+    if (!id) return await message.send('*Provide a user*');
+    await message.client.updateBlockStatus(id, 'block');
+    await message.send('_Blocked_');
+});
 
 Function({
-	pattern: 'unblock$',
-	fromMe: true,
-	desc: 'Unblock a person',
-	type: 'user'
-}, async (message, match) => {
-	const id = message.mention[0] || message.reply_message.sender || (!message.isGroup && message.jid)
-	if (!id) return await message.send('*Give me a user*')
-	await message.send('_Unblocked_')
-	await message.client.updateBlockStatus(id, 'unblock');
-})
+    pattern: 'unblock$',
+    fromMe: true,
+    desc: 'Unblock a person',
+    type: 'whatsapp'
+}, async (message) => {
+    const id = message.mention[0] || message.reply_message.sender || (!message.isGroup && message.jid);
+    if (!id) return await message.send('*Provide a user*');
+    await message.client.updateBlockStatus(id, 'unblock');
+    await message.send('_Unblocked_');
+});
 
 Function({
-	pattern: 'clear$',
-	fromMe: true,
-	desc: 'delete whatsapp chat',
-	type: 'whatsapp'
-}, async (message, match) => {
-	await message.clearChat(message.chat)
-	await message.send('_Cleared_')
-})
+    pattern: 'clear$',
+    fromMe: true,
+    desc: 'Delete WhatsApp chat',
+    type: 'whatsapp'
+}, async (message) => {
+    await message.clearChat(message.chat);
+    await message.send('_Chat cleared_');
+});
 
 Function({
-	pattern: 'archive$',
-	fromMe: true,
-	desc: 'archive whatsapp chat',
-	type: 'whatsapp'
-}, async (message, match) => {
-	await message.archiveChat(message.chat, true)
-	await message.send('_Archived_')
-})
+    pattern: 'archive$',
+    fromMe: true,
+    desc: 'Archive WhatsApp chat',
+    type: 'whatsapp'
+}, async (message) => {
+    await message.archiveChat(message.chat, true);
+    await message.send('_Chat archived_');
+});
 
 Function({
-	pattern: 'unarchive$',
-	fromMe: true,
-	desc: 'unarchive whatsapp chat',
-	type: 'whatsapp'
-}, async (message, match) => {
-	await message.archiveChat(message.chat, false)
-	await message.send('_Unarchived_')
-})
+    pattern: 'unarchive$',
+    fromMe: true,
+    desc: 'Unarchive WhatsApp chat',
+    type: 'whatsapp'
+}, async (message) => {
+    await message.archiveChat(message.chat, false);
+    await message.send('_Chat unarchived_');
+});
 
 Function({
-	pattern: 'pin$',
-	fromMe: true,
-	desc: 'pin a msg',
-	type: 'whatsapp'
-}, async (message, match) => {
-	await message.pinMsg(message.chat, true)
-	await message.send('_Pined_')
-})
+    pattern: 'pin$',
+    fromMe: true,
+    desc: 'Pin a message',
+    type: 'whatsapp'
+}, async (message) => {
+    await message.pinMsg(message.chat, true);
+    await message.send('_Message pinned_');
+});
 
 Function({
-	pattern: 'unpin$',
-	fromMe: true,
-	desc: 'unpin a msg',
-	type: 'whatsapp'
-}, async (message, match) => {
-	await message.pinMsg(message.chat, false)
-	await message.send('_Unpined_')
-})
+    pattern: 'unpin$',
+    fromMe: true,
+    desc: 'Unpin a message',
+    type: 'whatsapp'
+}, async (message) => {
+    await message.pinMsg(message.chat, false);
+    await message.send('_Message unpinned_');
+});
 
 Function({
-	pattern: 'setbio ?(.*)',
-	fromMe: true,
-	desc: 'To change your profile status',
-	type: 'whatsapp'
+    pattern: 'setbio ?(.*)',
+    fromMe: true,
+    desc: 'Change your profile status',
+    type: 'whatsapp'
 }, async (message, match) => {
-	match = match || message.reply_message.text
-	if (!match) return await message.send('*Need Status!*\n*Example: setbio Hey there! I am using WhatsApp*.')
-	await message.client.updateProfileStatus(match)
-	await message.send('_Profile status updated_')
-})
+    match = match || message.reply_message.text;
+    if (!match) return await message.send('*Need status!*\n*Example: setbio Hey there! I am using WhatsApp*');
+    await message.client.updateProfileStatus(match);
+    await message.send('_Profile status updated_');
+});
 
 Function({
-	pattern: 'setname ?(.*)',
-	fromMe: true,
-	desc: 'To change your profile name',
-	type: 'whatsapp'
+    pattern: 'setname ?(.*)',
+    fromMe: true,
+    desc: 'Change your profile name',
+    type: 'whatsapp'
 }, async (message, match) => {
-	match = match || message.reply_message.text
-	if (!match) return await message.send('*Need Name!*\n*Example: setname your name*.')
-	await message.client.updateProfileName(match)
-	await message.send('_Profile name updated_')
-})
+    match = match || message.reply_message.text;
+    if (!match) return await message.send('*Need name!*\n*Example: setname Your Name*');
+    await message.client.updateProfileName(match);
+    await message.send('_Profile name updated_');
+});
 
 Function({
-	pattern: 'onwa ?(.*)',
-	fromMe: true,
-	desc: 'To check if a given ID is on WhatsApp',
-	type: 'whatsapp'
+    pattern: 'onwa ?(.*)',
+    fromMe: true,
+    desc: 'Check if a number is on WhatsApp',
+    type: 'whatsapp'
 }, async (message, match) => {
-match = match || message.reply_message.text
-if (!match) return await message.send('*Need Number!*\n*Example: onwa +1 (123) 456-7890*')
-match = match.replace(/[^0-9]/g, '')
-if (!match) return await message.send('*Need Number!*\n*Example: onwa +1 (123) 456-7890*')
-const [result] = await message.client.onWhatsApp(match)
-if (!result) await message.send(match + " doest exists on WhatsApp")
-if (result && result.exists) {
-return await message.send("*" + match + " exists on WhatsApp*,\njid: " + result.jid)
-}
-})
+    match = match || message.reply_message.text;
+    if (!match) return await message.send('*Need number!*\n*Example: onwa +1 (123) 456-7890*');
+    match = match.replace(/[^0-9]/g, '');
+    if (!match) return await message.send('*Need number!*\n*Example: onwa +1 (123) 456-7890*');
+    
+    const [result] = await message.client.onWhatsApp(match);
+    if (!result) {
+        return await message.send(match + " does not exist on WhatsApp");
+    }
+    if (result.exists) {
+        return await message.send("*" + match + " exists on WhatsApp*,\nJID: " + result.jid);
+    }
+});

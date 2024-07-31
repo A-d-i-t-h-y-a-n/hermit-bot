@@ -6,67 +6,57 @@ const {
 	getCmdList,
 	isPublic
 } = require("../lib/");
+
 Function({
-	pattern: 'setcmd ?(.*)',
-	fromMe: true,
-	desc: 'to set audio/image/video as a cmd',
-	type: 'user'
-}, async (m, text, client) => {
-	if (!m.quoted) return await m.reply('_Reply to a image/video/audio/sticker_')
-	if (!text) return await m.reply('_Example : setcmd ping_')
-	if (!m.quoted.data.message[m.quoted.mtype].fileSha256) return await m.reply('_Failed_')
-	const setcmd = await setCmd(m, text);
-	if (!setcmd) return await m.reply('_Failed_')
-	await m.reply('_Success_')
+    pattern: 'setcmd ?(.*)',
+    fromMe: true,
+    desc: 'To set audio/image/video as a command',
+    type: 'user'
+}, async (message, match, client) => {
+    if (!message.quoted) return await message.reply('_Reply to an image/video/audio/sticker_');
+    if (!match) return await message.reply('_Example: setcmd ping_');
+    if (!message.quoted.data.message[message.quoted.mtype].fileSha256) return await message.reply('_Failed_');
+    
+    const setcmd = await setCmd(message, match);
+    if (!setcmd) return await message.reply('_Failed_');
+    
+    await message.reply('_Success_');
 });
 
 Function({
-	pattern: 'delcmd ?(.*)',
-	fromMe: true,
-	desc: 'to delete audio/image/video cmd',
-	type: 'user'
-}, async (m, text, client) => {
-	if (!m.quoted) return await m.reply('_Reply to a image/video/audio/sticker_')
-	let hash = m.quoted.data.message[m.quoted.mtype].fileSha256.toString('base64')
-	if (!hash) return await m.reply('_Failed_')
-	const delcmd = await delCmd(m)
-	if (!delcmd) return await m.reply('_Failed_')
-	await m.reply('_Success_')
+    pattern: 'delcmd ?(.*)',
+    fromMe: true,
+    desc: 'To delete audio/image/video command',
+    type: 'user'
+}, async (message, match, client) => {
+    if (!message.quoted) return await message.reply('_Reply to an image/video/audio/sticker_');
+    
+    let hash = message.quoted.data.message[message.quoted.mtype].fileSha256.toString('base64');
+    if (!hash) return await message.reply('_Failed_');
+    
+    const delcmd = await delCmd(message);
+    if (!delcmd) return await message.reply('_Failed_');
+    
+    await message.reply('_Success_');
 });
 
 Function({
-	pattern: 'listcmd ?(.*)',
-	fromMe: true,
-	desc: 'to get List cmd',
-	type: 'user'
-}, async (m) => {
-	const cmd = await getCmdList()
-	await m.reply(cmd)
-});
-Function({
-	on: 'audio',
-	fromMe: isPublic
+    pattern: 'listcmd ?(.*)',
+    fromMe: true,
+    desc: 'To get list of commands',
+    type: 'user'
 }, async (message) => {
-	await prepareCmd(message)
+    const cmd = await getCmdList();
+    await message.reply(cmd);
 });
 
-Function({
-	on: 'sticker',
-	fromMe: isPublic
-}, async (message) => {
-	await prepareCmd(message)
-});
+const mediaTypes = ['audio', 'sticker', 'video', 'image'];
 
-Function({
-	on: 'video',
-	fromMe: isPublic
-}, async (message) => {
-	await prepareCmd(message)
-});
-
-Function({
-	on: 'image',
-	fromMe: isPublic
-}, async (message) => {
-	await prepareCmd(message)
+mediaTypes.forEach(type => {
+    Function({
+        on: type,
+        fromMe: isPublic
+    }, async (message) => {
+        await prepareCmd(message);
+    });
 });

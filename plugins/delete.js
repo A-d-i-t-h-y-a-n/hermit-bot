@@ -1,64 +1,67 @@
 const {
-	Function,
-	isPublic
+    Function,
+    isPublic
 } = require("../lib/");
-async function isBotAdmins(m, client) {
-	const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
-	const participants = m.isGroup ? await groupMetadata.participants : ''
-	const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
-	return m.isGroup ? groupAdmins.includes(m.user_id) : false
+
+async function isBotAdmins(message, client) {
+    const groupMetadata = message.isGroup ? await client.groupMetadata(message.chat).catch(e => {}) : '';
+    const participants = message.isGroup ? await groupMetadata.participants : '';
+    const groupAdmins = message.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : '';
+    return message.isGroup ? groupAdmins.includes(message.user_id) : false;
 }
-Function({
-	pattern: 'del$',
-	fromMe: isPublic,
-	desc: 'delete message that sended by bot',
-	type: 'whatsapp'
-}, async (m, text, client) => {
-	if (!m.reply_message) return await m.reply('_Reply to a message_')
-	await client.sendMessage(m.chat, {
-		delete: {
-			remoteJid: m.chat,
-			fromMe: true,
-			id: m.quoted.id,
-			participant: m.quoted.sender
-		}
-	})
-})
-Function({
-	pattern: 'dlt$',
-	fromMe: true,
-	desc: 'delete message that sended participant',
-	type: 'group'
-}, async (m, text, client) => {
-	if (!m.reply_message) return await m.reply('_Reply to a message_')
-	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-	const isbotAdmin = await isBotAdmins(m, client)
-	if (!isbotAdmin) return await m.reply("I'm not an admin")
-	await client.sendMessage(m.chat, {
-		delete: {
-			remoteJid: m.chat,
-			fromMe: m.quoted.fromMe,
-			id: m.quoted.id,
-			participant: m.quoted.sender
-		}
-	})
-})
 
 Function({
-	pattern: 'edit ?(.*)',
-	fromMe: true,
-	desc: 'edit message that sended by bot',
-	type: 'whatsapp'
+    pattern: 'del$',
+    fromMe: isPublic,
+    desc: 'Delete message sent by the bot',
+    type: 'whatsapp'
 }, async (message, match, client) => {
-	if (!message.reply_message) return await message.reply('_Reply to a message_')
-	if (!match) return await message.reply('_Need text!_\n*Example: edit hi*')
-	await client.relayMessage(message.jid, {
-		protocolMessage: {
-			key: message.quoted.data.key,
-			type: 14,
-			editedMessage: {
-				conversation: match
-			}
-		}
-	}, {})
-})
+    if (!message.reply_message) return await message.reply('_Reply to a message_');
+    await client.sendMessage(message.chat, {
+        delete: {
+            remoteJid: message.chat,
+            fromMe: true,
+            id: message.quoted.id,
+            participant: message.quoted.sender
+        }
+    });
+});
+
+Function({
+    pattern: 'dlt$',
+    fromMe: true,
+    onlyGroup: true,
+    desc: 'Delete message sent by a participant',
+    type: 'group'
+}, async (message, match, client) => {
+    if (!message.reply_message) return await message.reply('_Reply to a message_');
+    const isBotAdmin = await isBotAdmins(message, client);
+    if (!isBotAdmin) return await message.reply("I'm not an admin");
+    await client.sendMessage(message.chat, {
+        delete: {
+            remoteJid: message.chat,
+            fromMe: message.quoted.fromMe,
+            id: message.quoted.id,
+            participant: message.quoted.sender
+        }
+    });
+});
+
+Function({
+    pattern: 'edit ?(.*)',
+    fromMe: true,
+    desc: 'Edit message sent by the bot',
+    type: 'whatsapp'
+}, async (message, match, client) => {
+    if (!message.reply_message) return await message.reply('_Reply to a message_');
+    if (!match) return await message.reply('_Need text!_\n*Example: edit hi*');
+    await client.relayMessage(message.jid, {
+        protocolMessage: {
+            key: message.quoted.data.key,
+            type: 14,
+            editedMessage: {
+                conversation: match
+            }
+        }
+    }, {});
+});

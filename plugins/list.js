@@ -1,20 +1,27 @@
 const {
-	Function,
-	Fancy,
-	commands,
-	isPublic
+    Function,
+    Fancy,
+    commands,
+    isPublic
 } = require("../lib/");
+
 Function({
-	pattern: 'list$',
-	fromMe: isPublic,
-	dontAddCommandList: true
-}, async (message, match) => {
-	let msg = ''
-	let no = 1
-	commands.map(async (command) => {
-		if (command.dontAddCommandList === false && command.pattern !== undefined) {
-			msg += `${no++}. ${command.pattern.toString().match(/(\W*)([A-Za-z0-9_ğüşiö ç]*)/)[2].trim()}\n${command.desc}\n\n`
-		}
-	})
-	await message.reply(await Fancy(msg.trim(), 32))
-})
+    pattern: 'list$',
+    fromMe: isPublic,
+    dontAddCommandList: true
+}, async (message) => {
+    let msg = '';
+    let no = 1;
+
+    const commandList = commands
+        .filter(command => command.dontAddCommandList === false && command.pattern !== undefined)
+        .map(command => {
+            const patternMatch = command.pattern.toString().match(/(\W*)([A-Za-z0-9_ğüşiö ç]*)/);
+            const commandName = patternMatch ? patternMatch[2].trim() : 'Unknown';
+            return `${no++}. ${commandName}\n${command.desc}\n\n`;
+        });
+
+    msg = commandList.join('');
+
+    await message.reply(await Fancy(msg.trim(), 32));
+});
