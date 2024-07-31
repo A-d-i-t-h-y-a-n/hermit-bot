@@ -20,7 +20,7 @@ const t = "```";
 
 const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
-/* Function({
+ Function({
   on: 'text',
   fromMe: isPublic,
 }, async (message, match, client) => {
@@ -100,7 +100,7 @@ const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwith
   if (isNaN(index) || index < 1 || index > urls.length) return await message.send('*Invalid index.*\n_Please provide a number within the range of search results._');
   await message.send(urls[index - 1], 'audio', { quoted: message.data, mimetype: 'audio/mpeg' });
   }
-}); */
+}); 
 
 Function({
 	pattern: 'play ?(.*)',
