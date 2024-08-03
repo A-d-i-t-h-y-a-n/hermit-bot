@@ -36,3 +36,5 @@ services:
         value: "false"
       - key: START_MSG
         value: "true"
+      - key: PORT
+        value: "3000"
