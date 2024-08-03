@@ -12,7 +12,7 @@ pm2.connect(function(err) {
     }
     
     pm2.start({
-        script: 'keep_alive.js',
+        script: './lib/keep_alive.js',
         name: 'keep-alive'
     }, function(err, apps) {
         pm2.disconnect();
