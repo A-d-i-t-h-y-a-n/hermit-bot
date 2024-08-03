@@ -38,16 +38,13 @@ module.exports = {
   REJECT_CALL: toBool(process.env.REJECT_CALL),
   KOYEB_API_KEY: process.env.KOYEB_API_KEY || false,
   KOYEB_APP_NAME: process.env.KOYEB_APP_NAME || '',
+  RENDER_API: process.RENDER_API || false,
+  RENDER_NAME: process.env.RENDER_NAME || '',
   TERMUX_VPS: toBool(process.env.TERMUX || process.env.VPS),
   AUTO_STATUS_VIEW: toBool(process.env.AUTO_STATUS_VIEW),
   APIKEY: process.env.APIKEY || 'free',
   AUTH_FILE: process.env.AUTH_FILE || false,
   START_MSG: toBool(process.env.START_MSG || 'true'),
-  HEROKU: {
-    HEROKU: convertToBool(process.env.HEROKU),
-    API_KEY: process.env.HEROKU_API_KEY,
-    APP_NAME: process.env.HEROKU_APP_NAME
-  },
   DATABASE_URL: DATABASE_URL,
   DATABASE: DATABASE_URL === './database.db' 
     ? new Sequelize({
