@@ -70,6 +70,23 @@ Function({
 			} catch (error) {
 				await message.send(`_Error during update: ${error.message}_`);
 			}
+		} else if (config.RENDER_API) {
+			const Render = require('../lib/render');
+			const render = new Render(config.RENDER_API, config.RENDER_NAME);
+			let intervalId;
+			intervalId = setInterval(async function() {
+				const deployment = render.deployInfo('1');
+				if (deployment[0].deploy.status == 'canceled') {
+					await message.reply('*Deploy Cancelled*')
+					clearInterval(intervalId);
+				} else if (deployment[0].status == 'live') {
+					await message.send('_Successfully Updated!_');
+					await message.send('_Restarting..._')
+					clearInterval(intervalId);
+					await pm2.stop('hermit-md');
+				}
+			}, 5000);
+		   await render.deploy('clear');
 		} else {
 			await git.reset('hard', ['HEAD'])
 			await git.pull()

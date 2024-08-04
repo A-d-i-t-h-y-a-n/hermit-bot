@@ -19,6 +19,7 @@ Function({
         try {
             await render.setVar(varKey.toUpperCase(), varValue);
             await message.send(`*_Successfully Set_* *${varKey}:${varValue}*\n_ReDeploying..._`);
+            await render.deploy('do_not_clear');
             await new Promise((resolve) => pm2.stop('hermit-md', resolve));
         } catch (error) {
             await message.send(`Error: ${error.message}`);
@@ -34,9 +35,9 @@ Function({
 }, async (message, match, client) => {
     if (!match) return await message.send('*Need Variable Key*\n_Example: getvar PREFIX_');
     try {
-        const value = await render.getVar(match.toUpperCase());
-        if (value) {
-            await message.send(`*${match}:* ${value}`);
+        const result = await render.getVar(match.toUpperCase());
+        if (result.value) {
+            await message.send(`*${result.key}:* ${result.value}`);
         } else {
             await message.send(`*${match}* not found.`);
         }
@@ -56,6 +57,7 @@ Function({
         const result = await render.delVar(match.toUpperCase());
         if (result) {
             await message.send(`*_Successfully Deleted_* *${match}*\n_ReDeploying..._`);
+            await render.deploy('do_not_clear');
             await new Promise((resolve) => pm2.stop('hermit-md', resolve));
         } else {
             await message.send(`Failed to delete *${match}* or it doesn't exist.`);
