@@ -1,4 +1,4 @@
-const { Function } = require('../lib/');
+const { Function, getJson } = require('../lib/');
 const pm2 = require('pm2');
 const config = require('../config');
 
@@ -103,7 +103,7 @@ const url = render.getUrl();
 
 setInterval(async () => {
   try {
-        await axios.get(url);
+        await getJson(url);
    } catch (error) {
         console.error(error.message);
    }
