@@ -81,7 +81,7 @@ Function({
 				if (deployment[0].deploy.status == 'canceled') {
 					await message.reply('*Deploy Cancelled*')
 					clearInterval(intervalId);
-				} else if (deployment[0].status == 'live') {
+				} else if (deployment[0].deploy.status == 'live') {
 					await message.send('_Successfully Updated!_');
 					await message.send('_Restarting..._')
 					clearInterval(intervalId);
