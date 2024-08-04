@@ -77,7 +77,7 @@ Function({
 			const render = new Render(config.RENDER_API, config.RENDER_NAME);
 			let intervalId;
 			intervalId = setInterval(async function() {
-				const deployment = render.deployInfo('1');
+				const deployment = await render.deployInfo('1');
 				if (deployment[0].deploy.status == 'canceled') {
 					await message.reply('*Deploy Cancelled*')
 					clearInterval(intervalId);
