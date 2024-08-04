@@ -38,7 +38,7 @@ module.exports = {
   REJECT_CALL: toBool(process.env.REJECT_CALL),
   KOYEB_API_KEY: process.env.KOYEB_API_KEY || false,
   KOYEB_APP_NAME: process.env.KOYEB_APP_NAME || '',
-  RENDER_API: process.RENDER_API || false,
+  RENDER_API: process.env.RENDER_API || false,
   RENDER_NAME: process.env.RENDER_NAME || '',
   TERMUX_VPS: toBool(process.env.TERMUX || process.env.VPS),
   AUTO_STATUS_VIEW: toBool(process.env.AUTO_STATUS_VIEW),
