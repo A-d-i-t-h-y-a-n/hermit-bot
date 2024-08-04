@@ -100,15 +100,4 @@ Function({
         await message.send(`Error: ${error.message}`);
     }
 });
-
-const url = render.getUrl();
-
-setInterval(async () => {
-  try {
-        await getJson(url);
-   } catch (error) {
-        console.error(error.message);
-   }
-}, 30 * 1000);
-
 }
