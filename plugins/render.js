@@ -103,7 +103,6 @@ const url = render.getUrl();
 setInterval(async () => {
   try {
         await axios.get(url);
-        console.log(200);
    } catch (error) {
         console.error(error.message);
    }
