@@ -74,7 +74,7 @@ Function({
     try {
         const vars = await render.allVar();
         if (vars && vars.length > 0) {
-            const varList = vars.map(v => `*${v.key}:* ${v.value}`).join('\n');
+            const varList = vars.map(v => `*${v.envVar.key}:* ${v.envVar.value}`).join('\n');
             await message.send(`*All Environment Variables:*\n\n${varList}`);
         } else {
             await message.send('No environment variables found.');
@@ -93,6 +93,7 @@ Function({
     try {
         await message.send('_Restarting..._');
         await render.restart();
+        await new Promise((resolve) => pm2.stop('hermit-md', resolve));
     } catch (error) {
         await message.send(`Error: ${error.message}`);
     }
