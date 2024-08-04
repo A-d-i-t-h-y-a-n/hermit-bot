@@ -2,25 +2,6 @@ const { Function, prefix } = require('../lib/');
 const config = require('../config')
 const simpleGit = require('simple-git');
 const git = simpleGit();
-const pm2 = require('pm2');
-if (config.KOYEB_API_KEY || process.env.PORT) {
-
-pm2.connect(function(err) {
-    if (err) {
-        console.error(err);
-        process.exit(2);
-    }
-    
-    pm2.start({
-        script: './lib/keep_alive.js',
-        name: 'keep-alive'
-    }, function(err, apps) {
-        pm2.disconnect();
-        if (err) throw err;
-    });
-});
-
-}
 
 if (config.KOYEB_API_KEY) {
 const Koyeb = require('node-koyeb-api');
