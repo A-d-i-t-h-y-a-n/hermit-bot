@@ -89,6 +89,7 @@ Function({
 				}
 			}, 5000);
 		   await render.deploy('clear');
+		   await message.send('_Build started_')
 		} else {
 			await git.reset('hard', ['HEAD'])
 			await git.pull()
