@@ -41,7 +41,9 @@ Function({
 	}
 
 	if (match && (match.toLowerCase() === 'now' || match.toLowerCase() === 'start')) {
-
+		await git.fetch();
+		const commits = await git.log(['main..origin/main']);
+		if (!commits.total > 0) return await message.send('_Bot is completely up-to-date!_');
 		if (config.KOYEB_API_KEY) {
 			const Koyeb = require('node-koyeb-api');
 			const koyeb = new Koyeb(config.KOYEB_API_KEY);
