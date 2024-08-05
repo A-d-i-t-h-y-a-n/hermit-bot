@@ -5,7 +5,6 @@ const {
 	createCanvas,
 	loadImage
 } = require('canvas')
-
 Function({
 	pattern: 'circle',
 	fromMe: true,
