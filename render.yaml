@@ -5,7 +5,6 @@ services:
     branch: main
     env: docker
     dockerfilePath: Dockerfile
-    startCommand: npm start
     plan: free
     autoDeploy: true
     envVars:
