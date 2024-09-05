@@ -34,7 +34,7 @@ Function({
 	if (!match) {
 		let istrue = isMute?.enabled ? true : false
 		const buttonMessage = {
-			text: 'AutoMute Manager',
+			text: 'AutoMute Manager\n*Example : automute 6:00 AM || automute 12:00 PM*',
 			footer: 'Group Name : ' + groupMetadata.subject + '\nAutoMute status : ' + istrue,
 			buttons: [{
 				buttonId: prefix + 'automute on',
