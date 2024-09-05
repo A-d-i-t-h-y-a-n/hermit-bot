@@ -57,7 +57,7 @@ Function({
     pattern: 'tovn ?(.*)',
     fromMe: isPublic,
     desc: 'video/audio to voice',
-    type: 'converter'
+    type: 'misc'
 }, async (message, match, client) => {
     if (/document/.test(message.mine) || !/video/.test(message.mine) && !/audio/.test(message.mine) || !message.reply_message) return message.reply('_Reply to a video/audio_')
     await message.send(await message.reply_message.download(), 'audio', { mimetype: 'audio/mpeg', ptt: true, quoted: message.data })

@@ -53,7 +53,7 @@ Function({
 	pattern: 'chatbot ?(.*)',
 	fromMe: true,
 	desc: 'set chat bot',
-	type: 'misc'
+	type: 'ai'
 }, async (message, match) => {
 	await chatBot(message, match)
 });
