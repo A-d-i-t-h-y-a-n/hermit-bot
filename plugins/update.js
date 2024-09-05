@@ -42,7 +42,10 @@ Function({
 
 	if (match && (match.toLowerCase() === 'now' || match.toLowerCase() === 'start')) {
 		await git.fetch();
-		const commits = await git.log(['main..origin/main']);
+		const branches = await git.branch(['-r']);
+        const remoteBranch = branches.all.find(branch => branch.includes('origin/main'));
+        if (!remoteBranch) return;
+		const commits = await git.log([`HEAD..${remoteBranch}`]);
 		if (!commits.total > 0) return await message.send('_Bot is completely up-to-date!_');
 		if (config.KOYEB_API_KEY) {
 			const Koyeb = require('node-koyeb-api');
