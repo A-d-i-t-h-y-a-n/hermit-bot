@@ -29,7 +29,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
     <br>
 <a href='https://app.koyeb.com/auth/signup' target="_blank"><img alt='koyeb' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
 
-3. Get [DATABASE_URL](https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki/DATABASE_URL) and copy it
+3. Create [DATABASE_URL](https://app.koyeb.com/database-services/new) and copy it
 
 4. Get [Koyeb api key](https://app.koyeb.com/account/api)
 
