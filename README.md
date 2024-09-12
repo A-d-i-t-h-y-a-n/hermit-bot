@@ -4,10 +4,10 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 ***
 
 ### SETUP
-
-1. Scan the QR and copy it
+1. [![Fork me on GitHub](https://img.shields.io/github/forks/a-d-i-t-h-y-a-n/hermit-bot?style=social)](https://github.com/a-d-i-t-h-y-a-n/hermit-bot)
+2. Scan the QR or pair and copy it
     <br>
-<a href='https://hermit.adithyan.in.net/' target="_blank"><img alt='SCAN QR' src='https://img.shields.io/badge/Scan_qr-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<a href='https://hermit.adithyan.in.net/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
 #### DEPLOY TO RENDER 
 
