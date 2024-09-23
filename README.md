@@ -43,7 +43,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 2. Installation
    ```
    npm i -global pm2
-   git clone https://github.com/A-d-i-t-h-y-a-n/hermit-md.git
+   git clone https://github.com/A-d-i-t-h-y-a-n/hermit-bot.git
    cd hermit-md
    npm install
    ```
