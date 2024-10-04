@@ -7,7 +7,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 1. [![Fork](https://img.shields.io/github/forks/a-d-i-t-h-y-a-n/hermit-bot?style=social)](https://github.com/a-d-i-t-h-y-a-n/hermit-bot/fork)
 2. Scan the QR or pair and copy it
     <br>
-<a href='https://hermit.adithyan.in.net/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<a href='https://hermit-md.adithyan.in.net/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
 #### DEPLOY TO RENDER 
 
@@ -35,7 +35,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 2. Now Deploy
     <br>
-<a href='https://hermit.adithyan.in.net/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
+<a href='https://hermit-md.adithyan.in.net/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
 
 #### RUN ON VPS/UBUNTU/WINDOWS
 
@@ -44,7 +44,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
    ```
    npm i -global pm2
    git clone https://github.com/A-d-i-t-h-y-a-n/hermit-bot.git
-   cd hermit-md
+   cd hermit-bot
    npm install
    ```
 3. Configuration
@@ -67,7 +67,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
   ```
 <br>
 
-For help visit [Github wiki](https://github.com/A-d-i-t-h-y-a-n/hermit-md/wiki)
+For help visit [Github wiki](https://github.com/A-d-i-t-h-y-a-n/hermit-bot/wiki)
 
 ***
 
