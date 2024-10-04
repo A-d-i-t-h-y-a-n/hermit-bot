@@ -5,7 +5,7 @@ const { spawn } = require('child_process');
 
 Function({
   pattern: 'amix ?(.*)',
-  fromMe: isPublic,
+  fromMe: true,
   desc: 'Mix two audio files',
   type: 'media'
 }, async (message, match, client) => {
