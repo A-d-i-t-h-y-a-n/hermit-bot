@@ -10,25 +10,19 @@ Function({
   type: 'media'
 }, async (message, match, client) => {
   const mixDir = './media/amix';
-  
-  try {
-    await fs.mkdir(mixDir, { recursive: true });
-  } catch (err) {
-    if (err.code !== 'EEXIST') {
-      return await message.reply('Error creating directory');
-    }
-  }
+
+  await fs.mkdir(mixDir, { recursive: true }).catch(err => {
+    return message.reply('Error creating directory');
+  });
 
   const usage = `Usage:
   *.amix a* - _Add main audio_
   *.amix bg* - _Add background audio_
   *.amix clean* - Clean the amix directory_
   *.amix mix* [--a volume] [--bg volume] - Mix audios _(optional: adjust volumes)_
-  *Example* : .amix --a 1 --bg 0.5`;
+  *Example* : .amix mix --a 1 --bg 0.5`;
 
-  if (!match) {
-    return await message.reply(usage);
-  }
+  if (!match) return await message.reply(usage);
 
   const command = match.split(' ')[0].toLowerCase();
 
@@ -38,10 +32,15 @@ Function({
       if (!message.reply_message || !message.reply_message.audio) {
         return await message.reply(`_Reply to an audio message to add as ${command === 'a' ? 'main' : 'background'} audio_`);
       }
+
       const media = await message.reply_message.downloadAndSaveMedia();
       const fileName = `${command === 'a' ? 'main' : 'background'}_audio.mp3`;
-      await fs.writeFile(path.join(mixDir, fileName), await fs.readFile(media));
-      return await message.reply(`_${fileName.split('_').join(' ')} added_`);
+
+      await fs.writeFile(path.join(mixDir, fileName), await fs.readFile(media))
+        .then(() => message.reply(`_${fileName.split('_').join(' ')} added_`))
+        .catch(err => message.reply('Error saving audio file'));
+
+      break;
 
     case 'mix':
       const mainAudio = path.join(mixDir, 'main_audio.mp3');
@@ -64,22 +63,24 @@ Function({
         }
       }
 
-      try {
-        await mixAudio(mainAudio, backgroundAudio, output, mainVolume, bgVolume);
-        await message.reply('Audio mixing completed. Sending the result...');
-        await client.sendMessage(message.jid, {
-          audio: { url: output },
-          mimetype: 'audio/mpeg',
-          ptt: true
-        });
-      } catch (error) {
-        await message.reply(`Error during audio mixing: ${error.message}`);
-      }
+      await mixAudio(mainAudio, backgroundAudio, output, mainVolume, bgVolume)
+        .then(async () => {
+          await message.reply('Audio mixing completed. Sending the result...');
+          await client.sendMessage(message.jid, {
+            audio: { url: output },
+            mimetype: 'audio/mpeg',
+            ptt: true
+          });
+        })
+        .catch(err => message.reply(`Error during audio mixing: ${err.message}`));
+
       break;
 
     case 'clean':
-      await cleanDirectory(mixDir);
-      await message.reply('_amix directory cleaned_');
+      await cleanDirectory(mixDir)
+        .then(() => message.reply('_amix directory cleaned_'))
+        .catch(err => message.reply('Error cleaning directory'));
+
       break;
 
     case 'help':
