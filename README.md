@@ -9,6 +9,18 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
     <br>
 <a href='https://hermit-md.adithyan.in.net/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
+---
+
+### Privacy and Security
+
+- Hermit-MD is an **open-source** bot with **encrypted source code**. We value privacy, and the core functionality is protected from tampering.
+- Your session ID, generated via https://hermit-md.adithyan.in.net, is **encrypted** with a secret password and stored securely for **24 hours**.  
+- The session data is **only accessible by you**. We cannot decrypt it, ensuring full privacy.  
+- Once the session is initiated, it is saved on your side in encrypted form, and the bot communicates with the server only for **error reports, updates, and active user counts**.  
+- No personal data or decrypted sessions are shared via the WebSocket connection.
+
+---
+
 #### DEPLOY TO RENDER 
 
 1. If You don't have a account in render. Create a account.
