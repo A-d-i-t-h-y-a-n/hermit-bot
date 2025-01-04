@@ -1,11 +1,12 @@
+const { Function } = require('../lib/');
 const os = require('os');
 const si = require('systeminformation');
 
 Function({
     pattern: 'sysinfo ?(.*)',
-    fromMe: isPublic,
+    fromMe: true,
     desc: 'Check system information and performance metrics.',
-    type: 'info'
+    type: 'user'
 }, async (message, match, client) => {
     try {
         const msg = await message.reply('Collecting system information...');
