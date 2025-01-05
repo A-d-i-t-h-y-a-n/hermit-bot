@@ -17,7 +17,7 @@ Function({
     if (!match) return await message.reply('*Need an Instagram link!*');
     
     try {
-        const { result, status } = await postJson(apiUrl + 'instagram', { url: match });
+        const { result, status } = await getJson('https://api-25ca.onrender.com/api/instagram?url=' + match);
         if (!status || result.length < 1) return await message.reply('*No media found!*');
         
         for (const url of result) {
