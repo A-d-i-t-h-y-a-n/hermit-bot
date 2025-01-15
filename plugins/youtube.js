@@ -321,55 +321,56 @@ Function({
 });
 
 Function({
-  pattern: 'ytv ?(.*)',
-  fromMe: isPublic,
-  desc: 'download videos from youtube',
-  type: 'download'
+    pattern: 'ytv ?(.*)',
+    fromMe: isPublic,
+    desc: 'download videos from youtube',
+    type: 'download'
 }, async (message, match, client) => {
-  match = match || message.reply_message.text;
-  if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*');
-  const qualityMatch = match.match(/q:(\d+p)/i);
-  let specifiedQuality = null;
-  if (qualityMatch) {
-    specifiedQuality = qualityMatch[1];
-    match = match.replace(/q:\d+p/i, '').trim();
-  }
-  
-  if (isUrl(match) && match.includes('youtu')) {
-    const ytId = ytIdRegex.exec(match);
-    if (specifiedQuality) {
-    const result = await ytv('https://youtu.be/' + ytId[1], specifiedQuality);
-    return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
-    }
-    const response = await searchYouTube('https://youtu.be/' + ytId[1]);
-    const result = filterLinks(response, { type: 'mp4' });
-    let buttons = [];
-    let no = 1;
-    for (let i of result) {
-        buttons.push({
-          type: "button",
-          display_text: `${i.quality} - ${i.size}`,
-          id: `${prefix}ytv https://youtu.be/${ytId[1]} q:${i.quality}`
-        });
-    }
-    const interactiveMessage = {
-      title: response.title,
-      text: `Available quality:`,
-      footer: "hermit-md",
-      subtitle: "Subtitle text",
-      buttons: buttons
-    };
-    return await client.interactiveMessage(message.jid, interactiveMessage);
-  } else {
-    const search = await yts(match);
-    if (search.all.length < 1) return await message.reply('_Not Found_');
+    match = match || message.reply_message.text
+    if (!match) return message.reply('_Need url or video name!_\n*Example: .ytv url/video name*')
+    
     try {
-      let quality = specifiedQuality ? specifiedQuality : 'auto';
-      const result = await ytv(search.videos[0].url, quality);
-      if (!result) return await message.reply('_Failed to download_');
-      return await message.send(result.url, 'video', { quoted: message.data, caption: result.title });
+        if (isUrl(match) && match.includes('youtu')) {
+            const apiUrl = `https://api.adithyan.in.net/api/ytv?url=${encodeURIComponent(match)}`;
+            const response = await getJson(apiUrl);
+            const result = response;
+            
+            if (!result.status) {
+                return await message.reply('_Failed to download video_');
+            }
+
+            const qualities = result.availableQuality;
+            let msg = '*Available Qualities*\n\n';
+            qualities.forEach((quality, index) => {
+                msg += `${index + 1}. ${quality}p\n`;
+            });
+            
+            if (result.url && result.filename) {
+                return await message.send(result.url, 'video', {
+                    quoted: message.data,
+                    caption: result.filename
+                });
+            }
+            
+        } else {
+            const search = await yts(match)
+            if (search.all.length < 1) return await message.reply('_Not Found_');
+            
+            const videoUrl = `https://youtu.be/${search.videos[0].videoId}`;
+            const apiUrl = `https://api.adithyan.in.net/api/ytv?url=${encodeURIComponent(videoUrl)}`;
+            const response = await getJson(apiUrl);
+            const result = response;
+            
+            if (!result.status) {
+                return await message.reply('_Failed to download video_');
+            }
+            
+            return await message.send(result.url, 'video', {
+                quoted: message.data,
+                caption: result.filename
+            });
+        }
     } catch (error) {
-      return await message.send('```' + error.message + '```');
+        return await message.send('```' + error.message + '```');
     }
-  }
 });
