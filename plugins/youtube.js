@@ -248,33 +248,75 @@ Function({
     match = match || message.reply_message.text;
     if (!match) return message.reply('_Need URL or song name!_\n*Example: .yta URL/song name*');
     
-    if (isUrl(match) && match.includes('youtu')) {
-        const ytId = ytIdRegex.exec(match);
-        const result = await yta('https://youtu.be/' + ytId[1]);
-        const fileSizeInMB = parseFloat(result.size);
-        if (fileSizeInMB > 10) {
-            const audioBuffer = await getBuffer(result.url);
-            return await message.client.sendMessage(message.jid, { audio: audioBuffer, mimetype: 'audio/mpeg'}, { quoted: message.data });
+    try {
+        if (isUrl(match) && match.includes('youtu')) {
+            const ytId = ytIdRegex.exec(match);
+            const apiUrl = `https://api.adithyan.in.net/api/yta?url=https://youtu.be/${ytId[1]}`;
+            
+            const result = await getJson(apiUrl);
+            
+            const fileSizeInMB = parseFloat(result.size);
+            if (fileSizeInMB > 10) {
+                const audioBuffer = await getBuffer(result.url);
+                return await message.client.sendMessage(message.jid, {
+                    audio: audioBuffer,
+                    mimetype: 'audio/mpeg'
+                }, { quoted: message.data });
+            } else {
+                const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]));
+                const audioBuffer = await getBuffer(result.url);
+                
+                const writer = await addAudioMetaData(
+                    await toAudio(audioBuffer),
+                    thumb,
+                    result.title,
+                    `${config.BOT_INFO.split(";")[0]}`,
+                    'Hermit Official'
+                );
+                
+                return await message.client.sendMessage(message.jid, {
+                    audio: writer,
+                    mimetype: 'audio/mpeg'
+                }, { quoted: message.data });
+            }
         } else {
-            const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]));
-            const audioBuffer = await getBuffer(result.url);
-            const writer = await addAudioMetaData(await toAudio(audioBuffer), thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official');
-            return await message.client.sendMessage(message.jid, { audio: writer, mimetype: 'audio/mpeg'}, { quoted: message.data });
+            const search = await yts(match);
+            if (search.all.length < 1) return await message.reply('_Not Found_');
+            
+            const videoUrl = search.videos[0].url;
+            const ytId = ytIdRegex.exec(videoUrl);
+            const apiUrl = `https://api.adithyan.in.net/api/yta?url=https://youtu.be/${ytId[1]}`;
+            
+            const result = await getJson(apiUrl);
+            
+            const fileSizeInMB = parseFloat(result.size);
+            if (fileSizeInMB > 10) {
+                const audioBuffer = await getBuffer(result.url);
+                return await message.client.sendMessage(message.jid, {
+                    audio: audioBuffer,
+                    mimetype: 'audio/mpeg'
+                }, { quoted: message.data });
+            } else {
+                const thumb = await getBuffer(await getYoutubeThumbnail(ytId[1]));
+                const audioBuffer = await getBuffer(result.url);
+                
+                const file = await addAudioMetaData(
+                    audioBuffer,
+                    thumb,
+                    result.title,
+                    `${config.BOT_INFO.split(";")[0]}`,
+                    'Hermit Official'
+                );
+                
+                return await message.client.sendMessage(message.jid, {
+                    audio: file,
+                    mimetype: 'audio/mpeg'
+                }, { quoted: message.data });
+            }
         }
-    } else {
-        const search = await yts(match);
-        if (search.all.length < 1) return await message.reply('_Not Found_');
-        const result = await yta(search.videos[0].url);
-        const fileSizeInMB = parseFloat(result.size);
-        if (fileSizeInMB > 10) {
-            const audioBuffer = await getBuffer(result.url);
-            return await message.client.sendMessage(message.jid, { audio: audioBuffer, mimetype: 'audio/mpeg'}, { quoted: message.data });
-        } else {
-            const thumb = await getBuffer(result.thumb);
-            const audioBuffer = await getBuffer(result.url);
-            const file = await addAudioMetaData(audioBuffer, thumb, result.title, `${config.BOT_INFO.split(";")[0]}`, 'Hermit Official');
-            return await message.client.sendMessage(message.jid, { audio: file, mimetype: 'audio/mpeg'}, { quoted: message.data });
-        }
+    } catch (error) {
+        console.error('Error:', error);
+        return message.reply(`Error: ${error.message || 'Unknown error occurred'}`);
     }
 });
 
