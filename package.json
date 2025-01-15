@@ -34,7 +34,7 @@
     "sqlite3": "^5.1.7",
     "string-crypto": "^2.0.2",
     "translate-google-api": "^1.0.4",
-    "youtubei.js": "^10.2.0",
+    "youtubei.js": "^12.2.0",
     "yt-search": "^2.11.1"
   }
 }
