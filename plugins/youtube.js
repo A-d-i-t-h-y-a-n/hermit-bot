@@ -20,6 +20,7 @@ const t = "```";
 
 const send = async (message, file, id) => config.SONG_THUMBNAIL ? await sendwithLinkpreview(message.client, message, file,  'https://www.youtube.com/watch?v=' + id) : await message.client.sendMessage(message.chat, { audio: file, mimetype: 'audio/mpeg' }, { quoted: message.data });
 
+
  Function({
   on: 'text',
   fromMe: isPublic,
