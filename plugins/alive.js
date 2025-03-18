@@ -19,7 +19,7 @@ Function({
 	var msg = await message.reply('*Ping!*');
 	var end = new Date().getTime();
 	var responseTime = end - start;
-	await msg.edit(`*Pong!*\nLatency: ${responseTime}ms`);
+	await message.reply(`*Pong!*\nLatency: ${responseTime}ms`);
 });
 
 Function({
