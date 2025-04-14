@@ -15,7 +15,7 @@ process.env.NODE_OPTIONS = '--max_old_space_size=2560';
 const DEBUG = convertToBool(process.env.DEBUG, 'true');
 
 module.exports = {
-  VERSION: 'v4.4.5',
+  VERSION: 'v4.4.6',
   SESSION_ID: process.env.SESSION_ID || '',
   MODE: (process.env.MODE || 'private').toLowerCase(),
   HANDLERS: (process.env.PREFIX || '^[.,!]').trim(),
