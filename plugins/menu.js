@@ -6,6 +6,7 @@ const {
     formatBytes,
     commands
 } = require('../lib/');
+
 const {
     BOT_INFO,
     MODE,
