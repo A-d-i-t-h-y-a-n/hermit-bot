@@ -11,6 +11,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 ---
 
+<!--
 ### Privacy and Security
 
 - Hermit-MD is an **open-source** bot with **encrypted source code**. We value privacy, and the core functionality is protected from tampering.
@@ -49,6 +50,8 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 2. Now Deploy
     <br>
 <a href='https://hermit-md.adithyan.in.net/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
+
+-->
 
 #### RUN ON VPS/UBUNTU/WINDOWS
 
