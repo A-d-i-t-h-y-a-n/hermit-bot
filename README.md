@@ -7,7 +7,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 1. [![Fork](https://img.shields.io/github/forks/a-d-i-t-h-y-a-n/hermit-bot?style=social)](https://github.com/a-d-i-t-h-y-a-n/hermit-bot/fork)
 2. Scan the QR or pair and copy it
     <br>
-<a href='https://hermit-md.adithyan.in.net/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<a href='https://hermit-md.vercel.app/' target="_blank"><img alt='SESSION' src='https://img.shields.io/badge/SESSION-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
 ---
 
@@ -15,7 +15,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 ### Privacy and Security
 
 - Hermit-MD is an **open-source** bot with **encrypted source code**. We value privacy, and the core functionality is protected from tampering.
-- Your session ID, generated via https://hermit-md.adithyan.in.net/session, is **encrypted** with a secret password and stored securely for **24 hours**.  
+- Your session ID, generated via https://hermit-md.vercel.app/session, is **encrypted** with a secret password and stored securely for **24 hours**.  
 - The session data is **only accessible by you**. We cannot decrypt it, ensuring full privacy.
 - We do **not use Pastebin or any other alternatives** for storing session data. All session data is securely stored in a **PostgreSQL database**, which is fully controlled by us, ensuring your data's security and privacy.
 - Once the session is initiated, it is saved on your side in encrypted form, and the bot communicates with the server only for **error reports, updates, and active user counts**.  
@@ -49,7 +49,7 @@ Hermit-md - Simple whatsapp Multi Device whatsapp bot.
 
 2. Now Deploy
     <br>
-<a href='https://hermit-md.adithyan.in.net/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
+<a href='https://hermit-md.vercel.app/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
 
 -->
 
