@@ -10,12 +10,6 @@ const {
 } = require('../lib/')
 const arm = new Database('arm');
 
-const isBotAdmins = async (message) => {
-	const groupMetadata = await message.client.groupMetadata(message.chat)
-	const admins = await groupMetadata.participants.filter(v => v.admin !== null).map(v => v.id)
-	return admins.includes(message.user_id)
-}
-
 const isAdmin = async (message, user) => {
 	const groupMetadata = await message.client.groupMetadata(message.chat)
 	const admins = await groupMetadata.participants.filter(v => v.admin !== null).map(v => v.id)
@@ -30,7 +24,7 @@ Function({
 		type: 'group'
 	},
 	async (message, match, client) => {
-		if (!(await isBotAdmins(message, client))) return await message.reply("I'm not an admin.");
+		if (!(await isAdmin(message, message.client.user.lid))) return await message.reply("I'm not an admin.");
 		const num = message.quoted.sender || match.replace(/[^0-9,]/g, '')
 		if (!num) return await message.reply('_Enter the numbers you want to add separated by commas._');
 		const messages = {
@@ -68,7 +62,7 @@ Function({
 	desc: 'kick someone in the group. Reply to message or tag a person to use command.',
 	type: 'group'
 }, async (message, match, client) => {
-	const isbotAdmin = await isBotAdmins(message, message.client)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
 		if (message.reply_message.data.key.fromMe) return false
@@ -99,7 +93,7 @@ Function({
 	desc: 'Makes any person an admin.',
 	type: 'group'
 }, async (message, match, client) => {
-	const isbotAdmin = await isBotAdmins(message, message.client)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
 		const admin = await isAdmin(message, message.reply_message.sender)
@@ -131,7 +125,7 @@ Function({
 	desc: 'Takes the authority of any admin.',
 	type: 'group'
 }, async (message, match, client) => {
-	const isbotAdmin = await isBotAdmins(message, message.client)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	if (message.reply_message !== false) {
 		const admin = await isAdmin(message, message.reply_message.sender)
@@ -162,7 +156,7 @@ Function({
 	desc: 'Mute the group chat. Only the admins can send a message.',
 	type: 'group'
 }, async (message, match) => {
-	const iamAdmin = await isBotAdmins(message)
+	const iamAdmin = await isAdmin(message, message.client.user.lid)
 	if (!iamAdmin) return await message.reply("I'm not an admin")
 	if (!match || isNaN(match)) {
 		await message.client.groupSettingUpdate(message.chat, 'announcement')
@@ -182,7 +176,8 @@ Function({
 	desc: 'Unmute the group chat. Anyone can send a message.',
 	type: 'group'
 }, async (message, match) => {
-	if (!isBotAdmins) return await message.reply("I'm not an admin")
+	const iamAdmin = await isAdmin(message, message.client.user.lid)
+	if (!iamAdmin) return await message.reply("I'm not an admin")
 	if (!match || isNaN(match)) {
 		await message.client.groupSettingUpdate(message.chat, 'not_announcement')
 		await message.send('*Group opened.*')
@@ -201,12 +196,12 @@ Function({
     onlyGroup: true,
 	desc: "Provides the group's invitation link.",
 	type: 'group'
-}, async (m, text, client) => {
-	if (!m.isGroup) return await m.reply('_This command only works in group chats_')
-	const isbotAdmin = await isBotAdmins(m, client)
-	if (!isbotAdmin) return await m.reply("I'm not an admin")
-	const response = await client.groupInviteCode(m.chat)
-	await m.reply(`https://chat.whatsapp.com/${response}`)
+}, async (message, text, client) => {
+	if (!message.isGroup) return await message.reply('_This command only works in group chats_')
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
+	if (!isbotAdmin) return await message.reply("I'm not an admin")
+	const response = await client.groupInviteCode(message.chat)
+	await message.reply(`https://chat.whatsapp.com/${response}`)
 })
 Function({
 	pattern: 'revoke ?(.*)',
@@ -215,7 +210,7 @@ Function({
 	desc: 'Revoke Group invite link.',
 	type: 'group'
 }, async (message, match) => {
-	const isbotAdmin = await isBotAdmins(message, message.client)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.reply("I'm not an admin")
 	await message.client.groupRevokeInvite(message.jid)
 	await message.send('_Revoked_')
@@ -270,7 +265,7 @@ Function({
 	desc: "only allow admins to modify the group's settings",
 	type: 'group'
 }, async (message, match, client) => {
-	const isbotAdmin = await isBotAdmins(message)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	const meta = await message.client.groupMetadata(message.chat)
 	if (meta.restrict) return await message.send("_Already only admin can modify group settings_")
@@ -285,7 +280,7 @@ Function({
 	desc: "allow everyone to modify the group's settings -- like display picture etc.",
 	type: 'group'
 }, async (message, match, client) => {
-	const isbotAdmin = await isBotAdmins(message)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	const meta = await message.client.groupMetadata(message.chat)
 	if (!meta.restrict) return await message.send("_Already everyone can modify group settings_")
@@ -307,7 +302,7 @@ Function({
 		await client.groupUpdateSubject(message.chat, match)
 		return await message.send("*Subject updated*")
 	}
-	const isbotAdmin = await isBotAdmins(message)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	await client.groupUpdateSubject(message.chat, match)
 	return await message.send("*Subject updated*")
@@ -327,7 +322,7 @@ Function({
 		await client.groupUpdateDescription(message.chat, match)
 		return await message.send("*Description updated*")
 	}
-	const isbotAdmin = await isBotAdmins(message)
+	const isbotAdmin = await isAdmin(message, message.client.user.lid)
 	if (!isbotAdmin) return await message.send("I'm not an admin")
 	await client.groupUpdateDescription(message.chat, match)
 	return await message.send("*Description updated*")
@@ -373,7 +368,7 @@ Function({
   desc: 'Ban users from group.',
   type: 'group',
 }, async (message, match, client) => {
-  const isbotAdmin = await isBotAdmins(message, message.client)
+  const isbotAdmin = await isAdmin(message, message.client.user.lid)
   if (!isbotAdmin) return await message.reply("I'm not an admin")
   const db = new Database('bannedNumbers');
   const groupBans = db.get(message.chat) || [];
