@@ -6,7 +6,6 @@ const {
 	toPTT,
 	prefix
 } = require("../lib/");
-const { downloadMediaMessage } = require('@adiwajshing/baileys')
 const { fromBuffer } = require('file-type')
 const config = require('../config');
 const fs = require('fs');
@@ -202,6 +201,7 @@ Function({
     desc: 'Media to document',
     type: 'misc'
 }, async (message, match) => {
+	const { downloadMediaMessage } = global.Baileys
     if (!message.reply_message) return await message.reply('Reply to a media');
     const fileName = match || '';
     const buffer = await downloadMediaMessage(message.quoted.data, 'buffer', {}, {});
