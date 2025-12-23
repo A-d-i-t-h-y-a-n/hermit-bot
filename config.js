@@ -11,6 +11,7 @@ global.apiUrl = 'https://hermit-api.koyeb.app/';
 
 const DATABASE_URL = process.env.DATABASE_URL || './database.db';
 process.env.NODE_OPTIONS = '--max_old_space_size=2560';
+const hasCaCert = !!process.env.PG_CA_CERT;
 
 const DEBUG = convertToBool(process.env.DEBUG, 'true');
 
@@ -54,16 +55,14 @@ module.exports = {
       })
     : new Sequelize(DATABASE_URL, {
         dialect: "postgres",
-        protocol: "postgres",
         logging: false,
-
         dialectOptions: {
           ssl: {
             require: true,
-            rejectUnauthorized: true,
-            ca: process.env.PG_CA_CERT
-              ? process.env.PG_CA_CERT.replace(/\\n/g, "\n")
-              : undefined,
+            rejectUnauthorized: hasCaCert, // 🔑 key line
+            ...(hasCaCert && {
+              ca: process.env.PG_CA_CERT.replace(/\\n/g, "\n"),
+            }),
           },
         },
       }),
