@@ -1,26 +1,24 @@
 # Hermit Bot
 
-> This repository is a fork of [Hermit Bot](https://github.com/adithyanlabs/hermit-bot).
+> The successor to Hermit-md.
 
-## GitHub Username Change
+## Repository Notice
 
-The original GitHub username:
+The original **Hermit-md** repository was disabled by GitHub Staff due to a violation of GitHub's Terms of Service.
 
-`A-d-i-t-h-y-a-n`
+As the original repository is no longer available, **Hermit Bot** was created as the new home and continuation of the project.
 
-has been changed to:
+### Project History
 
-`adithyanlabs`
+- **Original project:** `hermit-md`
+- **Current project:** `hermit-bot`
+- **Maintainer:** [Adithyan Labs](https://github.com/adithyanlabs)
+- **Previous GitHub username:** `A-d-i-t-h-y-a-n`
+- **Current GitHub username:** `adithyanlabs`
 
-This repository is now maintained under the **Adithyan Labs** GitHub identity.
-
-### Original Account
-
-- Old username: [A-d-i-t-h-y-a-n](https://github.com/A-d-i-t-h-y-a-n)
-- New username: [adithyanlabs](https://github.com/adithyanlabs)
-
-The username change does **not** affect the project itself or its history. This repository remains a fork of the original Hermit Bot project.
+Hermit Bot continues the project under the new repository and GitHub identity.
 
 ---
 
-**Adithyan Labs** — Open-source projects and experiments by Adithyan R.
+**Adithyan Labs**  
+Open-source software, tools, and experiments by Adithyan R.
